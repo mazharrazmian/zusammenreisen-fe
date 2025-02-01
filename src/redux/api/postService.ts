@@ -9,7 +9,7 @@ interface Post {
   text: string;
 }
 
-const getAllPosts = () => callAPi.get("/reisapp/posts/");
+const getAllPosts = (queryParams:URLSearchParams) => callAPi.get(`/reisapp/posts?${queryParams}`);
 const getPost = (id: number) => callAPi.get(`/reisapp/posts/${id}`);
 const getAllCountries = () => callAPi.get("/reisapp/countries/");
 const filterCountryByName = (key: string) =>
