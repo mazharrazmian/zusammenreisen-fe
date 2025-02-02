@@ -9,12 +9,15 @@ interface Post {
   text: string;
 }
 
-const getAllPosts = (queryParams:URLSearchParams) => callAPi.get(`/reisapp/posts?${queryParams}`);
+const getAllPosts = (queryParams:string) => {
+    return callAPi.get(`/reisapp/posts?${queryParams}`);
+
+}
 const getPost = (id: number) => callAPi.get(`/reisapp/posts/${id}`);
 const getAllCountries = () => callAPi.get("/reisapp/countries/");
 const filterCountryByName = (key: string) =>
   callAPi.get(`reisapp/countries/?name__startswith=${key}`);
-const filterCityByCountryId = (id: number) =>
+const filterCityByCountryId = (id: string) =>
   callAPi.get(`reisapp/cities/?country=${id}`);
 const createPost = (data: Post) =>
   callAPiMultiPart.post(`/reisapp/posts/`, data);

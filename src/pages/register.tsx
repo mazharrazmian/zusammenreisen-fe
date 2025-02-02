@@ -133,6 +133,8 @@ const RegisterPage = () => {
         name: values.first_name + values.last_name,
       };
 
+      console.log(datas)
+
       if (validations()) {
         setIsLoading(true);
         const res = await authServices.signUp(datas);
@@ -365,7 +367,9 @@ const RegisterPage = () => {
                       onChange={handleOnChange}
                     >
                       <MenuItem value="1">Male</MenuItem>
-                      <MenuItem value="0">Female</MenuItem>
+                      <MenuItem value="2">Female</MenuItem>
+                      <MenuItem value="3">Other</MenuItem>
+                      
                     </TextField>
                   </Box>
                 </Grid>
