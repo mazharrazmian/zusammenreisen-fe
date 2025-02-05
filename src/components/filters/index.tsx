@@ -15,26 +15,16 @@ import { GENDERS } from "../../Constants";
 
 
 interface FiltersProps {
-  setURLParams: (params:string) => void;
-  pageNumber : number,
+  filters: FilterState;
+  setFilters : (filters : FilterState)=> void,
 }
 
-const Filters: React.FC<FiltersProps> = ({ setURLParams,pageNumber }) => {
+const Filters: React.FC<FiltersProps> = ({ filters,setFilters }) => {
   
     const [countries,setCountries] = useState<Array<Country>>([])
     const [cities,setCities] = useState<Array<City>>([])
 
        
-
-  // Initialize filter state
-  const [filters, setFilters] = useState<FilterState>({
-    country: '',
-    city: '',
-    gender: "",
-    date_from : '',
-    date_to : '',
-  });
-
   
   useEffect(()=>{
      postServices.getAllCountries().then(res=>{
@@ -46,34 +36,13 @@ const Filters: React.FC<FiltersProps> = ({ setURLParams,pageNumber }) => {
     })
   },[])
 
-  useEffect(()=>{
-    if (filters.country == '' || filters.country == undefined){
-       return
-    }
-    
-    postServices.filterCityByCountryId(filters.country).then((res)=>{
-        setCities(res.data)
-    })
-    .catch(error=>{
-        console.log(error)
-    })
-
-  },[filters.country])
+  useEffect(() => {
+    if (!filters.country) return;
+    postServices.filterCityByCountryId(filters.country).then((res) => setCities(res.data)).catch(console.log);
+  }, [filters.country]);
 
 
-  useEffect(()=>{
-    const params = new URLSearchParams({
-        page: pageNumber.toString(),
-        ...(filters.country && { country: filters.country }),
-        ...(filters.city && { city: filters.city }),
-        ...(filters.date_from && { date_from: filters.date_from }),
-        ...(filters.date_to && { date_to: filters.date_to }),
-        ...(filters.gender && { gender: String(filters.gender)}),
-
-      }).toString();
-      setURLParams(params)
-  },[filters,pageNumber,setURLParams])
-
+  
   const handleChange = (
     e: React.ChangeEvent<{ name?: string; value: unknown }>
   ) => {
@@ -81,7 +50,6 @@ const Filters: React.FC<FiltersProps> = ({ setURLParams,pageNumber }) => {
     
     if (!name) return;
     const newFilters = { ...filters, [name]: value as string };
-    console.log(newFilters)
     setFilters(newFilters);
    
   };

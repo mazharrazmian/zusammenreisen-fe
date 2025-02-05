@@ -22,13 +22,21 @@ interface SearchComponentProps {
 
 const SearchComponent: React.FC<SearchComponentProps> = ({ places }) => {
   const [to, setTo] = React.useState<string>(""); // Store the selected place ID
+  const [dateFrom, setDateFrom] = React.useState<string>("");
+  const [dateTo, setDateTo] = React.useState<string>("");
+
   const navigate = useNavigate();
 
   const handleSearch = () => {
-    if (to) {
-      navigate(`/list?to=${to}`); // Pass the ID in the query params
-    }
+    const params = new URLSearchParams({
+      ...(to && { to }), // Pass place ID
+      ...(dateFrom && { date_from: dateFrom }),
+      ...(dateTo && { date_to: dateTo }),
+    }).toString();
+
+    navigate(`/list?${params}`);
   };
+
 
   return (
     <Box sx={homePageStyles.searchBox}>
@@ -54,7 +62,7 @@ const SearchComponent: React.FC<SearchComponentProps> = ({ places }) => {
         <Grid item xs={12} md={3}>
           <Box>
             <Typography sx={{ paddingLeft: "10px", fontSize: "14px" }}>
-              Departure
+              Departure Range
             </Typography>
             <TextField
               sx={{
@@ -66,6 +74,8 @@ const SearchComponent: React.FC<SearchComponentProps> = ({ places }) => {
               type="date"
               variant="outlined"
               placeholder="Departure"
+              onChange={(e) => setDateFrom(e.target.value)}
+              value={dateFrom}
             />
           </Box>
         </Grid>
@@ -79,6 +89,8 @@ const SearchComponent: React.FC<SearchComponentProps> = ({ places }) => {
               type="date"
               variant="outlined"
               placeholder="Return"
+              onChange={(e) => setDateTo(e.target.value)}
+              value={dateTo}
             />
           </Box>
         </Grid>

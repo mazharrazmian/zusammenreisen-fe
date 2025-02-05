@@ -18,6 +18,10 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import postServices from "../../redux/api/postService";
 import Filters from "../filters";
+import { useSearchParams } from "react-router-dom";
+import { FilterState } from "../../types";
+
+
 
 const PostsList = () => {
   const navigate = useNavigate();
@@ -27,8 +31,29 @@ const PostsList = () => {
   const [loading, setLoading] = useState(false);
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [page, setPage] = useState(1);
-  const [urlParams,setURLParams] = useState<string>('')
-  
+  const [searchParams] = useSearchParams(); //params in FE url e.g list?to=123
+
+  // Initialize filter state
+  const [filters, setFilters] = useState<FilterState>({
+    country: searchParams.get("to") || "",
+    city: '',
+    gender: "",
+    date_from : searchParams.get("date_from") || "",
+    date_to : searchParams.get("date_to") || "",
+  });
+
+  // Compute URL params whenever filters or page changes
+  const urlParams = new URLSearchParams({
+    page: page.toString(),
+    ...(filters.country && { country: filters.country }),
+    ...(filters.city && { city: filters.city }),
+    ...(filters.date_from && { date_from: filters.date_from }),
+    ...(filters.date_to && { date_to: filters.date_to }),
+    ...(filters.gender && { gender: String(filters.gender) }),
+  }).toString();
+
+
+
   const fetchPosts = async (pageNumber = 1) => {
     setLoading(true);
     try {
@@ -44,9 +69,25 @@ const PostsList = () => {
     }
   };
 
+  // Fetch posts whenever `urlParams` changes
   useEffect(() => {
-    fetchPosts(1);
-  }, [urlParams]);
+    const fetchPosts = async () => {
+      setLoading(true);
+      try {
+        const response = await postServices.getAllPosts(urlParams);
+        setPosts(response.data.results);
+        setCount(response.data.count);
+      } catch (error) {
+        console.log(error);
+        toast.error("Failed to fetch posts.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPosts();
+  }, [urlParams]); // Fetch whenever `urlParams` changes
+
 
   const handlePageChange = (_event: React.ChangeEvent<unknown>, value: number) => {
     fetchPosts(value);
@@ -60,7 +101,7 @@ const PostsList = () => {
         {/* Filters Section */}
         {!isMobile && (
           <Box sx={{ width: "250px", flexShrink: 0 }}>
-            <Filters setURLParams={setURLParams} pageNumber={page} />
+            <Filters filters={filters} setFilters={setFilters} />
           </Box>
         )}
         
