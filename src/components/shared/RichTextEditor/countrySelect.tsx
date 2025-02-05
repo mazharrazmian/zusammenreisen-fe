@@ -9,17 +9,20 @@ interface Country {
 interface CountrySelectProps {
   countries: Country[];
   value: Country | null;
-  onChange: (country: Country | null) => void;
+  name : string,
+  onChange: (fieldname :string ,country: Country | null) => void;
+  helperText : string,
+  error : boolean,
 }
 
-const CountrySelect: React.FC<CountrySelectProps> = ({ countries, value, onChange }) => {
+const CountrySelect: React.FC<CountrySelectProps> = ({ countries, value, onChange,name,helperText,error }) => {
   return (
     <Autocomplete
       options={countries}
       getOptionLabel={(option) => option.name}
       value={value}
-      onChange={(_, newValue) => onChange(newValue)}
-      renderInput={(params) => <TextField {...params} label="Select Country" variant="outlined" />}
+      onChange={(e, newValue) => onChange(name,newValue)}
+      renderInput={(params) => <TextField helperText={helperText} error={error} name={name} {...params} label="Select Country" variant="outlined" />}
     />
   );
 };

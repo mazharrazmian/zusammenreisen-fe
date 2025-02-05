@@ -87,7 +87,6 @@ const LoginPage = () => {
       if (validations()) {
         setIsLoading(true);
         const res = await authServices.login(datas);
-        console.log("res", res);
 
         if (res.status === 200) {
           Cookies.set("userId", res.data.id, {

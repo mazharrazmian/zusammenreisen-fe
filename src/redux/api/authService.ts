@@ -43,10 +43,11 @@ export const signUp = async (data: signup) => {
   
   export const getProfile = async () => {
     try {
+       
       const response = await callAPi.get("auth/users/me");
       return response
     } catch (error) {
-      handleApiError(error);
+     console.log(error)
     }
   };
 

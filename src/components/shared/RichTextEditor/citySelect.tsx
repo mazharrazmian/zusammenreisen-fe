@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Autocomplete, TextField } from "@mui/material";
+import { Autocomplete, ListItemText, TextField } from "@mui/material";
 import postServices from "../../../redux/api/postService";
 
 interface City {
@@ -10,10 +10,13 @@ interface City {
 interface CitySelectProps {
   countryId: string | null;
   value: City | null;
-  onChange: (city: City | null) => void;
+  onChange: (fieldname :string ,city: City | null) => void;
+  name : string,
+  helperText : string,
+  error : boolean,
 }
 
-const CitySelect: React.FC<CitySelectProps> = ({ countryId, value, onChange }) => {
+const CitySelect: React.FC<CitySelectProps> = ({ countryId, value, onChange,name , helperText , error}) => {
   const [cities, setCities] = useState<City[]>([]);
   const [loading, setLoading] = useState(false);
 
@@ -30,16 +33,23 @@ const CitySelect: React.FC<CitySelectProps> = ({ countryId, value, onChange }) =
       .finally(() => setLoading(false));
   }, [countryId]);
 
+
+
   return (
     <Autocomplete
       options={cities}
       getOptionLabel={(option) => option.name}
       value={value}
-      onChange={(_, newValue) => onChange(newValue)}
+      onChange={(_, newValue) => onChange(name,newValue)}
       loading={loading}
       disabled={!countryId}
-      renderInput={(params) => <TextField {...params} label="Select City" variant="outlined" />}
-    />
+      renderInput={(params) => <TextField helperText={helperText} error={error} name={name} {...params} label="Select City" variant="outlined" />}
+      renderOption={(props, item) => (
+        <li {...props} key={item.id}>
+          <ListItemText>{item.name}</ListItemText>
+        </li>
+)}
+      />
   );
 };
 

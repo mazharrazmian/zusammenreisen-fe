@@ -91,8 +91,8 @@ const PostsList = () => {
                     <CloseIcon />
                   </IconButton>
                 </Box>
-                <Filters data={posts} onFilterChange={handleFilterChange} />
-              </Box>
+                <Filters setURLParams={setURLParams} pageNumber={page} />
+                </Box>
             </Drawer>
           </>
         )}

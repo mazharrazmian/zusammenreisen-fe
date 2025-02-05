@@ -3,12 +3,12 @@
 
 export interface Country{
 
-    'id' : number,
+    'id' : string,
     'name' : string,
 }
 
 export interface City{
-    'id' : number,
+    'id' : string,
     'name' : string,
 }
 

@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import Cookies from "js-cookie";
 
 import authServices from "../api/authService";
 
@@ -10,7 +11,10 @@ const initialState = {
 };
 
 export const get_profile = createAsyncThunk("profile/get_profile", async () => {
-  try {
+    if (Cookies.get('accessToken') == undefined){
+        return
+    } 
+    try {
     const res = await authServices.getProfile();
     return res.data;
   } catch (error) {

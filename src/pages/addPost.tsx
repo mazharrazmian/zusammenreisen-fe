@@ -10,6 +10,7 @@ import {
     IconButton,
     Autocomplete,
     CircularProgress,
+    Divider,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
@@ -22,6 +23,9 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { addPostStyles } from "./styles";
 import styled from "@emotion/styled";
 import Navbar from "../components/navbar";
+import CountrySelect from "../components/shared/RichTextEditor/countrySelect";
+import CitySelect from "../components/shared/RichTextEditor/citySelect";
+import { City, Country } from "../types";
 
 const CustomDetails = styled(TextField)({
     "& .MuiOutlinedInput-input": {
@@ -33,12 +37,27 @@ const CustomDetails = styled(TextField)({
     },
 });
 
-const initialValues = {
+export interface postDataInterface {
+    title: string,
+    fromCountry : null | Country ,
+    fromCity : null | City,
+    toCountry : null | Country,
+    toCity : null | City,
+    postalCode:string,
+    departureDate: string,
+    returnDate: string,
+    text: string,
+    gender: string,
+    images: [],
+    dates_flexible: boolean,
+}
+
+const initialValues :postDataInterface = {
     title: "",
-    travel_from_country: "",
-    travel_from_city: "",
-    travel_to_country: "",
-    travel_to_city: "",
+    fromCountry : null ,
+    fromCity : null,
+    toCountry : null,
+    toCity : null,
     postalCode: "",
     departureDate: "",
     returnDate: "",
@@ -52,56 +71,37 @@ const AddPost = () => {
     const [errors, setErrors] = useState<{ [key: string]: string }>({});
     const [previewImages, setPreviewImages] = React.useState<string[]>([]);
     const [imageFiles, setImageFiles] = React.useState<File[]>([]);
-    const [openToCountry, setOpenToCountry] = React.useState(false);
-    const [openToCity, setOpenToCity] = React.useState(false);
-    const [openFromCountry, setOpenFromCountry] = React.useState(false);
-    const [openFromCity, setOpenFromCity] = React.useState(false);
-
-    const [cities_to, setCitiesTo] = React.useState<Array<object>>([])
-    const [cities_from, setCitiesFrom] = React.useState<Array<object>>([])
-
+    
+    const [countries,setCountries] = useState([])
+   
     const [loading, setLoading] = React.useState(false);
     const [isLoading, setIsLoading] = React.useState(false);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const getCountries = useSelector((state) => state.filter);
 
 
     useEffect(() => {
-        dispatch(get_AllCountries());
+       
+        postServices.getAllCountries()
+        .then(res=>{
+            setCountries(res.data)
+        })
+        .catch(error=>{
+            console.log(error)
+        })
+
     }, []);
+
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({ ...prevData, [name]: value }));
         validations({ [name]: value });
     };
 
-    useEffect(() => {
-        if (formData.travel_from_country) {
-
-            postServices.filterCityByCountryId(formData.travel_from_country)
-                .then(res => {
-                    setCitiesFrom(res.data)
-                })
-                .catch(error => {
-                    console.log(error)
-                })
-
-        }
-    }, [formData.travel_from_country, dispatch]);
-
-    useEffect(() => {
-        if (formData.travel_to_country) {
-            postServices.filterCityByCountryId(formData.travel_to_country)
-                .then(res => {
-                    setCitiesTo(res.data)
-                })
-                .catch(error => {
-                    console.log(error)
-                })
-
-        }
-    }, [formData.travel_to_country, dispatch]);
+    const handleAutoCompleteChange = (name :string , value : Country | City | null) =>{
+        setFormData((prevData)=>({...prevData, [name] : value}))
+    }
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const files = e.target.files;
@@ -125,72 +125,20 @@ const AddPost = () => {
 
         setImageFiles((prev) => prev.filter((_, i) => i !== index));
     };
-    const handleOpenToCountry = () => {
-        setOpenToCountry(true);
-        (async () => {
-            setLoading(true);
-
-            setLoading(false);
-        })();
-    };
-
-    const handleCloseToCountry = () => {
-        setOpenToCountry(false);
-    };
-    const handleOpenToCity = () => {
-        setOpenToCity(true);
-        (async () => {
-            setLoading(true);
-
-            setLoading(false);
-        })();
-    };
-
-    const handleCloseToCity = () => {
-        setOpenToCity(false);
-    };
-
-
-    const handleOpenFromCountry = () => {
-        setOpenFromCountry(true);
-        (async () => {
-            setLoading(true);
-
-            setLoading(false);
-        })();
-    };
-
-    const handleCloseFromCountry = () => {
-        setOpenFromCountry(false);
-    };
-    const handleOpenFromCity = () => {
-        setOpenFromCity(true);
-        (async () => {
-            setLoading(true);
-
-            setLoading(false);
-        })();
-    };
-
-    const handleCloseFromCity = () => {
-        setOpenFromCity(false);
-    };
-
-
+    
     const validations = (fieldValue = formData) => {
         const temp: { [key: string]: string } = { ...errors };
         if ("title" in fieldValue)
             temp.title = fieldValue.title ? "" : "Title is required";
+        if ("toCountry" in fieldValue)
+            temp.toCountry = fieldValue.toCountry?.id ? "" : "Country is required";
+        if ("toCity" in fieldValue)
+            temp.toCity = fieldValue.toCity?.id ? "" : "City is required";
 
-        if ("travel_to_country" in fieldValue)
-            temp.travel_to_country = fieldValue.travel_to_country ? "" : "Country is required";
-        if ("travel_to_city" in fieldValue)
-            temp.travel_to_city = fieldValue.travel_to_city ? "" : "City is required";
-
-        if ("travel_from_country" in fieldValue)
-            temp.travel_from_country = fieldValue.travel_from_country ? "" : "Country is required";
-        if ("travel_from_city" in fieldValue)
-            temp.travel_from_city = fieldValue.travel_from_city ? "" : "City is required";
+        if ("fromCountry" in fieldValue)
+            temp.fromCountry = fieldValue.fromCountry?.id ? "" : "Country is required";
+        if ("fromCity" in fieldValue)
+            temp.fromCity = fieldValue.fromCity?.id ? "" : "City is required";
 
         if ("departureDate" in fieldValue)
             temp.departureDate = fieldValue.departureDate
@@ -200,7 +148,7 @@ const AddPost = () => {
             temp.returnDate = fieldValue.returnDate ? "" : "Return date is required";
         if ("text" in fieldValue)
             temp.text = fieldValue.text ? "" : "This field is required";
-
+        console.log(temp)
         setErrors(temp);
         return Object.values(temp).every((x) => x === "");
     };
@@ -209,10 +157,10 @@ const AddPost = () => {
         if (validations()) {
             const postData = new FormData();
             postData.append("title", formData.title);
-            postData.append("travel_to_country", formData.travel_to_country);
-            postData.append("travel_to_city", formData.travel_to_city);
-            postData.append("travel_from_country", formData.travel_to_country);
-            postData.append("travel_from_city", formData.travel_to_city);
+            postData.append("travel_to_country", formData.toCountry!.id);
+            postData.append("travel_to_city", formData.toCity!.id);
+            postData.append("travel_from_country", formData.fromCountry!.id!);
+            postData.append("travel_from_city", formData.fromCity!.id);
             //        formData.append("postalCode", formData.postalCode);
             //      formData.append("place", formData.place);
             postData.append("date_from", formData.departureDate);
@@ -224,7 +172,11 @@ const AddPost = () => {
             imageFiles.forEach((file) => {
                 postData.append("images", file); // Same key for multiple files
             });
-
+            // Display the key/value pairs
+            // for (var pair of postData.entries()) {
+            //     console.log(pair[0]+ ', ' + pair[1]); 
+            // }
+            // return
             try {
                 setIsLoading(true);
                 const res = await postServices.createPost(postData); // Assuming postServices.createPost handles FormData
@@ -288,195 +240,38 @@ const AddPost = () => {
                                 helperText={errors.title}
                                 error={Boolean(errors.title)}
                                 onChange={handleChange}
+                                required
                             />
                         </Grid>
 
-                        {/* Travelling FROM */}
-
-                        <Grid item xs={12} md={4}>
-                            <Autocomplete
-                                sx={{ width: "100%" }} // Ensure it spans the full grid width
-                                open={openFromCountry}
-                                onOpen={handleOpenFromCountry}
-                                onClose={handleCloseFromCountry}
-                                isOptionEqualToValue={(option, value) =>
-                                    option.id === value?.id
-                                }
-                                getOptionLabel={(option) => option.name || ""}
-                                options={getCountries?.data || []}
-                                value={
-                                    getCountries?.data?.find(
-                                        (item: any) => item.id === formData.travel_from_country
-                                    ) || null
-                                }
-                                onChange={(event, newValue) => {
-                                    handleChange({
-                                        target: { name: "travel_from_country", value: newValue?.id || "" },
-                                    });
-                                }}
-                                loading={loading}
-                                renderInput={(params) => (
-                                    <TextField
-                                        {...params}
-                                        label="Country"
-                                        variant="outlined"
-                                        error={Boolean(errors.travel_from_country)}
-                                        helperText={errors.travel_from_country}
-                                        InputProps={{
-                                            ...params.InputProps,
-                                            endAdornment: (
-                                                <React.Fragment>
-                                                    {loading ? (
-                                                        <CircularProgress color="inherit" size={20} />
-                                                    ) : null}
-                                                    {params.InputProps.endAdornment}
-                                                </React.Fragment>
-                                            ),
-                                        }}
-                                    />
-                                )}
-                            />
+                      
+                        {/* Travel From Section */}
+                        <Grid item xs={12}>
+                            <Divider sx={{ my: 2 }}><Typography variant="h6">Travel From</Typography></Divider>
                         </Grid>
+                            <Grid item xs={12} md={6}>
+                                <CountrySelect
+                                helperText={errors.fromCountry}
+                                error={Boolean(errors.fromCountry)}
+                                name='fromCountry' countries={countries} value={formData.fromCountry} onChange={handleAutoCompleteChange} />
+                            </Grid>
+                            <Grid item xs={12} md={6}>
+                                <CitySelect helperText={errors.fromCity}
+                                error={Boolean(errors.fromCity)} name='fromCity' countryId={formData.fromCountry?.id || null} value={formData.fromCity} onChange={handleAutoCompleteChange} />
+                            </Grid>
 
-                        <Grid item xs={12} md={4}>
-                            {" "}
-                            <Autocomplete
-                                sx={{ width: "100%" }}
-                                open={openFromCity}
-                                onOpen={handleOpenFromCity}
-                                onClose={handleCloseFromCity}
-                                isOptionEqualToValue={(option, value) => option.id === value?.id}
-                                getOptionLabel={(option) => option.name || ""}
-                                options={cities_from || []}
-
-                                value={
-                                    cities_from?.find(
-                                        (item) => item.id === formData.travel_from_city
-                                    ) || null
-                                }
-                                onChange={(event, newValue) => {
-                                    handleChange({
-                                        target: { name: "travel_from_city", value: newValue?.id || "" },
-                                    });
-                                }}
-                                loading={loading}
-                                renderInput={(params) => (
-                                    <TextField
-                                        {...params}
-                                        label="City"
-                                        variant="outlined"
-                                        error={Boolean(errors.travel_from_city)}
-                                        helperText={errors.travel_from_city}
-                                        InputProps={{
-                                            ...params.InputProps,
-                                            endAdornment: (
-                                                <React.Fragment>
-                                                    {loading ? <CircularProgress color="inherit" size={20} /> : null}
-                                                    {params.InputProps.endAdornment}
-                                                </React.Fragment>
-                                            ),
-                                        }}
-                                    />
-                                )}
-                            />
-
+                        {/* Travel To Section */}
+                        <Grid item xs={12}>
+                            <Divider sx={{ my: 2 }}><Typography variant="h6">Travel To</Typography></Divider>
                         </Grid>
-
-
-                        {/* Travelling To */}
-
-                        <Grid item xs={12} md={4}>
-                            <Autocomplete
-                                sx={{ width: "100%" }} // Ensure it spans the full grid width
-                                open={openToCountry}
-                                onOpen={handleOpenToCountry}
-                                onClose={handleCloseToCountry}
-                                isOptionEqualToValue={(option, value) =>
-                                    option.id === value?.id
-                                }
-                                getOptionLabel={(option) => option.name || ""}
-                                options={getCountries?.data || []}
-                                value={
-                                    getCountries?.data?.find(
-                                        (item: any) => item.id === formData.travel_to_country
-                                    ) || null
-                                }
-                                onChange={(event, newValue) => {
-                                    handleChange({
-                                        target: { name: "travel_to_country", value: newValue?.id || "" },
-                                    });
-                                }}
-                                loading={loading}
-                                renderInput={(params) => (
-                                    <TextField
-                                        {...params}
-                                        label="Country"
-                                        variant="outlined"
-                                        error={Boolean(errors.travel_to_country)}
-                                        helperText={errors.travel_to_country}
-                                        InputProps={{
-                                            ...params.InputProps,
-                                            endAdornment: (
-                                                <React.Fragment>
-                                                    {loading ? (
-                                                        <CircularProgress color="inherit" size={20} />
-                                                    ) : null}
-                                                    {params.InputProps.endAdornment}
-                                                </React.Fragment>
-                                            ),
-                                        }}
-                                    />
-                                )}
-                            />
-                        </Grid>
-
-                        <Grid item xs={12} md={4}>
-                            {" "}
-                            <Autocomplete
-                                sx={{ width: "100%" }} // Ensure it spans the full grid width
-                                open={openToCity}
-                                onOpen={handleOpenToCity}
-                                onClose={handleCloseToCity}
-                                isOptionEqualToValue={(option, value) =>
-                                    option.id === value?.id
-                                }
-                                getOptionLabel={(option) => option.name || ""}
-                                options={cities_to || []}
-                                value={
-                                    cities_to?.find(
-                                        (item: any) => item.id === formData.travel_to_city
-                                    ) || null
-                                }
-                                onChange={(event, newValue) => {
-                                    handleChange({
-                                        target: { name: "travel_to_city", value: newValue?.id || "" },
-                                    });
-                                }}
-                                loading={loading}
-                                renderInput={(params) => (
-                                    <TextField
-                                        {...params}
-                                        label="City"
-                                        variant="outlined"
-                                        error={Boolean(errors.travel_to_city)}
-                                        helperText={errors.travel_to_city}
-                                        InputProps={{
-                                            ...params.InputProps,
-                                            endAdornment: (
-                                                <React.Fragment>
-                                                    {loading ? (
-                                                        <CircularProgress color="inherit" size={20} />
-                                                    ) : null}
-                                                    {params.InputProps.endAdornment}
-                                                </React.Fragment>
-                                            ),
-                                        }}
-                                    />
-                                )}
-                            />
-                        </Grid>
-
-
+                            <Grid item xs={12} md={6}>
+                                <CountrySelect helperText={errors.toCountry}
+                                error={Boolean(errors.toCountry)} name='toCountry' countries={countries} value={formData.toCountry} onChange={handleAutoCompleteChange} />
+                            </Grid>
+                            <Grid item xs={12} md={6}>
+                                <CitySelect helperText={errors.toCountry}
+                                error={Boolean(errors.toCity)} name='toCity' countryId={formData.toCountry?.id || null} value={formData.toCity} onChange={handleAutoCompleteChange} />
+                            </Grid>
 
 
                         <Grid item xs={12} md={4}>
@@ -504,6 +299,7 @@ const AddPost = () => {
                                 helperText={errors.departureDate}
                                 error={Boolean(errors.departureDate)}
                                 onChange={handleChange}
+                                required
                             />
                         </Grid>
                         <Grid item xs={12} md={3}>
@@ -519,7 +315,9 @@ const AddPost = () => {
                                 helperText={errors.returnDate}
                                 error={Boolean(errors.returnDate)}
                                 onChange={handleChange}
+                                required
                             />
+
                         </Grid>
                         <Grid item xs={12} md={12}>
                             {" "}
@@ -528,7 +326,6 @@ const AddPost = () => {
                                 fullWidth
                                 multiline
                                 variant="outlined"
-                                maxRows={4}
                                 rows={4}
                                 name="text"
                                 sx={{ height: "auto" }}
@@ -536,6 +333,7 @@ const AddPost = () => {
                                 helperText={errors.text}
                                 error={Boolean(errors.text)}
                                 onChange={handleChange}
+                                required
                             />
                         </Grid>
 
@@ -550,6 +348,7 @@ const AddPost = () => {
                                 value={formData?.gender}
                                 error={Boolean(errors?.gender)}
                                 onChange={handleChange}
+                                required
                             >
                                 <MenuItem value="1">Male</MenuItem>
                                 <MenuItem value="0">Female</MenuItem>
