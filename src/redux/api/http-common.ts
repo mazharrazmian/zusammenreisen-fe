@@ -22,13 +22,27 @@ export const callAPiMultiPart = axios.create({
 export const handleApiError = (error: any) => {
     if (axios.isAxiosError(error)) {
       if (error.response) {
+        console.log(error)
         // API returned an error response (e.g., 400, 401, 500)
         const errorData = error.response.data;
-        if (errorData?.errors?.length) {
-          toast.error(errorData.errors[0].detail || "Something went wrong!");
-        } else {
-          toast.error("An unexpected error occurred.");
+        if (errorData?.type == 'validation_error'){
+            if (errorData?.errors?.length) {
+                toast.error(`${errorData.errors[0].attr} : ${errorData.errors[0].detail}`|| "Something went wrong!");
+              } else {
+                toast.error("An unexpected error occurred.");
+              }
         }
+        else if (errorData?.type == 'client_error') {
+                if (errorData?.errors?.length) {
+                    toast.error(`${errorData.errors[0].detail}`|| "Something went wrong!");
+                  } else {
+                    toast.error("An unexpected error occurred.");
+                  }
+        }
+        else{
+            toast.error('Something went wrong')
+        }
+        
       } else if (error.request) {
         // API is down or no response received
         toast.error("Cannot connect to the server. Please try again later.");

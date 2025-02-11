@@ -7,13 +7,13 @@ interface sendChat {
   chat_room: number;
   content: string;
 }
-const createRoom = (data: createChat) => {
-    callAPiMultiPart.post("/chat/chat-rooms/", data).then(res=>{
-        return res
-    })
-    .catch(error=>{
-        handleApiError(error)
-    })
+const createRoom = async (data: createChat) => {
+    try {
+        const res = await callAPiMultiPart.post("/chat/chat-rooms/", data);
+        return res;
+    } catch (error) {
+        handleApiError(error);
+    }
     
     
 }

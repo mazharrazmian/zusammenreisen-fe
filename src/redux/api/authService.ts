@@ -15,12 +15,7 @@ interface login {
   password: string;
 }
 export const signUp = async (data: signup) => {
-    try {
-      const response = await callAPiMultiPart.post("auth/users/", data);
-      return response
-    } catch (error) {
-      handleApiError(error);
-    }
+    return await callAPiMultiPart.post("auth/users/", data);
   };
   
   export const login = async (data: login) => {

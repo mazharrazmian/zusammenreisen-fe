@@ -98,8 +98,9 @@ const ChatPage: React.FC = () => {
     };
     try {
       const res = await chatServices.createRoom(datas);
-
-      if (res.status === 200) {
+      console.log(res)
+      if (res?.status === 201) {
+        dispatch(getChatRooms(profile?.profile?.email));
         setOpen(false);
       }
     } catch (error) {
