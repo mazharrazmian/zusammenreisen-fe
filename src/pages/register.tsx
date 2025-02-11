@@ -28,6 +28,7 @@ const initialValues = {
   picture: "",
   phone: "",
   gender: "",
+  age:"",
 };
 const RegisterPage = () => {
   const navigate = useNavigate();
@@ -131,6 +132,7 @@ const RegisterPage = () => {
         "profile.picture": menuItemImg,
         "profile.phone": values.phone,
         name: values.first_name + values.last_name,
+        age : values.age,
       };
 
       console.log(datas)
@@ -321,7 +323,7 @@ const RegisterPage = () => {
                     />
                   </Box>
                 </Grid>
-                <Grid size={{ xs: 12 }}>
+                <Grid size={{ xs: 6 }}>
                   <Box>
                     <Typography sx={{ paddingLeft: "10px", fontSize: "14px" }}>
                       Email
@@ -333,7 +335,22 @@ const RegisterPage = () => {
                       value={values?.email}
                       error={Boolean(errors?.email)}
                       onChange={handleOnChange}
-                      sx={{}}
+                    />
+                  </Box>
+                </Grid>
+                <Grid size={{ xs: 6 }}>
+                  <Box>
+                    <Typography sx={{ paddingLeft: "10px", fontSize: "14px" }}>
+                      Age
+                    </Typography>
+                    <TextField
+                      fullWidth
+                      name="age"
+                      helperText={errors?.age}
+                      value={values?.age}
+                      error={Boolean(errors?.age)}
+                      onChange={handleOnChange}
+                      type="number"
                     />
                   </Box>
                 </Grid>

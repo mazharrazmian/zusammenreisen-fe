@@ -84,12 +84,14 @@ const PostsList = () => {
                 )}
 
                 {isMobile && (
-                    <>
+                    <Box sx={{ width: "20px" }}>
+
                         <IconButton
                             onClick={() => setFiltersOpen(true)}
                             sx={{ position: "relative", top: "0" }}
                         >
-                            <FilterAltIcon fontSize="small" />
+                            Filter
+                            <FilterAltIcon fontSize="medium" />
                         </IconButton>
                         <Drawer
                             anchor="left"
@@ -113,7 +115,7 @@ const PostsList = () => {
                                 <Filters filters={filters} setFilters={setFilters} />
                             </Box>
                         </Drawer>
-                    </>
+                    </Box>
                 )}
 
                 <Box sx={{ flex: 1 }}>
@@ -121,16 +123,14 @@ const PostsList = () => {
                         sx={{
                             display: "flex",
                             alignItems: "center",
-                            justifyContent: "space-between",
+                            justifyContent: "center",
                             marginBottom: 2,
                         }}
                     >
                         <Typography variant="h5" sx={{ fontWeight: "bold" }}>
-                            User Posts
+                            Matches
                         </Typography>
-                        <Button variant="contained" onClick={() => navigate("/add/post")}>
-                            Add Post
-                        </Button>
+                        
                     </Box>
 
                     {loading ? (

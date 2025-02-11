@@ -1,4 +1,4 @@
-import { callAPi, callAPiMultiPart } from "./http-common";
+import { callAPi, callAPiMultiPart, handleApiError } from "./http-common";
 
 interface createChat {
   second_participant: string;
@@ -7,9 +7,16 @@ interface sendChat {
   chat_room: number;
   content: string;
 }
-const createRoom = (data: createChat) =>
-  callAPiMultiPart.post("/chat/chat-rooms", data);
-
+const createRoom = (data: createChat) => {
+    callAPiMultiPart.post("/chat/chat-rooms/", data).then(res=>{
+        return res
+    })
+    .catch(error=>{
+        handleApiError(error)
+    })
+    
+    
+}
 const getChatRooms = (email: string) =>
   callAPi.get(`/chat/chat-rooms?email=${email}`);
 
