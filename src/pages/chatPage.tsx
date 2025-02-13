@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Box,
   Typography,
@@ -29,20 +29,35 @@ import { useDispatch, useSelector } from "react-redux";
 import { getChatRooms } from "../redux/slice/chatSlice";
 import noChat from "../assets/chat.svg";
 import Iconify from "../components/iconify";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import Cookies from "js-cookie";
+
+
 // Dummy data for chats and messages
 
 const ChatPage: React.FC = () => {
   const userChats = useSelector((s) => s?.chat);
   const profile = useSelector((s) => s?.profile);
-  const [activeChat, setActiveChat] = useState(userChats[0]);
+  const ws = useRef(null);
+  const { chatId } = useParams(); // Get chatId from URL
+
+  console.log(chatId)
+
+  const [activeChat, setActiveChat] = useState(() =>
+    userChats?.data?.find((chat) => chat.id === Number(chatId)) || userChats[0]
+  );  
   const [messageList, setMessageList] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [sendingChat, setSendingChat] = useState(false);
   const [open, setOpen] = useState(false);
   const [view, setView] = useState<"list" | "chat">("list"); // Added state for mobile view
   const [email, setEmail] = useState<string>("");
+  
+  const token = Cookies.get('accessToken')
   const theme = useTheme();
+
+
+
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -53,44 +68,53 @@ const ChatPage: React.FC = () => {
     }
   }, [profile?.profile?.email]);
 
-  const handleSendMessage = async () => {
-    if (newMessage.trim() !== "") {
-      // Prepare the new message object to be added
-      const newMessageObject = {
-        content: newMessage,
-        sender: {
-          id: profile?.profile?.profile?.id, // Assuming this is the ID of the current user
-        },
-        timestamp: new Date().toISOString(), // Use the current timestamp
-      };
+  // Sync activeChat with URL
+  useEffect(() => {
+    if (activeChat) {
+      navigate(`/chat/${activeChat.id}`, { replace: true });
+    }
+  }, [activeChat, navigate]);
 
-      try {
-        // Send the message to the server
-        setSendingChat(true);
-        const response = await chatServices.sendMessage({
-          chat_room: activeChat?.id, // The current active chat room ID
-          content: newMessage,
-        });
+  // Restore active chat from URL when chats are loaded
+  useEffect(() => {
+    if (chatId && userChats?.data?.length > 0) {
+      const chatFromURL = userChats.data.find((chat) => chat.id === Number(chatId));
+      if (chatFromURL) setActiveChat(chatFromURL);
+    }
+  }, [chatId, userChats]);
 
-        // If the message was sent successfully, update the message list
-        if (response.status === 201) {
-          setMessageList((prevMessages) => [...prevMessages, newMessageObject]);
-          setSendingChat(false);
-          console.log("Message sent successfully:", response);
-        } else {
-          setSendingChat(false);
-          console.error("Error sending message:", response);
+  // WebSocket Connection
+  useEffect(() => {
+    if (activeChat) {
+      const chatId = activeChat.id;
+      ws.current = new WebSocket(`ws://localhost:8001/ws/chat/${chatId}/?token=${token}`);
+
+      ws.current.onopen = () => console.log("WebSocket opened");
+      ws.current.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+        if (data.type === "chat_message") {
+          setMessageList((prevMessages) => [...prevMessages, data.message]);
         }
+      };
+      ws.current.onclose = () => console.log("WebSocket disconnected");
 
-        // Clear the input field after sending the message
-        setNewMessage("");
-      } catch (error) {
-        setSendingChat(false);
-        console.error("Error sending message:", error);
-        // Optionally handle errors (e.g., show an error message)
-      }
+      return () => ws.current?.close();
+    }
+  }, [activeChat]);
+
+
+  const handleSendSocketMessage = () => {
+    if (newMessage.trim() && ws.current) {
+      const messageData = {
+        content: newMessage,
+        chat_room : activeChat.id,
+        type : 'send_message'
+    };
+      ws.current.send(JSON.stringify(messageData));
+      setNewMessage("");
     }
   };
+
 
   const handleStartChat = async () => {
     const datas = {
@@ -294,7 +318,7 @@ const ChatPage: React.FC = () => {
                               >
                                 {isSentByCurrentUser
                                   ? "me"
-                                  : msg.sender?.profile?.name || "Unknown User"}
+                                  : msg.sender?.name || "Unknown User"}
                               </Typography>
                               <Typography
                                 variant="caption"
@@ -338,7 +362,7 @@ const ChatPage: React.FC = () => {
                   onKeyDown={(e) => {
                     if (e.key === "Enter" && !e.shiftKey) {
                       e.preventDefault();
-                      handleSendMessage();
+                      handleSendSocketMessage();
                     }
                   }}
                 >
@@ -352,7 +376,7 @@ const ChatPage: React.FC = () => {
                   />
                   <IconButton
                     color="primary"
-                    onClick={handleSendMessage}
+                    onClick={handleSendSocketMessage}
                     sx={{
                       borderRadius: "12px",
                       width: 50,
@@ -508,7 +532,7 @@ const ChatPage: React.FC = () => {
                                 >
                                   {isSentByCurrentUser
                                     ? "me"
-                                    : msg.sender?.profile?.name ||
+                                    : msg.sender?.name ||
                                       "Unknown User"}
                                 </Typography>
                                 <Typography
@@ -553,7 +577,7 @@ const ChatPage: React.FC = () => {
                     onKeyDown={(e) => {
                       if (e.key === "Enter" && !e.shiftKey) {
                         e.preventDefault();
-                        handleSendMessage();
+                        handleSendSocketMessage();
                       }
                     }}
                   >
@@ -567,7 +591,7 @@ const ChatPage: React.FC = () => {
                     />
                     <IconButton
                       color="primary"
-                      onClick={handleSendMessage}
+                      onClick={handleSendSocketMessage}
                       sx={{
                         borderRadius: "12px",
                         width: 50,
