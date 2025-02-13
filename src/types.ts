@@ -19,3 +19,44 @@ export interface FilterState {
   date_from : string,
   date_to : string,
 }
+
+
+export interface Profile {
+    id: number;
+    name: string;
+    email: string;
+    avatar?: string;
+    profile : {
+        id : number,
+        picture : URL,
+        gender : number,
+        phone : string,
+        age : number,
+    }
+  }
+  
+
+  export interface Participant {
+    chat_room: number;
+    profile: Profile;
+  }
+  
+  export interface Message {
+    chat_room: number;
+    sender: Profile;
+    content: string;
+    timestamp: string;
+  }
+  
+  export interface ChatRoom {
+    id: number;
+    created_at: string;
+    participants: Participant[];
+    messages: Message[];
+  }
+  
+  export interface UserChats {
+    loading: string;
+    data: ChatRoom[];
+  }
+  

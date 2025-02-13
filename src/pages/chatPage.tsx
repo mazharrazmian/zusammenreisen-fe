@@ -1,136 +1,156 @@
-import React, { useEffect, useRef, useState } from "react";
-import {
-  Box,
-  Typography,
-  Divider,
-  Avatar,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
-  IconButton,
-  TextField,
-  Button,
-  useMediaQuery,
-  Dialog,
-  DialogContent,
-  DialogActions,
-  DialogTitle,
-  CircularProgress,
-} from "@mui/material";
-import SendIcon from "@mui/icons-material/Send";
-import CloseIcon from "@mui/icons-material/Close";
-import { useTheme } from "@mui/material/styles";
-import ScrollableFeed from "react-scrollable-feed";
-import Navbar from "../components/navbar";
-import { Add } from "@mui/icons-material";
-import chatServices from "../redux/api/chatServices";
-import { useDispatch, useSelector } from "react-redux";
-import { getChatRooms } from "../redux/slice/chatSlice";
-import noChat from "../assets/chat.svg";
-import Iconify from "../components/iconify";
-import { useNavigate, useParams } from "react-router-dom";
-import Cookies from "js-cookie";
 
-
-// Dummy data for chats and messages
-
-const ChatPage: React.FC = () => {
-  const userChats = useSelector((s) => s?.chat);
-  const profile = useSelector((s) => s?.profile);
-  const ws = useRef(null);
-  const { chatId } = useParams(); // Get chatId from URL
-
-  console.log(chatId)
-
-  const [activeChat, setActiveChat] = useState(() =>
-    userChats?.data?.find((chat) => chat.id === Number(chatId)) || userChats[0]
-  );  
-  const [messageList, setMessageList] = useState([]);
-  const [newMessage, setNewMessage] = useState("");
-  const [sendingChat, setSendingChat] = useState(false);
-  const [open, setOpen] = useState(false);
-  const [view, setView] = useState<"list" | "chat">("list"); // Added state for mobile view
-  const [email, setEmail] = useState<string>("");
   
-  const token = Cookies.get('accessToken')
-  const theme = useTheme();
-
-
-
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (profile?.profile?.email) {
-      dispatch(getChatRooms(profile?.profile?.email));
-    }
-  }, [profile?.profile?.email]);
-
-  // Sync activeChat with URL
-  useEffect(() => {
-    if (activeChat) {
-      navigate(`/chat/${activeChat.id}`, { replace: true });
-    }
-  }, [activeChat, navigate]);
-
-  // Restore active chat from URL when chats are loaded
-  useEffect(() => {
-    if (chatId && userChats?.data?.length > 0) {
-      const chatFromURL = userChats.data.find((chat) => chat.id === Number(chatId));
-      if (chatFromURL) setActiveChat(chatFromURL);
-    }
-  }, [chatId, userChats]);
-
-  // WebSocket Connection
-  useEffect(() => {
-    if (activeChat) {
-      const chatId = activeChat.id;
-      ws.current = new WebSocket(`ws://localhost:8001/ws/chat/${chatId}/?token=${token}`);
-
-      ws.current.onopen = () => console.log("WebSocket opened");
-      ws.current.onmessage = (event) => {
-        const data = JSON.parse(event.data);
-        if (data.type === "chat_message") {
-          setMessageList((prevMessages) => [...prevMessages, data.message]);
-        }
-      };
-      ws.current.onclose = () => console.log("WebSocket disconnected");
-
-      return () => ws.current?.close();
-    }
-  }, [activeChat]);
-
-
-  const handleSendSocketMessage = () => {
-    if (newMessage.trim() && ws.current) {
-      const messageData = {
-        content: newMessage,
-        chat_room : activeChat.id,
-        type : 'send_message'
-    };
-      ws.current.send(JSON.stringify(messageData));
-      setNewMessage("");
-    }
-  };
-
-
-  const handleStartChat = async () => {
-    const datas = {
-      second_participant: email,
-    };
-    try {
-      const res = await chatServices.createRoom(datas);
-      console.log(res)
-      if (res?.status === 201) {
-        dispatch(getChatRooms(profile?.profile?.email));
-        setOpen(false);
+  interface ProfileState {
+    profile: Profile;
+  }
+  
+  interface RootState {
+    chat: UserChats;
+    profile: ProfileState;
+  }
+  //Step 2: Update the Component with Types
+  //Now, let's update the component to use these types.
+  
+  //typescript
+  //Copy
+  import React, { useEffect, useRef, useState } from "react";
+  import {
+    Box,
+    Typography,
+    Divider,
+    Avatar,
+    List,
+    ListItem,
+    ListItemAvatar,
+    ListItemText,
+    IconButton,
+    TextField,
+    Button,
+    useMediaQuery,
+    Dialog,
+    DialogContent,
+    DialogActions,
+    DialogTitle,
+    CircularProgress,
+  } from "@mui/material";
+  import SendIcon from "@mui/icons-material/Send";
+  import CloseIcon from "@mui/icons-material/Close";
+  import { useTheme } from "@mui/material/styles";
+  import ScrollableFeed from "react-scrollable-feed";
+  import Navbar from "../components/navbar";
+  import { Add } from "@mui/icons-material";
+  import chatServices from "../redux/api/chatServices";
+  import { useDispatch, useSelector } from "react-redux";
+  import noChat from "../assets/chat.svg";
+  import Iconify from "../components/iconify";
+  import { useNavigate, useParams } from "react-router-dom";
+  import Cookies from "js-cookie";
+  import { toast } from "react-toastify";
+import { ChatRoom, Message, Profile, UserChats } from "../types";
+  
+  const ChatPage: React.FC = () => {
+    const profile = useSelector((s: RootState) => s.profile);
+    const ws = useRef<WebSocket | null>(null);
+    const { chatId } = useParams<{ chatId: string }>();
+    const [userChats,setUserChats] = useState<UserChats>({loading:'loading',data:[]})
+    const [activeChat, setActiveChat] = useState<ChatRoom | null>(null);
+    const [messageList, setMessageList] = useState<Message[]>([]);
+    const [newMessage, setNewMessage] = useState<string>("");
+    const [sendingChat, setSendingChat] = useState<boolean>(false);
+    const [open, setOpen] = useState<boolean>(false);
+    const [view, setView] = useState<"list" | "chat">("list");
+    const [email, setEmail] = useState<string>("");
+  
+    const token = Cookies.get('accessToken');
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+  
+    useEffect(() => {
+    chatServices.getChatRooms(profile?.profile.email)
+    .then(response=>{
+        setUserChats({loading:'fulfilled',data:response.data})
+    })
+    .catch(error=>{
+        toast('couldnt get chats for you')
+    })
+      
+    }, [profile?.profile?.email, dispatch]);
+  
+    useEffect(() => {
+      if (activeChat) {
+        navigate(`/chat/${activeChat.id}`, { replace: true });
       }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+    }, [activeChat, navigate]);
+  
+    useEffect(() => {
+      if (chatId && userChats?.data?.length > 0) {
+        chatServices.retrieveRoom(Number(chatId))
+          .then(response => {
+            setActiveChat(response.data);
+            setMessageList(response.data.messages);
+          })
+          .catch(error => {
+            console.log(error);
+            toast('Could not load chats.....');
+          });
+      }
+    }, [chatId, userChats]);
+  
+    useEffect(() => {
+      if (activeChat) {
+        const chatId = activeChat.id;
+        ws.current = new WebSocket(`ws://localhost:8001/ws/chat/${chatId}/?token=${token}`);
+  
+        ws.current.onopen = () => console.log("WebSocket opened");
+        ws.current.onmessage = (event) => {
+          const data = JSON.parse(event.data);
+          if (data.type === "chat_message") {
+            setMessageList((prevMessages) => [...prevMessages, data.message]);
+          }
+        };
+        ws.current.onclose = () => console.log("WebSocket disconnected");
+  
+        return () => {
+          if (ws.current) {
+            if (ws.current.readyState === 1) { // <-- This is important
+                ws.current.close();
+            }
+          }
+        };
+      }
+    }, [activeChat, token]);
+  
+    const handleSendSocketMessage = () => {
+      if (newMessage.trim() && ws.current) {
+        const messageData = {
+          content: newMessage,
+          chat_room: activeChat?.id,
+          type: 'send_message'
+        };
+        ws.current.send(JSON.stringify(messageData));
+        setNewMessage("");
+      }
+    };
+  
+    const handleStartChat = async () => {
+      const datas = {
+        second_participant: email,
+      };
+      try {
+        const res = await chatServices.createRoom(datas);
+        if (res?.status === 201) {
+          chatServices.getChatRooms(profile.profile.email)
+          .then(response=>{
+            setUserChats({'loading':'fulfilled',data:response.data})
+          })
+          setOpen(false);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
 
   return (
     <>
