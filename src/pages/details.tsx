@@ -13,7 +13,8 @@ import {
   Dialog,
   AppBar,
   Toolbar,
-  Divider
+  Divider,
+  Tooltip
 } from '@mui/material';
 import {
   ArrowBack,
@@ -22,7 +23,10 @@ import {
   Language as LanguageIcon,
   LocationOn,
   CalendarMonth,
-  AccessTime
+  AccessTime,
+  Group as GroupIcon,
+  Person as PersonIcon,
+  DateRange as DateRangeIcon
 } from '@mui/icons-material';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay, EffectFade } from 'swiper/modules';
@@ -31,23 +35,21 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/effect-fade';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { get_post } from '../redux/slice/postsSlice';
+import { useDispatch } from 'react-redux';
 import postServices from '../redux/api/postService';
 import { toast } from 'react-toastify';
-
 import { formatDateWithOrdinal } from '../utils';
+import chatServices from '../redux/api/chatServices';
+import { handleApiError } from '../redux/api/http-common';
+
 
 const TravelDetails = () => {
-
-  const { id } = useParams<{ id: string }>();
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const [postData,setPostdata] = useState([])
-
+    const { id } = useParams<{ id: string }>();
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const [postData,setPostdata] = useState([])
   const [openChat, setOpenChat] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
-
 
   useEffect(() => {
     postServices.getPost(Number(id))
@@ -60,6 +62,30 @@ const TravelDetails = () => {
   }, [id]);
 
 
+  const handleChat = ()=>{
+    chatServices.getChatRooms(postData?.posted_by.user.email)
+    .then(response=>{
+        if (response.data.length > 0){
+            console.log(response.data)
+            navigate(`/chat/${response.data[0].id}`)
+        }
+        else{
+            let chatData = {
+                'second_participant' : postData?.posted_by.user.email
+            }
+            chatServices.createRoom(chatData)
+            .then(response=>{
+                if (response?.status == 201){
+                    navigate(`chat/${response.data.id}`)
+                }
+            })
+            .catch(error=>{
+                handleApiError(error)
+            })
+        }
+    })
+  }
+
   const DetailItem = ({ icon, label, value }) => (
     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
       {icon}
@@ -70,6 +96,40 @@ const TravelDetails = () => {
         <Typography variant="body1" sx={{ fontWeight: 500 }}>
           {value}
         </Typography>
+      </Box>
+    </Box>
+  );
+
+  const TravelPreference = () => (
+    <Box sx={{ mt: 3 }}>
+      <Typography variant="subtitle2" color="text.secondary" gutterBottom>
+        Travel Preferences
+      </Typography>
+      <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+        {
+            postData?.no_of_other_people && 
+            (
+            <Tooltip title={postData?.no_of_other_people == 0 ? "Travelling alone" : `Travelling with ${postData?.no_of_other_people} companions`}>
+          <Chip
+            icon={postData?.no_of_other_people == 0 ? <PersonIcon /> : <GroupIcon />}
+            label={postData?.no_of_other_people == 0 ? "Solo Traveller" : `Travelling With ${postData?.no_of_other_people} companions`}
+            color="primary"
+            variant="outlined"
+          />
+        </Tooltip>
+            )
+        }
+        
+      
+
+        <Tooltip title={postData?.dates_flexible ? "Open to adjusting travel dates" : "Fixed travel dates"}>
+          <Chip
+            icon={<DateRangeIcon />}
+            label={postData?.dates_flexible ? "Flexible Dates" : "Fixed Dates"}
+            color={postData?.dates_flexible ? "success" : "default"}
+            variant="outlined"
+          />
+        </Tooltip>
       </Box>
     </Box>
   );
@@ -108,8 +168,10 @@ const TravelDetails = () => {
                   }}
                 >
                   {postData?.images?.map((item, index) => (
-
-                    <SwiperSlide key={index}>
+                    
+                    <SwiperSlide  key={index}>
+                    
+                        
                       <Box
                         component="img"
                         src={item}
@@ -130,18 +192,18 @@ const TravelDetails = () => {
             <Grid item xs={12} md={4}>
               <Box sx={{ position: 'relative' }}>
                 <Box sx={{ textAlign: 'center', mb: 4 }}>
-                  <Avatar
+                <Avatar
                    alt={postData?.posted_by?.user?.name}
                     src={postData?.posted_by?.picture}
                     sx={{ width: 120, height: 120, mx: 'auto', mb: 2 }}
                   />
                   <Typography variant="h5" gutterBottom>
-                  {postData?.posted_by?.user?.name}
+                    {postData?.posted_by?.user?.name}
                   </Typography>
                   <Button
                     variant="contained"
                     startIcon={<ChatIcon />}
-                    onClick={() => setOpenChat(true)}
+                    onClick={handleChat}
                     sx={{ mt: 2 }}
                     fullWidth
                   >
@@ -166,6 +228,7 @@ const TravelDetails = () => {
                   label="Travel Dates"
                   value={`${formatDateWithOrdinal(postData?.date_from)} - ${formatDateWithOrdinal(postData?.date_to)}`}
                 />
+                
                 <DetailItem
                   icon={<LanguageIcon color="primary" />}
                   label="Languages"
@@ -187,6 +250,9 @@ const TravelDetails = () => {
                   label="Last Active"
                   value="2 hours ago"
                 />
+
+                {/* New Travel Preferences Section */}
+                <TravelPreference />
               </Box>
             </Grid>
 
@@ -203,10 +269,7 @@ const TravelDetails = () => {
                   position: 'relative'
                 }}
               >
-                I'm an adventurous traveler looking for companions to explore the beautiful city of Paris. 
-                I love photography, trying local cuisine, and immersing myself in different cultures. 
-                This will be my first time in Paris, and I'm excited to visit the iconic landmarks, 
-                discover hidden gems, and create memorable experiences with fellow travelers.
+               {postData?.text}
               </Typography>
               <Button
                 onClick={() => setIsExpanded(!isExpanded)}
@@ -220,32 +283,7 @@ const TravelDetails = () => {
       </Card>
 
       {/* Chat Dialog */}
-      <Dialog
-        fullScreen
-        open={openChat}
-        onClose={() => setOpenChat(false)}
-      >
-        <AppBar sx={{ position: 'relative' }}>
-          <Toolbar>
-            <IconButton
-              edge="start"
-              color="inherit"
-              onClick={() => setOpenChat(false)}
-            >
-              <CloseIcon />
-            </IconButton>
-            <Typography sx={{ ml: 2, flex: 1 }} variant="h6">
-              Chat with John Doe
-            </Typography>
-          </Toolbar>
-        </AppBar>
-        <Box sx={{ p: 3 }}>
-          {/* Chat interface would go here */}
-          <Typography variant="body1" color="text.secondary" align="center">
-            Start your conversation...
-          </Typography>
-        </Box>
-      </Dialog>
+      
     </Container>
   );
 };

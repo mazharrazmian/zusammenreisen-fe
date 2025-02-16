@@ -123,16 +123,19 @@ import { ChatRoom, Message, Profile, UserChats } from "../types";
     }, [activeChat, token]);
   
     const handleSendSocketMessage = () => {
-      if (newMessage.trim() && ws.current) {
-        const messageData = {
-          content: newMessage,
-          chat_room: activeChat?.id,
-          type: 'send_message'
-        };
-        ws.current.send(JSON.stringify(messageData));
-        setNewMessage("");
-      }
-    };
+        if (newMessage.trim() && ws.current) {
+          const messageData = {
+            content: newMessage,
+            chat_room: activeChat?.id,
+            type: 'send_message',
+          };
+      
+          ws.current.send(JSON.stringify(messageData));
+      
+          // **Do not add message directly to state, wait for WebSocket response**
+          setNewMessage("");
+        }
+      };
   
     const handleStartChat = async () => {
       const datas = {
