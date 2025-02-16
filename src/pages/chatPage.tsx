@@ -68,7 +68,7 @@ import { ChatRoom, Message, Profile, UserChats } from "../types";
     const navigate = useNavigate();
   
     useEffect(() => {
-    chatServices.getChatRooms(profile?.profile.email)
+    chatServices.getChatRoomsCurrUser()
     .then(response=>{
         setUserChats({loading:'fulfilled',data:response.data})
     })
@@ -76,7 +76,7 @@ import { ChatRoom, Message, Profile, UserChats } from "../types";
         toast('couldnt get chats for you')
     })
       
-    }, [profile?.profile?.email, dispatch]);
+    }, []);
   
     useEffect(() => {
       if (activeChat) {

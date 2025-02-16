@@ -46,10 +46,20 @@ export const signUp = async (data: signup) => {
     }
   };
 
+  export const getAllLanguages = async () =>{
+    try {
+        const response = await callAPiMultiPart.get("users/languages");
+        return response
+      } catch (error) {
+        handleApiError(error);
+      }
+  }
+
 const authServices = {
   signUp,
   login,
   getProfile,
   refresh,
+  getAllLanguages,
 };
 export default authServices;

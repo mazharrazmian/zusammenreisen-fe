@@ -26,8 +26,9 @@ import {
   AccessTime,
   Group as GroupIcon,
   Person as PersonIcon,
-  DateRange as DateRangeIcon
+  DateRange as DateRangeIcon,
 } from '@mui/icons-material';
+import EditIcon from '@mui/icons-material/Edit';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay, EffectFade } from 'swiper/modules';
 import 'swiper/css';
@@ -35,7 +36,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/effect-fade';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import postServices from '../redux/api/postService';
 import { toast } from 'react-toastify';
 import { formatDateWithOrdinal } from '../utils';
@@ -45,6 +46,8 @@ import { handleApiError } from '../redux/api/http-common';
 
 const TravelDetails = () => {
     const { id } = useParams<{ id: string }>();
+    const profile = useSelector((s) => s.profile);
+
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [postData,setPostdata] = useState([])
@@ -76,7 +79,7 @@ const TravelDetails = () => {
             chatServices.createRoom(chatData)
             .then(response=>{
                 if (response?.status == 201){
-                    navigate(`chat/${response.data.id}`)
+                    navigate(`/chat/${response.data.id}`)
                 }
             })
             .catch(error=>{
@@ -85,6 +88,12 @@ const TravelDetails = () => {
         }
     })
   }
+
+
+  const handleEdit = ()=>{
+    navigate(`/edit/post/${postData?.id}`)
+  }
+
 
   const DetailItem = ({ icon, label, value }) => (
     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
@@ -156,35 +165,37 @@ const TravelDetails = () => {
                   <ArrowBack />
                 </IconButton>
                 <Swiper
-                  modules={[Navigation, Pagination, Autoplay, EffectFade]}
-                  navigation
-                  pagination={{ clickable: true }}
-                  autoplay={{ delay: 5000 }}
-                  effect="fade"
-                  loop
-                  style={{
-                    borderRadius: '16px',
-                    height: '500px'
-                  }}
-                >
-                  {postData?.images?.map((item, index) => (
+                    key={postData?.images?.length}
+                    modules={[Navigation, Pagination, Autoplay]}
+                    navigation
+                    pagination={{ clickable: true }}
+                    autoplay={{ delay: 5000 }}
+                    loop
+                    style={{
+                        borderRadius: '16px',
+                        height: '500px'
+                    }}
                     
-                    <SwiperSlide  key={index}>
-                    
-                        
-                      <Box
-                        component="img"
-                        src={item}
-                        alt={`Travel image ${index + 1}`}
-                        sx={{
-                          width: '100%',
-                          height: '100%',
-                          objectFit: 'cover'
-                        }}
-                      />
-                    </SwiperSlide>
-                  ))}
-                </Swiper>
+                    >
+                    {postData?.images?.length > 0 ? (
+                        postData.images.map((item, index) => (
+                        <SwiperSlide key={index}>
+                            <Box
+                            component="img"
+                            src={item}
+                            alt={`Travel image ${index + 1}`}
+                            sx={{
+                                width: '100%',
+                                height: '100%',
+                                objectFit: 'cover'
+                            }}
+                            />
+                        </SwiperSlide>
+                        ))
+                    ) : (
+                        <Typography>No images available</Typography>
+                    )}
+                    </Swiper>
               </Box>
             </Grid>
 
@@ -200,15 +211,34 @@ const TravelDetails = () => {
                   <Typography variant="h5" gutterBottom>
                     {postData?.posted_by?.user?.name}
                   </Typography>
-                  <Button
-                    variant="contained"
-                    startIcon={<ChatIcon />}
-                    onClick={handleChat}
-                    sx={{ mt: 2 }}
-                    fullWidth
-                  >
-                    Start Chat
-                  </Button>
+                 {
+                    postData?.posted_by?.user.email != profile?.profile.email 
+                    ?
+                    (
+                        <Button
+                        variant="contained"
+                        startIcon={<ChatIcon />}
+                        onClick={handleChat}
+                        sx={{ mt: 2 }}
+                        fullWidth
+                      >
+                        Start Chat
+                      </Button>
+                    )
+                    :
+                    (
+                        <Button
+                        variant="contained"
+                        startIcon={<EditIcon />}
+                        onClick={handleEdit}
+                        sx={{ mt: 2 }}
+                        fullWidth
+                      >
+                        Edit Post
+                      </Button>
+                    )
+                 }
+                 
                 </Box>
 
                 <Divider sx={{ my: 3 }} />

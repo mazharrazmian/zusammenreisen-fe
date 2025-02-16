@@ -1,4 +1,5 @@
 import {
+    Autocomplete,
     Box,
     Button,
     Divider,
@@ -12,13 +13,15 @@ import {
   import vector1 from "../assets/Vector1.png";
   import vector2 from "../assets/vector2.png";
   import vector3 from "../assets/Vector3.png";
-  import { useState } from "react";
+  import { useEffect, useState } from "react";
   import Grid from "@mui/material/Grid2";
   import authServices from "../redux/api/authService";
   import { toast } from "react-toastify";
   import { useNavigate } from "react-router-dom";
   import { authStyles, login } from "./styles";
+import LanguageSelector from "../components/ language";
   
+
   const initialValues = {
     name: "",
     email: "",
@@ -39,7 +42,19 @@ import {
     const [isLoading, setIsLoading] = useState(false);
     const [onMouse, setOnMouse] = useState(false);
     const [menuItemImg, setMenuItemImg] = useState("");
-  
+    const [languages,setLanguages] = useState([])
+    const [selectedLanguages, setSelectedLanguages] = useState([]);
+
+
+    useEffect(()=>{
+
+        authServices.getAllLanguages().then(response=>{
+            setLanguages(response.data)
+        })
+
+    },[])
+
+
     const handleOnChange = (e) => {
       const { name, value, files } = e.target;
       const newValue = files ? files[0] : value;
@@ -70,6 +85,7 @@ import {
             "profile.phone": values.phone,
             name: values.name,
             "profile.age": values.age,
+            languages : selectedLanguages,
           };
       
           setIsLoading(true);
@@ -291,22 +307,16 @@ import {
                       />
                     </Box>
                   </Grid>
-                  <Grid size={{ xs: 12, md: 6 }}>
+                  <Grid size={{xs:6}}>
                     <Box>
-                      <Typography sx={{ paddingLeft: "10px", fontSize: "14px" }}>
-                        Phone Number
+                    <Typography sx={{ paddingLeft: "10px", fontSize: "14px" }}>
+                        Languages
                       </Typography>
-                      <TextField
-                        fullWidth
-                        name="phone"
-                        value={values?.phone}
-                        onChange={handleOnChange}
-                        required
-                        error={Boolean(errors.phone)}
-                        helperText={errors.phone}
-                      />
+                      <LanguageSelector allLanguages={languages} onLanguagesChange={setSelectedLanguages} />
                     </Box>
                   </Grid>
+                 
+
                   <Grid size={{ xs: 12, md: 6 }}>
                     <Box>
                       <Typography sx={{ paddingLeft: "10px", fontSize: "14px" }}>

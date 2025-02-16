@@ -20,6 +20,7 @@ const createRoom = async (data: createChat) => {
 const getChatRooms = (email: string) =>
   callAPi.get(`/chat/chat-rooms?email=${email}`);
 
+const getChatRoomsCurrUser = ()=> callAPi.get(`/chat/chat-rooms/`);
 const retrieveRoom = (id: number) => callAPi.get(`/chat/chat-rooms/${id}`);
 
 const sendMessage = (data: sendChat) =>
@@ -30,6 +31,7 @@ const chatServices = {
   getChatRooms,
   sendMessage,
   retrieveRoom,
+  getChatRoomsCurrUser,
 };
 
 export default chatServices;
