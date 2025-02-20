@@ -229,7 +229,7 @@ export const addPostStyles = {
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
-    padding: "3rem 0rem",
+    padding: "6rem 0rem",
   },
   imageWrapper: {
     display: "flex",

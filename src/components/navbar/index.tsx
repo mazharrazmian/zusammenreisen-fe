@@ -32,6 +32,7 @@ function Navbar({ position }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
+
   const [notifications, setNotifications] = React.useState<Array<Notification>>([]);
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
@@ -82,17 +83,27 @@ function Navbar({ position }) {
     };
   }, []);
 
-  React.useEffect(()=>{
 
+  const fetchNotifications = async ()=>{
     chatServices.getNotifications().then(response=>{
-        console.log(response.data)
         setNotifications(response.data)
     })
     .catch(error=>{
         console.log(error)
     })
+  }
 
-  },[])
+  React.useEffect(()=>{
+
+   fetchNotifications()
+   // Set up polling interval
+   const pollingInterval = setInterval(() => {
+    fetchNotifications();
+  }, 5 * 60 * 1000);
+  
+  return () => clearInterval(pollingInterval);
+
+  },[location])
 
 
   const handleNotificationClick = async (notification : Notification)=>{
@@ -111,6 +122,19 @@ function Navbar({ position }) {
     
 
   }
+
+  const handleNotificationRead = async (notification: Notification)=>{
+    // When user clicks on small dot, this function is run
+    chatServices.updateNotification(notification)
+    .then(response=>{
+        setNotifications(prevNotifications => 
+            prevNotifications.map(notification => 
+              notification.id === response.data.id ? response.data : notification
+            )
+        );
+    })
+  }
+
 
 
   return (
@@ -261,6 +285,7 @@ function Navbar({ position }) {
                     notifications={notifications}
                     onNotificationClick={handleNotificationClick}
                     scrolled={scrolled}
+                    updateNotification={handleNotificationRead}
                     />
               <Box sx={{ flexGrow: 0 }}>
                 <Tooltip>

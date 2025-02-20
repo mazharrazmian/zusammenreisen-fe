@@ -10,19 +10,27 @@ import {
 } from "@mui/material";
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { Notification } from '../../types';
-
+import chatServices from '../../redux/api/chatServices';
+import { Circle as CircleIcon } from '@mui/icons-material';
 
 type OnNotificationClick = (notification: Notification) => void;
+type updateNotification = (notification: Notification) => void;
+
 
 
 interface NotificationComponentProps {
     notifications: Array<Notification>; // Array of notifications
     onNotificationClick: OnNotificationClick; // Function to handle notification clicks
+    updateNotification : updateNotification;
     scrolled?: boolean; // Optional boolean to indicate if the component is scrolled
   }
 
 
-const NotificationComponent : React.FC<NotificationComponentProps> = ({ notifications=[], onNotificationClick, scrolled = false }) => {
+const NotificationComponent : React.FC<NotificationComponentProps> = ({ notifications=[],
+     onNotificationClick,
+      scrolled = false,
+      updateNotification,
+    }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   
   const unreadCount = notifications.filter(notif => notif.unread).length;
@@ -35,6 +43,8 @@ const NotificationComponent : React.FC<NotificationComponentProps> = ({ notifica
     setAnchorEl(null);
   };
   
+
+
   const handleNotificationClick = (notification : Notification) => {
     if (onNotificationClick) {
       onNotificationClick(notification);
@@ -88,28 +98,80 @@ const NotificationComponent : React.FC<NotificationComponentProps> = ({ notifica
         ) : (
           notifications.map((notification) => (
             <MenuItem
-              key={notification.id}
-              onClick={() => handleNotificationClick(notification)}
-              sx={{
-                bgcolor: notification.unread ? 'action.hover' : 'transparent',
-                '&:hover': {
-                  bgcolor: 'action.hover'
-                },
-                display: 'block',
-                py: 1
-              }}
-            >
-              <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
-                {notification.title}
-              </Typography>
-              <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+            key={notification.id}
+            onClick={() => handleNotificationClick(notification)}
+            sx={{
+              bgcolor: notification.unread ? '#EBF5FF' : 'transparent',
+              '&:hover': {
+                bgcolor: '#F5F9FF'
+              },
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'flex-start',
+              p: 2,
+              borderBottom: '1px solid #E0E0E0'
+            }}
+          >
+            <Box sx={{ flex: 1 }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 0.5 }}>
+                {notification.unread && (
+                  <Box
+                    sx={{
+                      width: 8,
+                      height: 8,
+                      borderRadius: '50%',
+                      bgcolor: '#1976d2',
+                      flexShrink: 0
+                    }}
+                  />
+                )}
+                <Typography 
+                  variant="subtitle2" 
+                  sx={{ 
+                    fontWeight: notification.unread ? 700 : 500,
+                    color: notification.unread ? '#1976d2' : 'text.primary'
+                  }}
+                >
+                  {notification.title}
+                </Typography>
+              </Box>
+              <Typography 
+                variant="body2" 
+                sx={{ 
+                  color: notification.unread ? 'text.primary' : 'text.secondary',
+                  mb: 0.5 
+                }}
+              >
                 {notification.message}
               </Typography>
               <Typography variant="caption" sx={{ color: 'text.disabled' }}>
                 {new Date(notification.created_at).toLocaleDateString()}
               </Typography>
-              <Divider sx={{ mt: 1 }} />
-            </MenuItem>
+            </Box>
+            
+
+            <IconButton 
+              size="small"
+              onClick={(e) => {
+                e.stopPropagation(); // Prevent MenuItem onClick from firing
+                updateNotification(notification);
+              }}
+              sx={{
+                ml: 1,
+                opacity: notification.unread ? 1 : 0.3,
+                '&:hover': {
+                  bgcolor: 'rgba(25, 118, 210, 0.04)'
+                }
+              }}
+            >
+              <CircleIcon 
+                sx={{ 
+                  fontSize: 16,
+                  color: notification.unread ? '#1976d2' : '#bdbdbd'
+                }} 
+              />
+            </IconButton>
+          </MenuItem>
           ))
         )}
       </Menu>

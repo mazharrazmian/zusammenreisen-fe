@@ -64,9 +64,8 @@ import { ChatRoom, Message, Profile, UserChats } from "../types";
     const token = Cookies.get('accessToken');
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-    const dispatch = useDispatch();
     const navigate = useNavigate();
-  
+    
     useEffect(() => {
     chatServices.getChatRoomsCurrUser()
     .then(response=>{
@@ -101,10 +100,18 @@ import { ChatRoom, Message, Profile, UserChats } from "../types";
     useEffect(() => {
       if (activeChat) {
         const chatId = activeChat.id;
-        ws.current = new WebSocket(`ws://localhost:8001/ws/chat/${chatId}/?token=${token}`);
+
+        // Close existing WebSocket before creating a new one
+        if (ws.current) {
+            ws.current.close();
+        }
   
+
+        ws.current = new WebSocket(`ws://localhost:8001/ws/chat/${chatId}/?token=${token}`);
+
         ws.current.onopen = () => console.log("WebSocket opened");
         ws.current.onmessage = (event) => {
+            console.log('new message')
           const data = JSON.parse(event.data);
           if (data.type === "chat_message") {
             setMessageList((prevMessages) => [...prevMessages, data.message]);
@@ -114,6 +121,8 @@ import { ChatRoom, Message, Profile, UserChats } from "../types";
   
         return () => {
           if (ws.current) {
+            console.log(ws.current.readyState);
+
             if (ws.current.readyState === 1) { // <-- This is important
                 ws.current.close();
             }

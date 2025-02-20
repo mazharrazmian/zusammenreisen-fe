@@ -6,12 +6,15 @@ import {
     Container,
     Typography,
     Box,
-    Grid,
     IconButton,
     Autocomplete,
     CircularProgress,
     Divider,
+    Checkbox,
+    FormControlLabel,
 } from "@mui/material";
+import Grid from '@mui/material/Grid2';
+
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { get_AllCountries, getCitiesByCId } from "../redux/slice/filterSlice";
@@ -50,6 +53,7 @@ export interface postDataInterface {
     gender: string,
     images: [],
     dates_flexible: boolean,
+    no_of_other_people : null | number,
 }
 
 const initialValues :postDataInterface = {
@@ -65,6 +69,7 @@ const initialValues :postDataInterface = {
     gender: "",
     images: [],
     dates_flexible: false,
+    no_of_other_people : null,
 };
 const AddPost = () => {
     const [formData, setFormData] = useState(initialValues);
@@ -73,9 +78,7 @@ const AddPost = () => {
     const [imageFiles, setImageFiles] = React.useState<File[]>([]);
     
     const [countries,setCountries] = useState([])
-   
-    const [loading, setLoading] = React.useState(false);
-    const [isLoading, setIsLoading] = React.useState(false);
+       const [isLoading, setIsLoading] = React.useState(false);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -94,8 +97,13 @@ const AddPost = () => {
 
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
+        let { name, value } = e.target;
+        if (name == 'dates_flexible'){
+            setFormData((prevData) => ({ ...prevData, [name]: e.target.checked }));
+            return 
+        }
         setFormData((prevData) => ({ ...prevData, [name]: value }));
+        console.log(formData)
         validations({ [name]: value });
     };
 
@@ -218,7 +226,11 @@ const AddPost = () => {
             >
                 <Navbar position="fixed" />
             </Box>
-            <Container sx={{ padding: "5rem 0rem" }}>
+
+                <Grid sx={{
+                    margin : '0% 5% 0% 5%'
+                }} container spacing={2}>
+
                 <Box>
                     <Box sx={addPostStyles.header}>
                         <Typography variant="h3">Add New Post</Typography>
@@ -227,8 +239,8 @@ const AddPost = () => {
                             Back
                         </Button>
                     </Box>
-                    <Grid container spacing={2}>
-                        <Grid item xs={12} md={12}>
+                    <Grid container spacing={2} >
+                        <Grid size={{ xs: 12}}>
                             <TextField
                                 autoFocus
                                 label="Title"
@@ -246,48 +258,43 @@ const AddPost = () => {
 
                       
                         {/* Travel From Section */}
-                        <Grid item xs={12}>
+                        <Grid size={{ xs: 12 }}>
                             <Divider sx={{ my: 2 }}><Typography variant="h6">Travel From</Typography></Divider>
                         </Grid>
-                            <Grid item xs={12} md={6}>
+                            <Grid size={{ xs: 12, md: 6 }}>
                                 <CountrySelect
                                 helperText={errors.fromCountry}
                                 error={Boolean(errors.fromCountry)}
                                 name='fromCountry' countries={countries} value={formData.fromCountry} onChange={handleAutoCompleteChange} />
                             </Grid>
-                            <Grid item xs={12} md={6}>
+                            <Grid size={{ xs: 12, md: 6 }}>
                                 <CitySelect helperText={errors.fromCity}
                                 error={Boolean(errors.fromCity)} name='fromCity' countryId={formData.fromCountry?.id || null} value={formData.fromCity} onChange={handleAutoCompleteChange} />
                             </Grid>
 
                         {/* Travel To Section */}
-                        <Grid item xs={12}>
+                        <Grid size={{ xs: 12 }}>
                             <Divider sx={{ my: 2 }}><Typography variant="h6">Travel To</Typography></Divider>
                         </Grid>
-                            <Grid item xs={12} md={6}>
+                            <Grid size={{ xs: 12, md: 6 }}>
                                 <CountrySelect helperText={errors.toCountry}
                                 error={Boolean(errors.toCountry)} name='toCountry' countries={countries} value={formData.toCountry} onChange={handleAutoCompleteChange} />
                             </Grid>
-                            <Grid item xs={12} md={6}>
+                            <Grid size={{ xs: 12, md: 6 }}>
                                 <CitySelect helperText={errors.toCountry}
                                 error={Boolean(errors.toCity)} name='toCity' countryId={formData.toCountry?.id || null} value={formData.toCity} onChange={handleAutoCompleteChange} />
                             </Grid>
 
-
-                        <Grid item xs={12} md={4}>
-                            {" "}
-                            <TextField
-                                label="Postal Code"
-                                type="text"
-                                fullWidth
-                                variant="outlined"
-                                name="postalCode"
-                                value={formData.postalCode}
-                                onChange={handleChange}
-                            />
+                        <Grid size={{ xs: 12 }}>
+                            <Divider sx={{ my: 2 }}><Typography variant="h6">Dates</Typography></Divider>
                         </Grid>
 
-                        <Grid item xs={12} md={3}>
+                    <Grid container size={{xs:12}} sx={{
+                                justifyContent: "space-around",
+                                alignItems: "center",
+                            }}>
+
+                        <Grid size={{ xs: 12, md: 3 }}>
                             <TextField
                                 label="Departure Date"
                                 type="date"
@@ -302,7 +309,8 @@ const AddPost = () => {
                                 required
                             />
                         </Grid>
-                        <Grid item xs={12} md={3}>
+                       
+                        <Grid size={{ xs: 12, md: 3 }}>
                             {" "}
                             <TextField
                                 label="Return Date"
@@ -319,7 +327,16 @@ const AddPost = () => {
                             />
 
                         </Grid>
-                        <Grid item xs={12} md={12}>
+                        <Grid size={{ xs: 12, md: 3 }}>
+                            <FormControlLabel 
+                            label="Are your dates flexible?"
+                            control={<Checkbox checked={formData.dates_flexible} onChange={handleChange} />} 
+                            name="dates_flexible"
+                            />
+                            </Grid>
+
+                        </Grid>
+                        <Grid size={{ xs: 12}}>
                             {" "}
                             <CustomDetails
                                 label="Tell us about your plans"
@@ -337,7 +354,7 @@ const AddPost = () => {
                             />
                         </Grid>
 
-                        <Grid item xs={12} md={4}>
+                        <Grid size={{ xs: 12, md: 4 }}>
                             {" "}
                             <TextField
                                 select
@@ -355,7 +372,27 @@ const AddPost = () => {
                                 <MenuItem value="2">other</MenuItem>
                             </TextField>
                         </Grid>
-                        <Grid item xs={12}>
+                        <Grid size={{ xs: 12, md: 4 }}>
+                            {" "}
+                            <TextField
+                                label="Other People"
+                                fullWidth
+                                name="no_of_other_people"
+                                helperText={errors?.no_of_other_people
+
+                                    ||
+
+                                    "If you are not travelling alone. Write number of people."
+                                }
+                                value={formData?.no_of_other_people}
+                                error={Boolean(errors?.no_of_other_people)}
+                                onChange={handleChange}
+                                type="number"
+                            >
+                                
+                            </TextField>
+                        </Grid>
+                        <Grid size={{ xs: 12}}>
                             <Button variant="contained" component="label">
                                 Upload Images
                                 <input
@@ -367,7 +404,7 @@ const AddPost = () => {
                                 />
                             </Button>
                         </Grid>
-                        <Grid item xs={12}>
+                        <Grid size={{ xs: 12 }} >
                             <Box sx={addPostStyles.imageWrapper}>
                                 {previewImages?.length > 0 ? (
                                     previewImages?.map((img, index) => (
@@ -409,7 +446,7 @@ const AddPost = () => {
                             </Box>
                         </Grid>
 
-                        <Grid item xs={12}>
+                        <Grid size={12}>
                             {" "}
                             <Button variant="contained" size="large" onClick={handleAddPost}>
                                 {isLoading ? "loading..." : "Add Post"}
@@ -417,7 +454,7 @@ const AddPost = () => {
                         </Grid>
                     </Grid>
                 </Box>
-            </Container>
+            </Grid>
         </>
     );
 };
