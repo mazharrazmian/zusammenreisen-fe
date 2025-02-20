@@ -46,6 +46,8 @@ import LanguageSelector from "../components/ language";
     const [selectedLanguages, setSelectedLanguages] = useState([]);
 
 
+    console.log(selectedLanguages)
+
     useEffect(()=>{
 
         authServices.getAllLanguages().then(response=>{
@@ -75,21 +77,33 @@ import LanguageSelector from "../components/ language";
   
     const handleSubmit = async (e) => {
         e.preventDefault()
+
         try {
-          const datas = {
-            email: values.email,
-            password: values.password,
-            re_password: values.re_password,
-            "profile.gender": values.gender,
-            "profile.picture": menuItemImg,
-            "profile.phone": values.phone,
-            name: values.name,
-            "profile.age": values.age,
-            languages : selectedLanguages,
-          };
+            const formData = new FormData();
+
+            // Append simple fields
+            formData.append('email', values.email);
+            formData.append('password', values.password);
+            formData.append('re_password', values.re_password);
+            formData.append('name', values.name);
+
+            // Append nested profile fields
+            formData.append('profile.gender', values.gender);
+            formData.append('profile.phone', values.phone);
+            formData.append('profile.age', values.age);
+
+            // Append the image file (if it exists)
+            if (menuItemImg) {
+                formData.append('profile.picture', menuItemImg);
+            }
+
+            // Append languages as separate fields
+            selectedLanguages.forEach((language, index) => {
+                formData.append('languages', language); // Use 'languages' without []
+            });
       
           setIsLoading(true);
-          const res = await authServices.signUp(datas);
+          const res = await authServices.signUp(formData);
           console.log(res)
           if (res.status === 201) {
             toast.success("Verification email has been sent to your email");

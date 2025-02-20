@@ -89,6 +89,7 @@ const TravelDetails = () => {
     })
   }
 
+  console.log(postData?.posted_by?.languages)
 
   const handleEdit = ()=>{
     navigate(`/edit/post/${postData?.id}`)
@@ -264,10 +265,10 @@ const TravelDetails = () => {
                   label="Languages"
                   value={
                     <Box sx={{ mt: 1 }}>
-                      {['English', 'French', 'Spanish'].map((lang) => (
+                      {postData?.posted_by?.languages.map((lang) => (
                         <Chip
-                          key={lang}
-                          label={lang}
+                          key={lang.name}
+                          label={lang.name}
                           size="small"
                           sx={{ mr: 1, mb: 1 }}
                         />

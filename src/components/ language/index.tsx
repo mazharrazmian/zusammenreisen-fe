@@ -6,11 +6,9 @@ const LanguageSelector = ({ allLanguages,onLanguagesChange }) => {
     const [selectedLanguages, setSelectedLanguages] = useState([]);
 
     const handleChange = (event, newValue) => {
-        const normalizedValues = newValue.map((item) =>
-            typeof item === "string" ? { name: item } : item
-          );
         setSelectedLanguages(newValue); // Update local state
-        onLanguagesChange(newValue); // Pass selected languages to parent
+        let languages = newValue.map(value=>value.name)
+        onLanguagesChange(languages); // Pass selected languages to parent
       };
     
 
