@@ -17,6 +17,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { get_profile } from "../../redux/slice/profileSlice";
 import { toast } from "react-toastify";
 import { Chat } from "@mui/icons-material";
+import NotificationComponent from "./notification";
+import chatServices from "../../redux/api/chatServices";
+
+import { Notification } from "../../types";
 
 const pages = [
   { id: 1, pageName: "Home", path: "/" },
@@ -28,6 +32,7 @@ function Navbar({ position }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
+  const [notifications, setNotifications] = React.useState<Array<Notification>>([]);
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
@@ -76,6 +81,37 @@ function Navbar({ position }) {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+  React.useEffect(()=>{
+
+    chatServices.getNotifications().then(response=>{
+        console.log(response.data)
+        setNotifications(response.data)
+    })
+    .catch(error=>{
+        console.log(error)
+    })
+
+  },[])
+
+
+  const handleNotificationClick = async (notification : Notification)=>{
+
+    chatServices.updateNotification(notification)
+    .then(response=>{
+        console.log(response.data)
+    })
+    .catch(error=>{
+        console.log(error)
+    })
+    .finally(()=>{
+        navigate(`/chat/${notification.chat_room}`);
+
+    })
+    
+
+  }
+
 
   return (
     <AppBar
@@ -221,14 +257,11 @@ function Navbar({ position }) {
           </Box>
           {accessToken ? (
             <Box sx={{ display: "flex", alignItems: "center", gap: "10px" }}>
-              <IconButton onClick={() => navigate("/chat")}>
-                <Chat
-                  sx={{
-                    color: scrolled ? "#000" : "#fff",
-                    ":hover": { color: "#1877F2" },
-                  }}
-                />
-              </IconButton>
+              <NotificationComponent 
+                    notifications={notifications}
+                    onNotificationClick={handleNotificationClick}
+                    scrolled={scrolled}
+                    />
               <Box sx={{ flexGrow: 0 }}>
                 <Tooltip>
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>

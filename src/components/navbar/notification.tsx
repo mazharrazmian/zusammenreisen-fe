@@ -1,12 +1,31 @@
 import React from 'react';
-import { Badge, IconButton, Menu, MenuItem, Typography, Box } from '@/components/ui/card';
-import { NotificationsIcon as Bell} from '@mui/icons-material/Notifications';
+import { 
+  IconButton, 
+  Menu, 
+  MenuItem, 
+  Typography, 
+  Box,
+  Badge,
+  Divider
+} from "@mui/material";
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import { Notification } from '../../types';
 
-const NotificationComponent = ({ notifications = [], onNotificationClick }) => {
+
+type OnNotificationClick = (notification: Notification) => void;
+
+
+interface NotificationComponentProps {
+    notifications: Array<Notification>; // Array of notifications
+    onNotificationClick: OnNotificationClick; // Function to handle notification clicks
+    scrolled?: boolean; // Optional boolean to indicate if the component is scrolled
+  }
+
+
+const NotificationComponent : React.FC<NotificationComponentProps> = ({ notifications=[], onNotificationClick, scrolled = false }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const menuRef = React.useRef(null);
   
-  const unreadCount = notifications.filter(notif => !notif.read).length;
+  const unreadCount = notifications.filter(notif => notif.unread).length;
   
   const handleOpenMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -16,7 +35,7 @@ const NotificationComponent = ({ notifications = [], onNotificationClick }) => {
     setAnchorEl(null);
   };
   
-  const handleNotificationClick = (notification) => {
+  const handleNotificationClick = (notification : Notification) => {
     if (onNotificationClick) {
       onNotificationClick(notification);
     }
@@ -24,58 +43,76 @@ const NotificationComponent = ({ notifications = [], onNotificationClick }) => {
   };
 
   return (
-    <Box className="relative">
-      <IconButton 
-        onClick={handleOpenMenu}
-        className="relative"
-        ref={menuRef}
-      >
-        {unreadCount > 0 && (
-          <Badge 
-            className="absolute -top-1 -right-1 min-w-[20px] h-5 rounded-full bg-red-500 text-white text-xs flex items-center justify-center"
-          >
-            {unreadCount}
-          </Badge>
-        )}
-        <Bell className="h-6 w-6" />
+    <Box>
+      <IconButton onClick={handleOpenMenu}>
+        <Badge badgeContent={unreadCount} color="error">
+          <NotificationsIcon 
+            sx={{
+              color: scrolled ? "#000" : "#fff",
+              ":hover": { color: "#1877F2" },
+              transition: "color 0.3s ease"
+            }}
+          />
+        </Badge>
       </IconButton>
       
-      {menuRef.current && (
-        <Menu
-          open={Boolean(anchorEl)}
-          onClose={handleCloseMenu}
-          anchorEl={menuRef.current}
-          className="mt-2 p-2 w-80"
-        >
-          <div className="max-h-96 overflow-y-auto">
-            {(!notifications || notifications.length === 0) ? (
-              <MenuItem className="text-gray-500">
-                <Typography>No notifications</Typography>
-              </MenuItem>
-            ) : (
-              notifications.map((notification) => (
-                <MenuItem
-                  key={notification.id}
-                  onClick={() => handleNotificationClick(notification)}
-                  className={`p-3 hover:bg-gray-100 ${!notification.read ? 'bg-blue-50' : ''}`}
-                >
-                  <div className="flex flex-col gap-1">
-                    <Typography className="font-medium">
-                      {notification.title}
-                    </Typography>
-                    <Typography className="text-sm text-gray-600">
-                      {notification.message}
-                    </Typography>
-                    <Typography className="text-xs text-gray-400">
-                      {new Date(notification.timestamp).toLocaleDateString()}
-                    </Typography>
-                  </div>
-                </MenuItem>
-              ))
-            )}
-          </div>
-        </Menu>
-      )}
+      <Menu
+        sx={{ mt: 2 }}
+        id="notifications-menu"
+        anchorEl={anchorEl}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'right',
+        }}
+        keepMounted
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+        open={Boolean(anchorEl)}
+        onClose={handleCloseMenu}
+        PaperProps={{
+          sx: {
+            maxHeight: 400,
+            width: '300px',
+            overflowY: 'auto'
+          }
+        }}
+      >
+        {(!notifications || notifications.length === 0) ? (
+          <MenuItem>
+            <Typography sx={{ color: 'text.secondary' }}>
+              No notifications
+            </Typography>
+          </MenuItem>
+        ) : (
+          notifications.map((notification) => (
+            <MenuItem
+              key={notification.id}
+              onClick={() => handleNotificationClick(notification)}
+              sx={{
+                bgcolor: notification.unread ? 'action.hover' : 'transparent',
+                '&:hover': {
+                  bgcolor: 'action.hover'
+                },
+                display: 'block',
+                py: 1
+              }}
+            >
+              <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
+                {notification.title}
+              </Typography>
+              <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                {notification.message}
+              </Typography>
+              <Typography variant="caption" sx={{ color: 'text.disabled' }}>
+                {new Date(notification.created_at).toLocaleDateString()}
+              </Typography>
+              <Divider sx={{ mt: 1 }} />
+            </MenuItem>
+          ))
+        )}
+      </Menu>
     </Box>
   );
 };

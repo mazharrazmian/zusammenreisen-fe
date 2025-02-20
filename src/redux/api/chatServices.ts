@@ -1,5 +1,9 @@
 import { callAPi, callAPiMultiPart, handleApiError } from "./http-common";
 
+
+import { Notification } from "../../types";
+
+
 interface createChat {
   second_participant: string;
 }
@@ -17,6 +21,20 @@ const createRoom = async (data: createChat) => {
     
     
 }
+
+const getNotifications = async ()=>{
+    return await callAPi.get('/chat/notifications/')
+}
+
+const updateNotification = async (notification : Notification) =>{
+    let id = notification.id
+    let data = {
+        unread : false
+    }
+
+    return await callAPi.patch(`chat/notifications/${id}/`,data=data)
+}
+
 const getChatRooms = (email: string) =>
   callAPi.get(`/chat/chat-rooms?email=${email}`);
 
@@ -32,6 +50,8 @@ const chatServices = {
   sendMessage,
   retrieveRoom,
   getChatRoomsCurrUser,
+  getNotifications,
+  updateNotification,
 };
 
 export default chatServices;

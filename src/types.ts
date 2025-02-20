@@ -60,3 +60,13 @@ export interface Profile {
     data: ChatRoom[];
   }
   
+
+
+  export interface Notification {
+    title : string,
+    id : number,
+    message : string,
+    unread : boolean,
+    created_at : string,
+    chat_room : null | number
+  }
