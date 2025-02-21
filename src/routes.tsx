@@ -9,6 +9,10 @@ import Details from "./pages/details";
 import AddPost from "./pages/addPost";
 import ChatPage from "./pages/chatPage";
 import EditPost from "./pages/editPost";
+import ProtectedRoute from "./hoc/protectedRoute";
+import ActivateAccount from "./pages/activateAccount";
+import ResetPassword from "./pages/passwordReset";
+import ProfilePage from "./pages/accountPage";
 
 export default function Router() {
     const routes = useRoutes([
@@ -21,16 +25,60 @@ export default function Router() {
         ],
       },
       { path: "details/:id", element: <Details /> },
-      { path: "add/post", element: <AddPost /> },
-      { path: "edit/post/:id", element: <EditPost /> },
+      
+      { 
+        path: "add/post", 
+        element: (
+          <ProtectedRoute>
+            <AddPost />
+          </ProtectedRoute>
+        ) 
+      },
+
+      { 
+        path: "edit/post/:id", 
+        element: (
+          <ProtectedRoute>
+            <EditPost />
+          </ProtectedRoute>
+        ) 
+      },
+
       { path: "login", element: <LoginPage /> },
       { path: "register", element: <RegisterPage /> },
-      { path: "chat", element: <ChatPage /> },   // Chat without ID
-      { path: "chat/:chatId", element: <ChatPage /> },  // Chat with ID
+
+      { 
+        path: "chat", 
+        element: (
+          <ProtectedRoute>
+            <ChatPage />
+          </ProtectedRoute>
+        ) 
+      },
+
+      { 
+        path: "chat/:chatId", 
+        element: (
+          <ProtectedRoute>
+            <ChatPage />
+          </ProtectedRoute>
+        ) 
+      },
+      { 
+        path: "account", 
+        element: (
+          <ProtectedRoute>
+            <ProfilePage/>
+          </ProtectedRoute>
+        ) 
+      },
+      // Add Activation & Reset Password Routes
+    { path: "activate/:uid/:token", element:  <ActivateAccount />},
+    { path: "reset-password/:uid/:token", element: <ProtectedRoute> <ResetPassword /> </ProtectedRoute>},
+
       { path: "404", element: <Page404 /> },
       { path: "*", element: <Navigate to="/404" replace /> },
     ]);
   
     return routes;
-  }
-  
+}

@@ -42,17 +42,19 @@ import { toast } from 'react-toastify';
 import { formatDateWithOrdinal } from '../utils';
 import chatServices from '../redux/api/chatServices';
 import { handleApiError } from '../redux/api/http-common';
+import Cookies from 'js-cookie';
+import Navbar from '../components/navbar';
 
 
 const TravelDetails = () => {
     const { id } = useParams<{ id: string }>();
     const profile = useSelector((s) => s.profile);
+    const accessToken = Cookies.get('accessToken')
 
     const navigate = useNavigate();
-    const dispatch = useDispatch();
     const [postData,setPostdata] = useState([])
-  const [openChat, setOpenChat] = useState(false);
-  const [isExpanded, setIsExpanded] = useState(false);
+    const [isExpanded, setIsExpanded] = useState(false);
+
 
   useEffect(() => {
     postServices.getPost(Number(id))
@@ -66,7 +68,7 @@ const TravelDetails = () => {
 
 
   const handleChat = ()=>{
-    chatServices.getChatRooms(postData?.posted_by.user.email)
+    chatServices.getChatRooms(postData?.posted_by?.user.email)
     .then(response=>{
         if (response.data.length > 0){
             console.log(response.data)
@@ -74,7 +76,7 @@ const TravelDetails = () => {
         }
         else{
             let chatData = {
-                'second_participant' : postData?.posted_by.user.email
+                'second_participant' : postData?.posted_by?.user.email
             }
             chatServices.createRoom(chatData)
             .then(response=>{
@@ -145,6 +147,21 @@ const TravelDetails = () => {
   );
 
   return (
+    <>
+    <Box
+        sx={{
+            background: "#000",
+            position: "fixed",
+            top: "0",
+            left: "0",
+            right: "0",
+            height: "100px",
+            zIndex : '3',
+        }}
+    >
+    <Navbar position="fixed" />
+    </Box>
+
     <Container maxWidth="lg" sx={{ mt: 12, mb: 4 }}>
       <Card sx={{ position: 'relative', overflow: 'visible' }}>
         <CardContent sx={{ p: { xs: 2, md: 4 } }}>
@@ -213,18 +230,28 @@ const TravelDetails = () => {
                     {postData?.posted_by?.user?.name}
                   </Typography>
                  {
-                    postData?.posted_by?.user.email != profile?.profile.email 
+                    postData?.posted_by?.user.email != profile?.profile?.email 
                     ?
                     (
+                        
+                        <>
                         <Button
                         variant="contained"
                         startIcon={<ChatIcon />}
                         onClick={handleChat}
                         sx={{ mt: 2 }}
                         fullWidth
+                        disabled={accessToken === undefined ? true : false}
                       >
-                        Start Chat
+                        {
+                            accessToken === undefined ? 'Login to chat'
+                            :
+                            'Start Chat'
+                        }
                       </Button>
+                      </>
+
+                    
                     )
                     :
                     (
@@ -316,6 +343,7 @@ const TravelDetails = () => {
       {/* Chat Dialog */}
       
     </Container>
+    </>
   );
 };
 

@@ -32,6 +32,7 @@ export interface Profile {
         gender : number,
         phone : string,
         age : number,
+        languages : []
     }
   }
   

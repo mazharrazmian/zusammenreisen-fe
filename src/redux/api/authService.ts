@@ -46,6 +46,11 @@ export const signUp = async (data: signup) => {
     }
   };
 
+  export const updateProfile = async (id,data) => {
+      const response = await callAPi.patch(`users/profile/${id}`,data=data);
+      return response
+  };
+
   export const getAllLanguages = async () =>{
     try {
         const response = await callAPiMultiPart.get("users/languages");
@@ -55,11 +60,20 @@ export const signUp = async (data: signup) => {
       }
   }
 
+  export const activateAccount = async ({uid,token}) =>{
+
+    return callAPiMultiPart.post('/auth/users/activation/',{uid,token})
+    
+  }
+
+
 const authServices = {
   signUp,
   login,
   getProfile,
   refresh,
   getAllLanguages,
+  activateAccount,
+  updateProfile,
 };
 export default authServices;

@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Autocomplete, TextField, Chip } from "@mui/material";
 
+
 const LanguageSelector = ({ allLanguages,onLanguagesChange }) => {
 
     const [selectedLanguages, setSelectedLanguages] = useState([]);
-
     const handleChange = (event, newValue) => {
         setSelectedLanguages(newValue); // Update local state
         let languages = newValue.map(value=>value.name)

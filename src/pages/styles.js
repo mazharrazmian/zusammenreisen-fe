@@ -116,6 +116,7 @@ export const authStyles = {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+    cursor : 'pointer',
   },
 };
 

@@ -14,13 +14,14 @@ import { Avatar, Divider, Stack, Tooltip } from "@mui/material";
 import { useNavigate, useLocation } from "react-router-dom";
 import Cookies from "js-cookie";
 import { useDispatch, useSelector } from "react-redux";
-import { get_profile } from "../../redux/slice/profileSlice";
+import { get_profile,clearProfile } from "../../redux/slice/profileSlice";
 import { toast } from "react-toastify";
-import { Chat } from "@mui/icons-material";
+import { Chat, SettingsApplications, SettingsVoiceOutlined } from "@mui/icons-material";
 import NotificationComponent from "./notification";
 import chatServices from "../../redux/api/chatServices";
 
 import { Notification } from "../../types";
+import Iconify from "../iconify";
 
 const pages = [
   { id: 1, pageName: "Home", path: "/" },
@@ -65,6 +66,7 @@ function Navbar({ position }) {
     setAnchorElUser(null);
     Cookies.remove("accessToken", { path: "/" });
     Cookies.remove("refreshToken", { path: "/" });
+    dispatch(clearProfile())
     toast.success("Logout successful");
   };
 
@@ -324,6 +326,15 @@ function Navbar({ position }) {
                     </Typography>
                   </MenuItem>
                   <Divider />
+                  <MenuItem onClick={()=>navigate('/account')}>
+                    
+                    <Typography sx={{ textAlign: "center",display:'flex' }}>
+                      <Iconify icon={'mdi:home'}  width={25}
+                      
+                      /> 
+                      Profile
+                    </Typography>
+                  </MenuItem>
                   <MenuItem onClick={handleLogout}>
                     <Typography sx={{ textAlign: "center", color: "red" }}>
                       Logout

@@ -13,9 +13,6 @@ import {
     CardContent,
     CardActions,
     CircularProgress,
-    Dialog,
-    DialogTitle,
-    DialogContent,
     CardMedia,
     IconButton,
 } from "@mui/material";
