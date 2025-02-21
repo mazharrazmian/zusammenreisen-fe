@@ -11,16 +11,20 @@ const ProfilePage = () => {
     const [languages, setLanguages] = useState([]); // Available languages list
     const [openPasswordModal, setOpenPasswordModal] = useState(false);
     const [passwordData, setPasswordData] = useState({ old_password: "", new_password: "" });
+    const [selectedLanguages,setSelectedLanguages] = useState([])
+
 
     useEffect(() => {
         authServices.getProfile()
-            .then(response => {
-                setUser({ email: response.data.email, name: response.data.name }); // Store user data separately
-                setProfile(response.data.profile); // Store only profile data
-            })
-            .catch(() => {
-                toast("Couldn't get your profile data");
-            });
+        .then(response => {
+            setUser({email:response?.data.email,name:response?.data.name});
+            setProfile(response.data.profile);
+            setSelectedLanguages(response.data.profile.languages || []); // Keep as [{name: "English"}]
+        })
+        .catch(error => {
+            console.log(error);
+            toast("Couldn't get your profile data");
+        });
 
         authServices.getAllLanguages()
             .then(response => setLanguages(response.data))
@@ -39,18 +43,18 @@ const ProfilePage = () => {
         }
     };
 
-    const setSelectedLanguages = (selectedLanguages) => {
-        setProfile(prevProfile => ({ ...prevProfile, languages: selectedLanguages }));
-    };
-
     const handleProfileUpdate = () => {
         const formData = new FormData();
         Object.keys(profile).forEach(key => {
-            if (key === "languages") {
-                profile.languages.forEach(lang => formData.append("languages[]", lang)); // Send languages as an array
-            
-            } 
-            
+            if (key === 'languages'){
+                // Convert selectedLanguages to just names
+            const languagesForAPI = selectedLanguages.map(lang => lang.name)
+            console.log(languagesForAPI)
+            languagesForAPI.forEach(language=>{
+                formData.append("languages[]", language); 
+            })
+            }
+
             else if (key === 'picture'){
                 if (typeof(profile.picture) != File){
                     return
@@ -99,7 +103,7 @@ const ProfilePage = () => {
             </FormControl>
 
             {/* Language Selector */}
-            <LanguageSelector allLanguages={languages} onLanguagesChange={setSelectedLanguages} />
+            <LanguageSelector allLanguages={languages} selectedLanguages={selectedLanguages} onLanguagesChange={setSelectedLanguages} />
 
             <Button variant="contained" color="primary" onClick={handleProfileUpdate} style={{ margin: "10px 0" }}>Save Changes</Button>
             <Button variant="outlined" color="secondary" onClick={() => setOpenPasswordModal(true)}>Reset Password</Button>
