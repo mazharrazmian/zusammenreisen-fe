@@ -10,14 +10,6 @@ const Layout = () => {
   const navigate = useNavigate();
   const [openChat, setOpenChat] = useState(false); // State for chat visibility
 
-  const handleChatOpen = () => {
-    setOpenChat(true);
-  };
-  const accessToken = Cookies.get("accessToken");
-  const handleChatClose = () => {
-    setOpenChat(false);
-  };
-
   return (
     <>
       <Navbar position="fixed" />
@@ -34,26 +26,6 @@ const Layout = () => {
       >
         <ChatIcon />
       </Fab> */}
-      {accessToken && (
-        <Fab
-          color="primary"
-          aria-label="chat"
-          sx={{
-            position: "fixed",
-            bottom: 16,
-            right: 16,
-            width: "150px",
-            borderRadius: "10px",
-            display: { xs: "none", md: "flex" },
-          }}
-          onClick={() => navigate("/add/post")}
-        >
-          <Box sx={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            <AddCircleOutline />
-            <Typography>Add Post</Typography>
-          </Box>
-        </Fab>
-      )}
       {/* Chat Drawer */}
       {/* <ChatDrawer open={openChat} onClose={handleChatClose} /> */}
     </>

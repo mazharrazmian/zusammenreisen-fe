@@ -41,7 +41,7 @@ const initialValues = {
     gender: "",
     images: [],
     dates_flexible: false,
-    no_of_other_people: null,
+    travelling_in_group : false, //this is set to false. The state is logically inverted. But we use ! at the time of posting data
 };
 
 
@@ -88,10 +88,19 @@ const AddPost = () => {
 
     const handleChange = (e) => {
         const { name, value, checked } = e.target;
-        setFormData((prevData) => ({
-            ...prevData,
-            [name]: name === "dates_flexible" ? checked : value,
-        }));
+        if (['dates_flexible','travelling_in_group'].includes(name)){
+            setFormData((prevData) => ({
+                ...prevData,
+                [name]: checked,
+            }));
+        }
+        else{
+            setFormData((prevData) => ({
+                ...prevData,
+                [name]: value,
+            }));
+        }
+       
     };
 
     const handleAutoCompleteChange = (name, value) => {
@@ -138,6 +147,15 @@ const AddPost = () => {
             postData.append("date_to", formData.returnDate);
             postData.append("text", formData.text);
             postData.append("gender", formData.gender);
+            if (formData.travelling_in_group === true){
+                postData.append('travelling_alone','false');
+            }
+            else if (formData.travelling_in_group === false){
+                postData.append('travelling_alone','true');
+            }
+            if (formData.dates_flexible === true){
+                postData.append('dates_flexible','true')
+            }
 
             // Append all images
             imageFiles.forEach((file) => {
@@ -276,10 +294,16 @@ const AddPost = () => {
                                 error={Boolean(errors.returnDate)}
                             />
                         </Grid>
-                        <Grid item xs={12}>
+                        <Grid item xs={12} sm={6}>
                             <FormControlLabel
                                 control={<Checkbox checked={formData.dates_flexible} onChange={handleChange} name="dates_flexible" />}
                                 label="Are your dates flexible?"
+                            />
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <FormControlLabel
+                                control={<Checkbox checked={formData.travelling_in_group} onChange={handleChange} name="travelling_in_group" />}
+                                label="Are you travelling with other people (in a group)?"
                             />
                         </Grid>
                         <Grid item xs={12}>

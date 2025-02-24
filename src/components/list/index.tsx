@@ -32,15 +32,29 @@ const PostsList = () => {
     const [loading, setLoading] = useState(false);
     const [filtersOpen, setFiltersOpen] = useState(false);
     const [page, setPage] = useState(1);
-    const [searchParams] = useSearchParams();
+    const [searchParams, setSearchParams] = useSearchParams();
+
+
+
+    // Retrieve filters from sessionStorage (if available)
+    const getSavedFilters = () => {
+        const savedFilters = sessionStorage.getItem("postsFilters");
+        return savedFilters ? JSON.parse(savedFilters) : {};
+    };
+
 
     const [filters, setFilters] = useState<FilterState>({
-        country: searchParams.get("to") || "",
-        city: '',
-        gender: "",
-        date_from: searchParams.get("date_from") || "",
-        date_to: searchParams.get("date_to") || "",
+        country: searchParams.get("country") || getSavedFilters().country || "",
+        city: searchParams.get("city") || getSavedFilters().city || "",
+        gender: searchParams.get("gender") || getSavedFilters().gender || "",
+        date_from: searchParams.get("date_from") || getSavedFilters().date_from || "",
+        date_to: searchParams.get("date_to") || getSavedFilters().date_to || "",
     });
+
+    // Save filters whenever they change
+    useEffect(() => {
+        sessionStorage.setItem("postsFilters", JSON.stringify(filters));
+    }, [filters]);
 
     const urlParams = new URLSearchParams({
         page: page.toString(),
@@ -51,7 +65,10 @@ const PostsList = () => {
         ...(filters.gender && { gender: String(filters.gender) }),
     }).toString();
 
+
+
     const fetchPosts = async (pageNumber = 1) => {
+        setSearchParams(urlParams)
         setLoading(true);
         try {
             const response = await postServices.getAllPosts(urlParams);
@@ -83,55 +100,76 @@ const PostsList = () => {
                     </Box>
                 )}
 
-                {isMobile && (
-                    <Box sx={{ width: "20px" }}>
+                <Box sx={{ flex: 1 }}>
 
-                        <IconButton
-                            onClick={() => setFiltersOpen(true)}
-                            sx={{ position: "relative", top: "0" }}
-                        >
-                            Filter
-                            <FilterAltIcon fontSize="medium" />
-                        </IconButton>
-                        <Drawer
-                            anchor="left"
-                            open={filtersOpen}
-                            onClose={() => setFiltersOpen(false)}
-                        >
-                            <Box sx={{ width: 300, padding: 2 }}>
-                                <Box
+                    {isMobile ? (
+                        <>
+                            {/* Move the filter button outside the 20px-wide box */}
+                            <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    onClick={() => setFiltersOpen(true)}
                                     sx={{
-                                        display: "flex",
-                                        justifyContent: "space-between",
+                                        width: "90%",
+                                        maxHeight: "48px", // Prevents excessive height
+                                        borderRadius: "8px",
+                                        textTransform: "none",
+                                        fontWeight: "600",
+                                        boxShadow: 2,
+                                        display: "inline-flex", // Keeps it compact
                                         alignItems: "center",
-                                        marginBottom: "16px",
+                                        justifyContent: "center",
+                                        padding: "10px 16px",
                                     }}
                                 >
-                                    <Typography variant="h6">Filters</Typography>
-                                    <IconButton onClick={() => setFiltersOpen(false)}>
-                                        <CloseIcon />
-                                    </IconButton>
-                                </Box>
-                                <Filters filters={filters} setFilters={setFilters} />
+                                    <FilterAltIcon sx={{ mr: 1 }} />
+                                    Filters
+                                </Button>
                             </Box>
-                        </Drawer>
-                    </Box>
-                )}
 
-                <Box sx={{ flex: 1 }}>
-                    <Box
-                        sx={{
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            marginBottom: 2,
-                        }}
-                    >
-                        <Typography variant="h5" sx={{ fontWeight: "bold" }}>
-                            Matches
-                        </Typography>
-                        
-                    </Box>
+                            <Drawer
+                                anchor="left"
+                                open={filtersOpen}
+                                onClose={() => setFiltersOpen(false)}
+                            >
+                                <Box sx={{ width: 300, padding: 2 }}>
+                                    <Box
+                                        sx={{
+                                            display: "flex",
+                                            justifyContent: "space-between",
+                                            alignItems: "center",
+                                            marginBottom: "16px",
+                                        }}
+                                    >
+                                        <Typography variant="h6">Filters</Typography>
+                                        <IconButton onClick={() => setFiltersOpen(false)}>
+                                            <CloseIcon />
+                                        </IconButton>
+                                    </Box>
+                                    <Filters filters={filters} setFilters={setFilters} />
+                                </Box>
+                            </Drawer>
+                        </>
+                    )
+
+                        :
+                        <Box
+                            sx={{
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                marginBottom: 2,
+                            }}
+                        >
+                            <Typography variant="h5" sx={{ fontWeight: "bold" }}>
+                                Matches
+                            </Typography>
+
+                        </Box>
+
+
+                    }
 
                     {loading ? (
                         <Box
@@ -148,7 +186,7 @@ const PostsList = () => {
                         <>
                             <Grid container spacing={3}>
                                 {posts.map((item, index) => (
-                                    <Grid key={index} size={{ xs: 12, sm: 6, md:4 }}>
+                                    <Grid key={index} size={{ xs: 12, sm: 6, md: 4 }}>
                                         <Card
                                             sx={{
                                                 borderRadius: "12px",
@@ -177,7 +215,7 @@ const PostsList = () => {
                                                 />
                                                 <Box
                                                     sx={{
-                                                        textAlign: {xs:'center',sm:'left'},
+                                                        textAlign: { xs: 'center', sm: 'left' },
                                                         marginTop: 2,
                                                         paddingLeft: "12px",
 
@@ -203,20 +241,32 @@ const PostsList = () => {
                                                         <strong>To:</strong> {item.travel_to_city},{" "}
                                                         {item.travel_to_country}
                                                     </Typography>
-                                                    <Stack direction="row" spacing={1} sx={{marginTop:'1em',justifyContent:{xs:'center',sm:'left'}}}>
-                                                        <Chip
-                                                            label={item?.no_of_other_people ? `Traveling with ${item?.no_of_other_people}` : 'Traveling Alone'}
-                                                            color="secondary"
+                                                    <Stack direction="row" spacing={1} sx={{ marginTop: '1em', justifyContent: { xs: 'center', sm: 'left' } }}>
+                                                        {
+                                                            item?.travelling_alone ? 
+                                                            (
+                                                                <Chip
+                                                            label={'Travelling Alone'}
                                                             size="small"
                                                         />
+                                                            )
+                                                            :
+                                                            (
+                                                                <Chip
+                                                                label={'Travelling In Group'}
+                                                                size="small"
+                                                            />
+                                                            )
+                                                        }
                                                         
-                                                            {item.dates_flexible && 
+                                                        {item.dates_flexible &&
                                                             <Chip
-                                                            label={`Dates Flexible` }
-                                                        />    
-                                                            }
-                                                        
-                                                        
+                                                                label={`Dates Flexible`}
+                                                                size='small'
+                                                            />
+                                                        }
+
+
                                                     </Stack>
 
                                                 </Box>
