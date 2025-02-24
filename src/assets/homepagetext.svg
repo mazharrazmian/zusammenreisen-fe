@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 200">
+  <style>
+    @keyframes fadeIn {
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes highlightText {
+      0% { fill: #FFFFFF; }
+      50% { fill: #FFAB00; }
+      100% { fill: #FFFFFF; }
+    }
+    
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+    
+    .main-text {
+      font-family: 'Arial', sans-serif;
+      font-weight: bold;
+      font-size: 36px;
+      fill: #FFFFFF;
+    }
+    
+    .sub-text {
+      font-family: 'Arial', sans-serif;
+      font-weight: bold;
+      font-size: 32px;
+      fill: #FFFFFF;
+    }
+    
+    .highlight {
+      fill: #FFAB00;
+      animation: highlightText 3s infinite;
+    }
+    
+    #text1 {
+      animation: fadeIn 1s ease-out forwards, pulse 4s infinite;
+      opacity: 0;
+    }
+    
+    #text2 {
+      animation: fadeIn 1s ease-out 0.5s forwards, pulse 4s infinite 0.5s;
+      opacity: 0;
+    }
+    
+    .underline {
+      stroke: #1877F2;
+      stroke-width: 3;
+      stroke-dasharray: 400;
+      stroke-dashoffset: 400;
+      animation: drawLine 2s ease-out forwards 1s;
+    }
+    
+    @keyframes drawLine {
+      to {
+        stroke-dashoffset: 0;
+      }
+    }
+  </style>
+  
+  <!-- Background decorative elements -->
+  <circle cx="60" cy="160" r="8" fill="#FFAB00" opacity="0.8">
+    <animate attributeName="r" values="8;12;8" dur="3s" repeatCount="indefinite" />
+  </circle>
+  <circle cx="540" cy="40" r="10" fill="#00A76F" opacity="0.8">
+    <animate attributeName="r" values="10;14;10" dur="4s" repeatCount="indefinite" />
+  </circle>
+  <circle cx="500" cy="160" r="6" fill="#00B8D9" opacity="0.8">
+    <animate attributeName="r" values="6;10;6" dur="3.5s" repeatCount="indefinite" />
+  </circle>
+  <circle cx="100" cy="50" r="7" fill="#8E33FF" opacity="0.8">
+    <animate attributeName="r" values="7;11;7" dur="3.2s" repeatCount="indefinite" />
+  </circle>
+  
+  <!-- Main text group -->
+  <g id="text1">
+    <text x="300" y="80" text-anchor="middle" class="main-text">
+      Zussamenreisen 
+      <tspan class="highlight">Cuts</tspan> 
+      The 
+      <tspan class="highlight">Costs!</tspan>
+    </text>
+    <line x1="150" y1="90" x2="450" y2="90" class="underline" />
+  </g>
+  
+  <!-- Secondary text group -->
+  <g id="text2">
+    <text x="300" y="140" text-anchor="middle" class="sub-text">
+      Elevates 
+      <tspan class="highlight">The Fun</tspan>
+    </text>
+    <line x1="200" y1="150" x2="400" y2="150" class="underline" />
+  </g>
+</svg>

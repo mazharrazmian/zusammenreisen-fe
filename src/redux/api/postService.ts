@@ -24,6 +24,10 @@ const createPost = (data: Post) =>
 const editPost = (id: number, data) =>
   callAPiMultiPart.put(`/reisapp/posts/${id}`, data);
 
+const getFeaturedDestinations = async ()=>{
+    return callAPi.get('/reisapp/destinations/')
+}
+
 const postServices = {
   getAllPosts,
   getPost,
@@ -32,5 +36,6 @@ const postServices = {
   filterCityByCountryId,
   filterCountryByName,
   editPost,
+  getFeaturedDestinations,
 };
 export default postServices;
