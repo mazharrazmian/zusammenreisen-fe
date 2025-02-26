@@ -39,6 +39,7 @@ const PostsList = () => {
     // Retrieve filters from sessionStorage (if available)
     const getSavedFilters = () => {
         const savedFilters = sessionStorage.getItem("postsFilters");
+        console.log(savedFilters)
         return savedFilters ? JSON.parse(savedFilters) : {};
     };
 

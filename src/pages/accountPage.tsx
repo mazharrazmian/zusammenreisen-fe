@@ -1,16 +1,18 @@
 import { useState, useEffect } from "react";
-import { TextField, Button, Dialog, DialogActions, DialogContent, DialogTitle, MenuItem, Select, InputLabel, FormControl } from "@mui/material";
+import { TextField, Button, Dialog, DialogActions, DialogContent, DialogTitle, MenuItem, Select, InputLabel, FormControl, Box } from "@mui/material";
 import axios from "axios";
 import authServices from "../redux/api/authService";
 import { toast } from "react-toastify";
 import LanguageSelector from "../components/language";
+import { handleApiError } from "../redux/api/http-common";
+import Navbar from "../components/navbar";
 
 const ProfilePage = () => {
     const [user, setUser] = useState({ email: "", name: "" }); // Stores only name & email
     const [profile, setProfile] = useState({ id: "", picture: "", gender: "", age: "", languages: [] }); // Stores profile data
     const [languages, setLanguages] = useState([]); // Available languages list
     const [openPasswordModal, setOpenPasswordModal] = useState(false);
-    const [passwordData, setPasswordData] = useState({ old_password: "", new_password: "" });
+    const [passwordData, setPasswordData] = useState({ current_password: "", new_password: "" });
     const [selectedLanguages,setSelectedLanguages] = useState([])
 
 
@@ -64,10 +66,7 @@ const ProfilePage = () => {
                 formData.append(key, profile[key]);
             }
         });
-       // Display the key/value pairs
-        for (var pair of formData.entries()) {
-            console.log(pair[0]+ ', ' + pair[1]); 
-        }
+      
         authServices.updateProfile(profile.id, formData)
             .then(() => toast("Profile successfully updated"))
             .catch(() => toast("Could not update profile. Please contact support."));
@@ -78,12 +77,33 @@ const ProfilePage = () => {
     };
 
     const handlePasswordReset = () => {
-        axios.post("/auth/password/change/", passwordData).then(() => setOpenPasswordModal(false));
+        authServices.setPassword({current_password:passwordData.current_password,new_password:passwordData.new_password})
+       .then((response) => {
+        toast("Password changed successfully")
+        setOpenPasswordModal(false)
+        
+       }).catch(error=>{
+        handleApiError(error)
+        toast("Password could not be changed. Please contact an administrator. Or write us an email.")
+       });
     };
 
     if (!profile.id) return <p>Loading...</p>;
 
     return (
+        <>
+        <Box
+        sx={{
+            background: "#000",
+            top: "0",
+            left: "0",
+            right: "0",
+            height: "100px",
+        }}
+    >
+        <Navbar position="fixed" />
+    </Box>
+
         <div style={{ maxWidth: "500px", margin: "auto", textAlign: "center" }}>
             <h2>Profile</h2>
             <div>
@@ -112,7 +132,7 @@ const ProfilePage = () => {
             <Dialog open={openPasswordModal} onClose={() => setOpenPasswordModal(false)}>
                 <DialogTitle>Reset Password</DialogTitle>
                 <DialogContent>
-                    <TextField fullWidth label="Old Password" name="old_password" type="password" onChange={handlePasswordChange} margin="normal" />
+                    <TextField fullWidth label="Old Password" name="current_password" type="password" onChange={handlePasswordChange} margin="normal" />
                     <TextField fullWidth label="New Password" name="new_password" type="password" onChange={handlePasswordChange} margin="normal" />
                 </DialogContent>
                 <DialogActions>
@@ -121,6 +141,7 @@ const ProfilePage = () => {
                 </DialogActions>
             </Dialog>
         </div>
+   </>
     );
 };
 

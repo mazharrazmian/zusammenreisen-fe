@@ -22,7 +22,7 @@ const filterCityByCountryId = (id: string) =>
 const createPost = (data: Post) =>
   callAPiMultiPart.post(`/reisapp/posts/`, data);
 const editPost = (id: number, data) =>
-  callAPiMultiPart.put(`/reisapp/posts/${id}`, data);
+  callAPiMultiPart.put(`/reisapp/posts/${id}/`, data);
 
 const getFeaturedDestinations = async ()=>{
     return callAPi.get('/reisapp/destinations/')

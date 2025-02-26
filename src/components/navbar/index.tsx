@@ -30,6 +30,7 @@ const pages = [
 ];
 
 function Navbar({ position }) {
+    console.log('rendering navbar')
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
@@ -188,7 +189,9 @@ function Navbar({ position }) {
               aria-controls="menu-appbar"
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
-              color="inherit"
+              sx={{
+                color:scrolled ? "#000" : "#fff",
+              }}
             >
               <MenuIcon />
             </IconButton>
@@ -209,9 +212,11 @@ function Navbar({ position }) {
               sx={{ display: { xs: "block", md: "none" } }}
             >
               {pages.map((page) => (
+
                 <MenuItem
                   key={page.id}
                   onClick={() => {
+                    sessionStorage.setItem("postsFilters", JSON.stringify({}));
                     navigate(page.path);
                     handleCloseNavMenu();
                   }}
@@ -256,6 +261,7 @@ function Navbar({ position }) {
               <Button
                 key={page.id}
                 onClick={() => {
+                sessionStorage.setItem("postsFilters", JSON.stringify({}));
                   navigate(page.path);
                   handleCloseNavMenu();
                 }}
@@ -283,12 +289,16 @@ function Navbar({ position }) {
           </Box>
           {accessToken ? (
             <Box sx={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                 <Box sx={{flexGrow:0}}> 
+                    <Button variant="contained" onClick={()=>navigate('/add/post')} >Add Post</Button>
+                </Box>
               <NotificationComponent 
                     notifications={notifications}
                     onNotificationClick={handleNotificationClick}
                     scrolled={scrolled}
                     updateNotification={handleNotificationRead}
                     />
+               
               <Box sx={{ flexGrow: 0 }}>
                 <Tooltip>
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>

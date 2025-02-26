@@ -66,6 +66,12 @@ export const signUp = async (data: signup) => {
     
   }
 
+  export const setPassword = async ({current_password,new_password}) =>{
+
+    return callAPiMultiPart.post('/auth/users/set_password/',{current_password,new_password})
+    
+  }
+
 
 const authServices = {
   signUp,
@@ -75,5 +81,6 @@ const authServices = {
   getAllLanguages,
   activateAccount,
   updateProfile,
+  setPassword,
 };
 export default authServices;

@@ -221,7 +221,7 @@ export const homePageStyles = {
     margin: "auto",
     transform: "translate(0,-50%)",
     padding: "2rem",
-    marginTop: { xs: "2rem", md: "0rem" },
+    marginTop: { xs: "2.5rem", md: "0rem" },
   },
 };
 

@@ -43,7 +43,7 @@ const SearchComponent: React.FC<SearchComponentProps> = ({ places }) => {
       <Grid container spacing={2}>
         <Grid item xs={12} md={6}>
           <Typography sx={{ paddingLeft: "10px", fontSize: "14px" }}>
-            Find Your Place
+            Select Your Destination
           </Typography>
           <Autocomplete
             options={places}
@@ -62,7 +62,7 @@ const SearchComponent: React.FC<SearchComponentProps> = ({ places }) => {
         <Grid item xs={12} md={3}>
           <Box>
             <Typography sx={{ paddingLeft: "10px", fontSize: "14px" }}>
-              Departure Range
+              Departure Date
             </Typography>
             <TextField
               sx={{
@@ -82,7 +82,7 @@ const SearchComponent: React.FC<SearchComponentProps> = ({ places }) => {
         <Grid item xs={12} md={3}>
           <Box>
             <Typography sx={{ paddingLeft: "10px", fontSize: "14px" }}>
-              Return
+              Return Date
             </Typography>
             <TextField
               fullWidth
@@ -97,33 +97,15 @@ const SearchComponent: React.FC<SearchComponentProps> = ({ places }) => {
 
         <Grid
           item
-          xs={6}
-          md={12}
-          sx={{
-            display: { xs: "flex", md: "none" },
-            alignItems: "end",
-            justifyContent: "flex-end",
-          }}
-        >
-          <Button variant="searchBtn" onClick={() => navigate("/add/post")}>
-            <Box sx={{ display: "flex", alignItems: "center", gap: "10px" }}>
-              <AddCircleOutline />
-              Add Post
-            </Box>
-          </Button>
-        </Grid>
-        <Grid
-          item
-          xs={6}
-          md={12}
+          xs={12}
           sx={{
             display: "flex",
-            alignItems: "end",
             justifyContent: "flex-end",
+            alignItems:'end',
           }}
         >
-          <Button variant="searchBtn" onClick={handleSearch}>
-            Find Place
+          <Button sx={{paddingTop:'1em',paddingBottom:'1em',fontSize:'1em'}} variant="contained" onClick={handleSearch}>
+            Find Travel Partners
           </Button>
         </Grid>
       </Grid>

@@ -1,6 +1,6 @@
 import { Box, Button, Card, CardContent, CardMedia, Container, Grid, Rating, Typography } from "@mui/material";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import SearchComponent from "../components/search";
 import { get_AllCountries } from "../redux/slice/filterSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -30,6 +30,11 @@ const HomePage: React.FC = () => {
     })
   }, []);
   const places = getCountries?.data || [];
+
+
+  const memoizedAnimatedText = useMemo(() => <AnimatedText />, []);
+
+
   return (
     <>
     
@@ -42,9 +47,12 @@ const HomePage: React.FC = () => {
         style={{ maxWidth: '60%', height: 'auto' }}
       /> */}
 
-      <AnimatedText />
+      {memoizedAnimatedText}
+
     </Box>
-      <SearchComponent places={places} />
+        
+    <SearchComponent places={places}  />
+
 
       {/* Below the Search */}
 
