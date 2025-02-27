@@ -280,7 +280,11 @@ const PostsList = () => {
                                                     }}
                                                 >
                                                     <Button
-                                                        onClick={() => navigate(`/details/${item?.id}`)}
+                                                        href={`/details/${item?.id}`}
+                                                        onClick={(e) => {
+                                                            e.preventDefault()
+                                                            navigate(`/details/${item?.id}`)}
+                                                        }
                                                         variant="contained"
                                                         fullWidth
                                                         sx={{

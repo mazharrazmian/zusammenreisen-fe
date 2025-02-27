@@ -18,11 +18,14 @@ import { toast } from "react-toastify";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import { authStyles, login } from "./styles";
+import { useDispatch } from "react-redux";
+import { get_profile } from "../redux/slice/profileSlice";
 const initialValues = {
   email: "",
   password: "",
 };
 const LoginPage = () => {
+    const dispatch = useDispatch()
   const navigate = useNavigate();
   const [values, setValues] = useState(initialValues);
   const [showPassword, setShowPassword] = useState(false);
@@ -125,6 +128,7 @@ const LoginPage = () => {
             secure: true,
             sameSite: "strict",
           });
+          dispatch(get_profile())
           navigate("/");
           toast.success("Login successful");
           setIsLoading(false);

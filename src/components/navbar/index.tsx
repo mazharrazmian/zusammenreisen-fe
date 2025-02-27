@@ -14,7 +14,7 @@ import { Avatar, Divider, Stack, Tooltip } from "@mui/material";
 import { useNavigate, useLocation } from "react-router-dom";
 import Cookies from "js-cookie";
 import { useDispatch, useSelector } from "react-redux";
-import { get_profile,clearProfile } from "../../redux/slice/profileSlice";
+import { clearProfile } from "../../redux/slice/profileSlice";
 import { toast } from "react-toastify";
 import { Chat, SettingsApplications, SettingsVoiceOutlined } from "@mui/icons-material";
 import NotificationComponent from "./notification";
@@ -29,8 +29,9 @@ const pages = [
   { id: 3, pageName: "Blog", path: "/blog" },
 ];
 
-function Navbar() {
-  const navigate = useNavigate();
+const Navbar = React.memo(()=>{
+
+    const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
 
@@ -102,7 +103,7 @@ function Navbar() {
   
   return () => clearInterval(pollingInterval);
 
-  },[location])
+  },[])
 
 
   const handleNotificationClick = async (notification : Notification)=>{
@@ -255,7 +256,9 @@ function Navbar() {
             {pages.map((page) => (
               <Button
                 key={page.id}
-                onClick={() => {
+                href={page.path}
+                onClick={(e) => {
+                e.preventDefault()
                 sessionStorage.setItem("postsFilters", JSON.stringify({}));
                   navigate(page.path);
                   handleCloseNavMenu();
@@ -362,6 +365,8 @@ function Navbar() {
       </Container>
     </AppBar>
   );
-}
+
+}) 
+  
 
 export default Navbar;

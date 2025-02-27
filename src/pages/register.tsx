@@ -97,12 +97,12 @@ const RegisterPage = () => {
 
             // Append languages as separate fields
             selectedLanguages.forEach((language, index) => {
-                formData.append('languages', language); // Use 'languages' without []
+                formData.append('languages', language.name); // Use 'languages' without []
             });
-
+            console.log(selectedLanguages)
             setIsLoading(true);
+
             const res = await authServices.signUp(formData);
-            console.log(res)
             if (res.status === 201) {
                 toast.success("Verification email has been sent to your email");
                 setIsLoading(false);
@@ -291,7 +291,7 @@ const RegisterPage = () => {
                                         <Typography sx={{ paddingLeft: "10px", fontSize: "14px" }}>
                                             Languages
                                         </Typography>
-                                        <LanguageSelector allLanguages={languages} onLanguagesChange={setSelectedLanguages} />
+                                        <LanguageSelector selectedLanguages={selectedLanguages} allLanguages={languages} onLanguagesChange={setSelectedLanguages} />
                                     </Box>
                                 </Grid>
 
