@@ -34,19 +34,16 @@ const PostsList = () => {
     const [page, setPage] = useState(1);
     const [searchParams, setSearchParams] = useSearchParams();
 
-
-
     // Retrieve filters from sessionStorage (if available)
     const getSavedFilters = () => {
         const savedFilters = sessionStorage.getItem("postsFilters");
-        console.log(savedFilters)
         return savedFilters ? JSON.parse(savedFilters) : {};
     };
 
 
     const [filters, setFilters] = useState<FilterState>({
-        country: searchParams.get("country") || getSavedFilters().country || "",
-        city: searchParams.get("city") || getSavedFilters().city || "",
+        country_to: searchParams.get("country_to") || getSavedFilters().country_to || "",
+        city_to: searchParams.get("city_to") || getSavedFilters().city_to || "",
         gender: searchParams.get("gender") || getSavedFilters().gender || "",
         date_from: searchParams.get("date_from") || getSavedFilters().date_from || "",
         date_to: searchParams.get("date_to") || getSavedFilters().date_to || "",
@@ -59,8 +56,8 @@ const PostsList = () => {
 
     const urlParams = new URLSearchParams({
         page: page.toString(),
-        ...(filters.country && { country: filters.country }),
-        ...(filters.city && { city: filters.city }),
+        ...(filters.country_to && { country_to: filters.country_to}),
+        ...(filters.city_to && { city_to: filters.city_to }),
         ...(filters.date_from && { date_from: filters.date_from }),
         ...(filters.date_to && { date_to: filters.date_to }),
         ...(filters.gender && { gender: String(filters.gender) }),

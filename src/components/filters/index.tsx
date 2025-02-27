@@ -9,10 +9,11 @@ import {
     InputLabel,
     TextField,
 } from "@mui/material";
-import { City, Country, FilterState } from "../../types";
+import { City, FilterState } from "../../types";
 import { filterStyles } from "../../pages/styles";
 import postServices from "../../redux/api/postService";
 import { GENDERS } from "../../Constants";
+import { useAppSelector } from "../../redux/store";
 
 
 interface FiltersProps {
@@ -22,25 +23,14 @@ interface FiltersProps {
 
 const Filters: React.FC<FiltersProps> = ({ filters, setFilters }) => {
 
-    const [countries, setCountries] = useState<Array<Country>>([])
+    const countries = useAppSelector(s=>s.filter.countries)
     const [cities, setCities] = useState<Array<City>>([])
 
 
-
     useEffect(() => {
-        postServices.getAllCountries().then(res => {
-            setCountries(res.data)
-        })
-            .catch(error => {
-                console.log(error)
-
-            })
-    }, [])
-
-    useEffect(() => {
-        if (!filters.country) return;
-        postServices.filterCityByCountryId(filters.country).then((res) => setCities(res.data)).catch(console.log);
-    }, [filters.country]);
+        if (!filters.country_to) return;
+        postServices.filterCityByCountryId(filters.country_to).then((res) => setCities(res.data)).catch(console.log);
+    }, [filters.country_to]);
 
 
 
@@ -48,7 +38,6 @@ const Filters: React.FC<FiltersProps> = ({ filters, setFilters }) => {
         e: React.ChangeEvent<{ name?: string; value: unknown }>
     ) => {
         const { name, value } = e.target;
-
         if (!name) return;
         const newFilters = { ...filters, [name]: value as string };
         setFilters(newFilters);
@@ -57,8 +46,8 @@ const Filters: React.FC<FiltersProps> = ({ filters, setFilters }) => {
 
     const handleReset = () => {
         const resetFilters: FilterState = {
-            country: '',
-            city: '',
+            country_to: '',
+            city_to: '',
             gender: "",
             date_from: '',
             date_to: '',
@@ -73,10 +62,10 @@ const Filters: React.FC<FiltersProps> = ({ filters, setFilters }) => {
             Filters
         </Typography>
     
-        {/* Country Filter */}
+        {/* country_to Filter */}
         <FormControl fullWidth variant="outlined" sx={{ mt: 2 }}>
-            <InputLabel shrink={!!filters.country}>Country</InputLabel>
-            <Select name="country" value={filters.country} onChange={handleChange}>
+            <InputLabel shrink={!!filters.country_to}>To Country</InputLabel>
+            <Select name="country_to" value={filters.country_to} onChange={handleChange}>
                 <MenuItem value="">All Countries</MenuItem>
                 {countries?.map((country) => (
                     <MenuItem key={country.id} value={country.id}>
@@ -88,8 +77,8 @@ const Filters: React.FC<FiltersProps> = ({ filters, setFilters }) => {
     
         {/* City Filter */}
         <FormControl fullWidth variant="outlined" sx={{ mt: 2 }}>
-            <InputLabel shrink={!!filters.city}>City</InputLabel>
-            <Select name="city" value={filters.city} onChange={handleChange}>
+            <InputLabel >To City</InputLabel>
+            <Select name="city_to" value={filters.city_to} onChange={handleChange}>
                 <MenuItem value="">All Cities</MenuItem>
                 {cities.map((city) => (
                     <MenuItem key={city.id} value={city.id}>
@@ -101,7 +90,7 @@ const Filters: React.FC<FiltersProps> = ({ filters, setFilters }) => {
     
         {/* Gender Filter */}
         <FormControl fullWidth variant="outlined" sx={{ mt: 2 }}>
-            <InputLabel shrink={!!filters.gender}>Gender</InputLabel>
+            <InputLabel >Gender</InputLabel>
             <Select name="gender" value={filters.gender} onChange={handleChange}label='Gender' >
                 <MenuItem value="">All Genders</MenuItem>
                 {GENDERS.map((gender) => (
@@ -117,7 +106,7 @@ const Filters: React.FC<FiltersProps> = ({ filters, setFilters }) => {
             fullWidth
             type="date"
             variant="outlined"
-            label="Travelling From"
+            label="Date From"
             onChange={handleChange}
             value={filters.date_from}
             name="date_from"
@@ -131,7 +120,7 @@ const Filters: React.FC<FiltersProps> = ({ filters, setFilters }) => {
             fullWidth
             type="date"
             variant="outlined"
-            label="Travelling To"
+            label="Date To"
             onChange={handleChange}
             value={filters.date_to}
             name="date_to"

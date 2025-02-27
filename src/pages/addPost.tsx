@@ -208,7 +208,7 @@ const AddPost = () => {
 
     return (
         <>
-            {/* <Box
+            <Box
                 sx={{
                     background: "#000",
                     top: "0",
@@ -218,7 +218,7 @@ const AddPost = () => {
                 }}
             >
                 <Navbar />
-            </Box> */}
+            </Box>
 
             <Container maxWidth="md">
                 <Card sx={{ mt: 4, p: 2 }}>

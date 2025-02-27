@@ -13,8 +13,8 @@ export interface City{
 }
 
 export interface FilterState {
-  country : string;
-  city : string,
+  country_to : string;
+  city_to : string,
   gender: number | "";
   date_from : string,
   date_to : string,

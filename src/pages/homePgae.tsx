@@ -1,15 +1,14 @@
-import { Box, Button, Card, CardContent, CardMedia, Container, Grid, Rating, Typography } from "@mui/material";
+import { Box, Button, Card, CardContent, CardMedia, Container, Grid2 as Grid, Rating, Typography } from "@mui/material";
 
 import React, { useEffect, useMemo, useState } from "react";
 import SearchComponent from "../components/search";
 import { get_AllCountries } from "../redux/slice/filterSlice";
 import { homePageStyles } from "./styles";
-import { Star } from "@mui/icons-material";
 import postServices from "../redux/api/postService";
 import { useNavigate } from "react-router-dom";
-import animatedTextSvg from '../assets/homepagetext.svg';
 import AnimatedText from "../components/homePageComponents/animatedText";
 import { useAppDispatch, useAppSelector } from "../redux/store";
+
 
 
 const HomePage: React.FC = () => {
@@ -20,7 +19,6 @@ const HomePage: React.FC = () => {
 
   const [featuredDestinations,setFeaturedDestinations] = useState([])
   useEffect(() => {
-    dispatch(get_AllCountries());
     postServices.getFeaturedDestinations()
     .then(response=>{
         setFeaturedDestinations(response.data)
@@ -60,9 +58,11 @@ const HomePage: React.FC = () => {
           <Typography variant="h4" gutterBottom sx={{ fontWeight: "bold", marginBottom: "30px",textAlign:'center' }}>
             Featured Healing Destinations
           </Typography>
-          <Grid container spacing={4}>
+          <Grid container spacing={4}
+          sx={{display:"flex",justifyContent:'center',alignContent:'space-between'}}
+          >
             {featuredDestinations.map((destination) => (
-              <Grid item xs={12} sm={6} md={4} key={destination.id}>
+              <Grid sx={{xs:12,sm:6,md:4}} key={destination.id}>
                 <Card sx={{ 
                   height: "100%", 
                   display: "flex", 
@@ -82,7 +82,7 @@ const HomePage: React.FC = () => {
                     alt={destination.country.name}
                   />
                   <CardContent>
-                    <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 1 }}>
+                    <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 1, width:300 }}>
                       <Typography variant="h6" component="h2">
                         {destination.city.name}
                       </Typography>

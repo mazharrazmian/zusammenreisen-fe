@@ -21,7 +21,7 @@ interface SearchComponentProps {
 }
 
 const SearchComponent: React.FC<SearchComponentProps> = ({ places }) => {
-  const [to, setTo] = React.useState<string>(""); // Store the selected place ID
+  const [country_to, setCountry] = React.useState<string>(""); // Store the selected place ID
   const [dateFrom, setDateFrom] = React.useState<string>("");
   const [dateTo, setDateTo] = React.useState<string>("");
 
@@ -29,11 +29,11 @@ const SearchComponent: React.FC<SearchComponentProps> = ({ places }) => {
 
   const handleSearch = () => {
     const params = new URLSearchParams({
-      ...(to && { to }), // Pass place ID
+      ...(country_to && { country_to }), // Pass place ID
       ...(dateFrom && { date_from: dateFrom }),
       ...(dateTo && { date_to: dateTo }),
     }).toString();
-
+console.log(params)
     navigate(`/list?${params}`);
   };
 
@@ -48,8 +48,8 @@ const SearchComponent: React.FC<SearchComponentProps> = ({ places }) => {
           <Autocomplete
             options={places}
             getOptionLabel={(option) => option?.name} // Display the name
-            value={places?.find((place) => place?.id === to) || null} // Match ID to set the selected value
-            onChange={(event, newValue) => setTo(newValue ? newValue?.id : "")}
+            value={places?.find((place) => place?.id === country_to) || null} // Match ID to set the selected value
+            onChange={(event, newValue) => setCountry(newValue ? newValue?.id : "")}
             renderInput={(params) => (
               <TextField
                 {...params}

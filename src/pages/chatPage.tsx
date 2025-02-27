@@ -34,7 +34,6 @@
     CircularProgress,
   } from "@mui/material";
   import SendIcon from "@mui/icons-material/Send";
-  import CloseIcon from "@mui/icons-material/Close";
   import { useTheme } from "@mui/material/styles";
   import ScrollableFeed from "react-scrollable-feed";
   import Navbar from "../components/navbar";

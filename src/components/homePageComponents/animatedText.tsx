@@ -88,7 +88,6 @@ const Dot = styled(Box)(({ size, color, top, left, animationDelay }) => ({
 // 🟢 Memoize the component to prevent re-renders
 const AnimatedText = React.memo(() => {
 
-    console.log("rendering animated text")
   return (
     <AnimatedContainer>
       {/* Decorative circles */}

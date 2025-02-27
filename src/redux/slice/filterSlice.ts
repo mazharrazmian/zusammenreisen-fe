@@ -1,7 +1,14 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import postServices from "../api/postService";
+import { Country } from "../../types";
 
-const initialState = {
+interface filterStateInterface {
+    countries : Array<Country>,
+    loading : string,
+    error : null | any
+}
+
+const initialState : filterStateInterface = {
   countries: [],
   loading: "idle",
   error: null,
