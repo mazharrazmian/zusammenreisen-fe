@@ -40,16 +40,16 @@
   import Navbar from "../components/navbar";
   import { Add } from "@mui/icons-material";
   import chatServices from "../redux/api/chatServices";
-  import { useDispatch, useSelector } from "react-redux";
   import noChat from "../assets/chat.svg";
   import Iconify from "../components/iconify";
   import { useNavigate, useParams } from "react-router-dom";
   import Cookies from "js-cookie";
   import { toast } from "react-toastify";
 import { ChatRoom, Message, Profile, UserChats } from "../types";
+import { useAppSelector } from "../redux/store";
   
   const ChatPage: React.FC = () => {
-    const profile = useSelector((s: RootState) => s.profile);
+    const profile = useAppSelector((s) => s.profile);
     const ws = useRef<WebSocket | null>(null);
     const { chatId } = useParams<{ chatId: string }>();
     const [userChats,setUserChats] = useState<UserChats>({loading:'loading',data:[]})

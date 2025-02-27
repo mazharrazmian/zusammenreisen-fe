@@ -6,10 +6,11 @@ import Router from "./routes";
 import ThemeProvider from "./theme";
 import { useEffect } from "react";
 import { get_profile } from "./redux/slice/profileSlice";
+import { useAppDispatch } from "./redux/store";
 
 function App() {
   // scheduleTokenRefresh();
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   // Fetch profile data once when the app loads
   useEffect(() => {
     dispatch(get_profile());

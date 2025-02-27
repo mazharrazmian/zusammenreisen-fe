@@ -14,9 +14,9 @@ export const get_profile = createAsyncThunk("profile/get_profile", async () => {
         return
     } 
     try {
-    const res = await authServices.getProfile();
+    const res = await <any> authServices.getProfile();
     return res.data;
-  } catch (error) {
+  } catch (error : any) {
     console.log(error);
     return error.response.data;
   }
@@ -40,7 +40,7 @@ const profileSlice = createSlice({
     builder.addCase(get_profile.fulfilled, (state, action) => {
       (state.loading = "fulfilled"), (state.profile = action.payload);
     });
-    builder.addCase(get_profile.rejected, (state, action) => {
+    builder.addCase(get_profile.rejected, (state, action : any) => {
       (state.loading = "rejected"),
         (state.profile = null),
         (state.error = action.payload);

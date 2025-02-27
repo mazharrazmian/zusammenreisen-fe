@@ -3,21 +3,21 @@ import { Box, Button, Card, CardContent, CardMedia, Container, Grid, Rating, Typ
 import React, { useEffect, useMemo, useState } from "react";
 import SearchComponent from "../components/search";
 import { get_AllCountries } from "../redux/slice/filterSlice";
-import { useDispatch, useSelector } from "react-redux";
 import { homePageStyles } from "./styles";
 import { Star } from "@mui/icons-material";
 import postServices from "../redux/api/postService";
 import { useNavigate } from "react-router-dom";
 import animatedTextSvg from '../assets/homepagetext.svg';
 import AnimatedText from "../components/homePageComponents/animatedText";
+import { useAppDispatch, useAppSelector } from "../redux/store";
 
 
 const HomePage: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
+  const places = useAppSelector(s=>s.filter.countries)
   const navigate = useNavigate()
-
-  const getCountries = useSelector((state) => state.filter);
     
+
   const [featuredDestinations,setFeaturedDestinations] = useState([])
   useEffect(() => {
     dispatch(get_AllCountries());
@@ -29,8 +29,6 @@ const HomePage: React.FC = () => {
         console.log(error)
     })
   }, []);
-  const places = getCountries?.data || [];
-
 
   const memoizedAnimatedText = useMemo(() => <AnimatedText />, []);
 

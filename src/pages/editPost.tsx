@@ -16,13 +16,12 @@ import {
     CardMedia,
     IconButton,
 } from "@mui/material";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { useNavigate, useParams } from "react-router-dom";
 import CountrySelect from "../components/shared/RichTextEditor/countrySelect";
 import CitySelect from "../components/shared/RichTextEditor/citySelect";
 import postServices from "../redux/api/postService";
-import { get_AllPosts } from "../redux/slice/postsSlice";
 import { Delete } from "@mui/icons-material";
 import { addPostStyles } from "./styles";
 import Navbar from "../components/navbar";

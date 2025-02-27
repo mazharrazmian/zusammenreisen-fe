@@ -1,13 +1,7 @@
 import { callAPi, callAPiMultiPart } from "./http-common";
 
-interface Post {
-  travel_to_country: number | null; // Allows for null in case the value is optional
-  travel_to_city: number | null; // Allows for null in case the value is optional
-  date_from: string; // Use string if storing dates as ISO strings
-  date_to: string;
-  title: string;
-  text: string;
-}
+import { postDataInterface } from "../../pages/addPost";
+
 
 const getAllPosts = (queryParams:string) => {
     return callAPi.get(`/reisapp/posts?${queryParams}`);
@@ -19,9 +13,9 @@ const filterCountryByName = (key: string) =>
   callAPi.get(`reisapp/countries/?name__startswith=${key}`);
 const filterCityByCountryId = (id: string) =>
   callAPi.get(`reisapp/cities/?country=${id}`);
-const createPost = (data: Post) =>
+const createPost = (data : any) =>
   callAPiMultiPart.post(`/reisapp/posts/`, data);
-const editPost = (id: number, data) =>
+const editPost = (id: number, data : any) =>
   callAPiMultiPart.put(`/reisapp/posts/${id}/`, data);
 
 const getFeaturedDestinations = async ()=>{

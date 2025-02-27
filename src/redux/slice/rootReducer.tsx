@@ -1,11 +1,6 @@
-import filterSlice from "./filterSlice";
-import postSlice from "./postsSlice";
 import profileSlice from "./profileSlice";
-import chatSlice from "./chatSlice";
-
+import filterSlice from './filterSlice'
 export const rootReducer = {
-  posts: postSlice,
-  filter: filterSlice,
   profile: profileSlice,
-  chat: chatSlice,
+  filter : filterSlice,
 };

@@ -36,7 +36,6 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/effect-fade';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import postServices from '../redux/api/postService';
 import { toast } from 'react-toastify';
 import { formatDateWithOrdinal } from '../utils';
@@ -44,11 +43,12 @@ import chatServices from '../redux/api/chatServices';
 import { handleApiError } from '../redux/api/http-common';
 import Cookies from 'js-cookie';
 import Navbar from '../components/navbar';
+import { useAppSelector } from '../redux/store';
 
 
 const TravelDetails = () => {
     const { id } = useParams<{ id: string }>();
-    const profile = useSelector((s) => s.profile);
+    const profile = useAppSelector((s) => s.profile);
     const accessToken = Cookies.get('accessToken')
 
     const navigate = useNavigate();

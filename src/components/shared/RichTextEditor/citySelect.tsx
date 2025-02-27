@@ -2,10 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Autocomplete, ListItemText, TextField } from "@mui/material";
 import postServices from "../../../redux/api/postService";
 
-interface City {
-  id: number;
-  name: string;
-}
+import { City } from "../../../types";
 
 interface CitySelectProps {
   countryId: string | null;

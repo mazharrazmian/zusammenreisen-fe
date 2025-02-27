@@ -46,7 +46,7 @@ export const signUp = async (data: signup) => {
     }
   };
 
-  export const updateProfile = async (id,data) => {
+  export const updateProfile = async (id : any ,data : any) => {
       const response = await callAPi.patch(`users/profile/${id}`,data=data);
       return response
   };
@@ -60,7 +60,7 @@ export const signUp = async (data: signup) => {
       }
   }
 
-  export const activateAccount = async ({uid,token}) =>{
+  export const activateAccount = async ({uid ,token} : {uid:string,token:string}) =>{
 
     return callAPiMultiPart.post('/auth/users/activation/',{uid,token})
     

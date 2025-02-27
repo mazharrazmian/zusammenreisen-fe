@@ -35,7 +35,7 @@ const NotificationComponent : React.FC<NotificationComponentProps> = ({ notifica
   
   const unreadCount = notifications.filter(notif => notif.unread).length;
   
-  const handleOpenMenu = (event) => {
+  const handleOpenMenu = (event : any) => {
     setAnchorEl(event.currentTarget);
   };
   

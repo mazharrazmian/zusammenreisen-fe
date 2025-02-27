@@ -13,7 +13,7 @@ import AdbIcon from "@mui/icons-material/Adb";
 import { Avatar, Divider, Stack, Tooltip } from "@mui/material";
 import { useNavigate, useLocation } from "react-router-dom";
 import Cookies from "js-cookie";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { clearProfile } from "../../redux/slice/profileSlice";
 import { toast } from "react-toastify";
 import { Chat, SettingsApplications, SettingsVoiceOutlined } from "@mui/icons-material";
@@ -22,6 +22,7 @@ import chatServices from "../../redux/api/chatServices";
 
 import { Notification } from "../../types";
 import Iconify from "../iconify";
+import { useAppSelector } from "../../redux/store";
 
 const pages = [
   { id: 1, pageName: "Home", path: "/" },
@@ -44,7 +45,7 @@ const Navbar = React.memo(()=>{
   );
   const [scrolled, setScrolled] = React.useState(false);
 
-  const profile = useSelector((s) => s?.profile);
+  const profile : any = useAppSelector((s) => s?.profile);
   
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -298,7 +299,7 @@ const Navbar = React.memo(()=>{
                     />
                
               <Box sx={{ flexGrow: 0 }}>
-                <Tooltip>
+                <Tooltip title={''}>
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                     <Avatar
                       alt={profile?.profile?.name}
