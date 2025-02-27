@@ -66,12 +66,26 @@ export const signUp = async (data: signup) => {
     
   }
 
-  export const setPassword = async ({current_password,new_password}) =>{
+  export const setPassword = async ({current_password,new_password} : {current_password:string,new_password:string}) =>{
 
     return callAPiMultiPart.post('/auth/users/set_password/',{current_password,new_password})
     
   }
 
+  export const forgotPassword = async ({email} : {email:string}) =>{
+
+    return callAPiMultiPart.post('/auth/users/reset_password/',{email})
+    
+  }
+
+  export const resetPasswordConfirm = ({uid,token,password} : {uid:string,token:string,password:string}) =>{
+    return callAPiMultiPart.post("/auth/users/reset_password_confirm/", {
+        uid,
+        token,
+        new_password: password,
+      });
+  }
+  
 
 const authServices = {
   signUp,
@@ -82,5 +96,7 @@ const authServices = {
   activateAccount,
   updateProfile,
   setPassword,
+  forgotPassword,
+  resetPasswordConfirm
 };
 export default authServices;

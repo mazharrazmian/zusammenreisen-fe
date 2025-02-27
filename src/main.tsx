@@ -17,7 +17,7 @@ createRoot(document.getElementById("root")!).render(
         <Provider store={store}>
           <Suspense fallback={<div>Loading...</div>}>
             <App />
-            <ToastContainer autoClose={3000} position="bottom-center" />
+            <ToastContainer autoClose={5000} position="bottom-center" />
           </Suspense>
         </Provider>
       </BrowserRouter>

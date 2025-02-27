@@ -101,7 +101,7 @@ const ProfilePage = () => {
             height: "100px",
         }}
     >
-        <Navbar position="fixed" />
+        <Navbar />
     </Box>
 
         <div style={{ maxWidth: "500px", margin: "auto", textAlign: "center" }}>

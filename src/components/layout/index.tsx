@@ -12,7 +12,7 @@ const Layout = () => {
 
   return (
     <>
-      <Navbar position="fixed" />
+      <Navbar />
       <Outlet />
       {/* <Fab
         color="primary"

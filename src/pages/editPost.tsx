@@ -260,7 +260,7 @@ const EditPost = () => {
             height: "100px",
         }}
     >
-        <Navbar position="fixed" />
+        <Navbar />
     </Box>
 
         <Container maxWidth="md">

@@ -74,7 +74,7 @@ export default function Router() {
       },
       // Add Activation & Reset Password Routes
     { path: "activate/:uid/:token", element:  <ActivateAccount />},
-    { path: "reset-password/:uid/:token", element: <ProtectedRoute> <ResetPassword /> </ProtectedRoute>},
+    { path: "password/reset/confirm/:uid/:token", element:  <ResetPassword />},
 
       { path: "404", element: <Page404 /> },
       { path: "*", element: <Navigate to="/404" replace /> },

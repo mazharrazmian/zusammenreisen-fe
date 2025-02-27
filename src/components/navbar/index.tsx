@@ -29,8 +29,7 @@ const pages = [
   { id: 3, pageName: "Blog", path: "/blog" },
 ];
 
-function Navbar({ position }) {
-    console.log('rendering navbar')
+function Navbar() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
@@ -45,10 +44,7 @@ function Navbar({ position }) {
   const [scrolled, setScrolled] = React.useState(false);
 
   const profile = useSelector((s) => s?.profile);
-  // console.log("profile", profile);
-  React.useEffect(() => {
-    dispatch(get_profile());
-  }, []);
+  
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -142,7 +138,6 @@ function Navbar({ position }) {
 
   return (
     <AppBar
-      position={position}
       sx={{
         background: scrolled ? "#fff" : "transparent",
         transition: "background 0.3s ease",

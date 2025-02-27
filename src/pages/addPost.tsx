@@ -206,7 +206,7 @@ const AddPost = () => {
             height: "100px",
         }}
     >
-        <Navbar position="fixed" />
+        <Navbar />
     </Box>
 
         <Container maxWidth="md">

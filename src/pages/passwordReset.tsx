@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Container, TextField, Button, Typography, CircularProgress } from "@mui/material";
+import authServices from "../redux/api/authService";
 
 const ResetPassword = () => {
   const { uid, token } = useParams();
@@ -17,14 +18,10 @@ const ResetPassword = () => {
       setMessage("Passwords do not match.");
       return;
     }
-
+    if (uid === undefined || token === undefined) return
     setLoading(true);
     try {
-      await axios.post("https://your-api.com/auth/users/reset_password_confirm/", {
-        uid,
-        token,
-        new_password: password,
-      });
+      await authServices.resetPasswordConfirm({uid,token,password})
       setMessage("Your password has been reset! You can now log in.");
     } catch {
       setMessage("Invalid or expired reset link.");

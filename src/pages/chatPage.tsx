@@ -173,7 +173,7 @@ import { ChatRoom, Message, Profile, UserChats } from "../types";
           height: { md: "100px", xs: "90px" },
         }}
       >
-        <Navbar position="static" />
+        <Navbar />
       </Box>
       <Box
         sx={{

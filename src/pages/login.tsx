@@ -47,6 +47,27 @@ const LoginPage = () => {
     });
   };
 
+
+  const handleForgotPassword = ()=>{
+   
+    authServices.forgotPassword({email:values.email})
+    .then(response=>{
+        if (response.status == 204){
+            toast("A Password Reset Email has been set to your Email Account. Please follow the instructions there.")
+        }
+
+        else if (response.status == 400){
+            setErrors({'email':'Please enter a valid email address'})
+            toast("Please write your email in the email field above, and click 'Forgot Password' again")
+        }
+    })
+    .catch(error=>{
+        setErrors({'email':'Please enter a valid email address'})
+        toast("There was an error sending you an email. Please write your email above and click Forgot Password again")
+    })
+    
+  }
+
   const validations = (fieldValue = values) => {
     const temp = { ...errors };
 
@@ -207,7 +228,10 @@ const LoginPage = () => {
                   </Box>
                   <Box>
                     <Typography sx={authStyles.forgotPass}>
-                      Forgot Password?
+                      <Button variant="text" 
+                      onClick={()=>handleForgotPassword()}
+                      >Forgot Password?
+                      </Button>
                     </Typography>
                   </Box>
                 </Box>
@@ -226,7 +250,8 @@ const LoginPage = () => {
                 <Divider>or</Divider>
               </Box>
               <Box sx={authStyles.IocnMainWrapper}>
-                <Box sx={authStyles.IconWrapper}>
+                {/* Uncomment below for Facebook and Google login icons */}
+                {/* <Box sx={authStyles.IconWrapper}>
                   <IconButton>
                     <Iconify width={18} icon="flat-color-icons:google" />
                   </IconButton>
@@ -235,7 +260,7 @@ const LoginPage = () => {
                   <IconButton>
                     <Iconify width={18} icon="logos:facebook" />
                   </IconButton>
-                </Box>
+                </Box> */}
               </Box>
               <Box mt={2} mb={4}>
                 <Typography

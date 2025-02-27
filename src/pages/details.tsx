@@ -159,7 +159,7 @@ const TravelDetails = () => {
             zIndex : '3',
         }}
     >
-    <Navbar position="fixed" />
+    <Navbar />
     </Box>
 
     <Container maxWidth="lg" sx={{ mt: 12, mb: 4 }}>
