@@ -174,6 +174,7 @@ const Navbar = React.memo(()=>{
                 color: scrolled ? "#000" : "#fff",
                 textDecoration: "none",
               }}
+              onClick={()=>navigate('/')}
             >
               LOGO
             </Typography>

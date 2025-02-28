@@ -46,6 +46,7 @@
   import { toast } from "react-toastify";
 import { ChatRoom, Message, Profile, UserChats } from "../types";
 import { useAppSelector } from "../redux/store";
+import { CHAT_URL } from "../redux/api/http-common";
   
   const ChatPage: React.FC = () => {
     const profile = useAppSelector((s) => s.profile);
@@ -106,7 +107,7 @@ import { useAppSelector } from "../redux/store";
         }
   
 
-        ws.current = new WebSocket(`ws://localhost:8001/ws/chat/${chatId}/?token=${token}`);
+        ws.current = new WebSocket(`${CHAT_URL}/ws/chat/${chatId}/?token=${token}`);
 
         ws.current.onopen = () => console.log("WebSocket opened");
         ws.current.onmessage = (event) => {

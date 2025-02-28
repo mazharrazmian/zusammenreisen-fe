@@ -98,7 +98,7 @@ const HomePage: React.FC = () => {
                       color="primary" 
                       fullWidth
                       sx={{ marginTop: 2 }}
-                      onClick={()=>navigate(`/list?city=${destination.city.id}&country=${destination.country.id}`)}
+                      onClick={()=>navigate(`/list?city_to=${destination.city.id}&country_to=${destination.country.id}`)}
                     >
                       Find Travellers
                     </Button>

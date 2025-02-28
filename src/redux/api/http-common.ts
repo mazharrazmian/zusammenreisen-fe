@@ -3,7 +3,7 @@ import Cookies from "js-cookie";
 import { toast } from "react-toastify";
 
 export const API_URL = import.meta.env.VITE_API_URL;
-
+export const CHAT_URL = import.meta.env.VITE_CHAT_URL;
 
 export const callAPi = axios.create({
   baseURL: API_URL,
