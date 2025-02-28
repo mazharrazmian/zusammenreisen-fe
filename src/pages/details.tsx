@@ -71,7 +71,6 @@ const TravelDetails = () => {
     chatServices.getChatRooms(postData?.posted_by?.user.email)
     .then(response=>{
         if (response.data.length > 0){
-            console.log(response.data)
             navigate(`/chat/${response.data[0].id}`)
         }
         else{

@@ -32,7 +32,6 @@ const SearchComponent: React.FC<SearchComponentProps> = ({ places }) => {
       ...(dateFrom && { date_from: dateFrom }),
       ...(dateTo && { date_to: dateTo }),
     }).toString();
-console.log(params)
     navigate(`/list?${params}`);
   };
 

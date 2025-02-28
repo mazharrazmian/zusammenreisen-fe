@@ -23,7 +23,6 @@ export const callAPiMultiPart = axios.create({
 export const handleApiError = (error: any) => {
     if (axios.isAxiosError(error)) {
       if (error.response) {
-        console.log(error)
         // API returned an error response (e.g., 400, 401, 500)
         const errorData = error.response.data;
         if (errorData?.type == 'validation_error'){

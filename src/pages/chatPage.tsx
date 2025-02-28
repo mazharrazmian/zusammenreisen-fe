@@ -106,7 +106,6 @@ import { CHAT_URL } from "../redux/api/http-common";
             ws.current.close();
         }
   
-        console.log(CHAT_URL)
         ws.current = new WebSocket(`${CHAT_URL}/ws/chat/${chatId}/?token=${token}`);
 
         ws.current.onopen = () => console.log("WebSocket opened");

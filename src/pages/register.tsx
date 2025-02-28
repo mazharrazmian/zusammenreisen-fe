@@ -99,7 +99,6 @@ const RegisterPage = () => {
             selectedLanguages.forEach((language, index) => {
                 formData.append('languages', language.name); // Use 'languages' without []
             });
-            console.log(selectedLanguages)
             setIsLoading(true);
 
             const res = await authServices.signUp(formData);
@@ -110,7 +109,6 @@ const RegisterPage = () => {
             }
         } catch (error) {
             setIsLoading(false);
-            console.log(error)
             // Check if the error is a validation error
             if (error.response?.data?.type === "validation_error") {
                 // Initialize an empty errors object
@@ -154,16 +152,16 @@ const RegisterPage = () => {
                                     </Typography>
                                 </Box>
                                 <Box sx={authStyles.IocnMainWrapper}>
-                                    <Box sx={authStyles.IconWrapper}>
+                                    {/* <Box sx={authStyles.IconWrapper}>
                                         <IconButton>
                                             <Iconify width={18} icon="flat-color-icons:google" />
                                         </IconButton>
-                                    </Box>
-                                    <Box sx={authStyles.IconWrapper}>
+                                    </Box> */}
+                                    {/* <Box sx={authStyles.IconWrapper}>
                                         <IconButton>
                                             <Iconify width={18} icon="logos:facebook" />
                                         </IconButton>
-                                    </Box>
+                                    </Box> */}
                                 </Box>
                                 <Box mt={2}>
                                     <Typography

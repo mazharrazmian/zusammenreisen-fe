@@ -17,7 +17,6 @@ export const get_profile = createAsyncThunk("profile/get_profile", async () => {
     const res = await <any> authServices.getProfile();
     return res.data;
   } catch (error : any) {
-    console.log(error);
     return error.response.data;
   }
 });
