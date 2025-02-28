@@ -6,9 +6,8 @@ import { get_AllCountries } from "../redux/slice/filterSlice";
 import { homePageStyles } from "./styles";
 import postServices from "../redux/api/postService";
 import { useNavigate } from "react-router-dom";
-import AnimatedText from "../components/homePageComponents/animatedText";
 import { useAppDispatch, useAppSelector } from "../redux/store";
-
+import AnimatedText from "../components/animateText/animateText";
 
 
 const HomePage: React.FC = () => {

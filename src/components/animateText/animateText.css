@@ -1,0 +1,186 @@
+/* Animations */
+@keyframes fadeIn {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+  }
+  
+  @keyframes highlightText {
+    0% { color: #FFFFFF; }
+    50% { color: #FFAB00; }
+    100% { color: #FFFFFF; }
+  }
+  
+  @keyframes drawLine {
+    to { width: 100%; }
+  }
+  
+  @keyframes sizeAnimation {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+  }
+  
+  @keyframes floatAnimation1 {
+    0% { transform: translate(0, 0); }
+    50% { transform: translate(0, -10px); }
+    100% { transform: translate(0, 0); }
+  }
+  
+  /* Container */
+  .animated-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    overflow: hidden;
+    width: 100%;
+    height: 200px;
+  }
+  
+  /* Text Line */
+  .text-line {
+    position: relative;
+    opacity: 0;
+    display: inline-block;
+    width: fit-content;
+    text-align: center;
+  }
+  
+  .text-line.fade-in {
+    animation: fadeIn 1s ease-out forwards, pulse 4s infinite;
+  }
+  
+  .text-line.fade-in.delay-0 {
+    animation-delay: 0s;
+  }
+  
+  .text-line.fade-in.delay-0-5 {
+    animation-delay: 0.5s;
+  }
+  
+  /* Highlight Text */
+  .highlight {
+    color: #FFAB00;
+    animation: highlightText 3s infinite;
+  }
+  
+  /* Underline */
+  .underline {
+    position: relative;
+    height: 3px;
+    background-color: #1877F2;
+    width: 0%;
+    margin: 0 auto;
+    animation: drawLine 1s ease-out forwards;
+  }
+  
+  .underline.delay-1 {
+    animation-delay: 1s;
+  }
+  
+  .underline.delay-1-5 {
+    animation-delay: 1.5s;
+  }
+  
+  .underline.width-300 {
+    max-width: 300px;
+  }
+  
+  .underline.width-200 {
+    max-width: 200px;
+  }
+  
+  /* Dots */
+  .dot {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: #FFAB00;
+    opacity: 0.8;
+    animation: sizeAnimation 3s infinite, floatAnimation1 4s infinite;
+  }
+  
+  .dot.delay-0 {
+    animation-delay: 0s;
+  }
+  
+  .dot.delay-0-5 {
+    animation-delay: 0.5s;
+  }
+  
+  .dot.delay-1 {
+    animation-delay: 1s;
+  }
+  
+  .dot.delay-1-5 {
+    animation-delay: 1.5s;
+  }
+  
+  .dot.size-16 {
+    width: 16px;
+    height: 16px;
+  }
+  
+  .dot.size-20 {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .dot.size-12 {
+    width: 12px;
+    height: 12px;
+  }
+  
+  .dot.size-14 {
+    width: 14px;
+    height: 14px;
+  }
+  
+  .dot.color-00A76F {
+    background-color: #00A76F;
+  }
+  
+  .dot.color-00B8D9 {
+    background-color: #00B8D9;
+  }
+  
+  .dot.color-8E33FF {
+    background-color: #8E33FF;
+  }
+  
+  .dot.top-80 {
+    top: 80%;
+  }
+  
+  .dot.top-20 {
+    top: 20%;
+  }
+  
+  .dot.top-25 {
+    top: 25%;
+  }
+  
+  .dot.left-10 {
+    left: 10%;
+  }
+  
+  .dot.left-90 {
+    left: 90%;
+  }
+  
+  .dot.left-80 {
+    left: 80%;
+  }
+  
+  .dot.left-15 {
+    left: 15%;
+  }
