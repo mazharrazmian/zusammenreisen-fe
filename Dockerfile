@@ -13,6 +13,10 @@ RUN npm install
 # Copy the rest of the application code
 COPY . .
 
+# Ensure Vite picks up .env.production
+RUN cp .env.production .env
+
+
 # Build the React app
 RUN npm run build
 
