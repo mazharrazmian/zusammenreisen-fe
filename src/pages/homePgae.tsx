@@ -12,7 +12,6 @@ import { useAppDispatch, useAppSelector } from "../redux/store";
 
 
 const HomePage: React.FC = () => {
-  const dispatch = useAppDispatch();
   const places = useAppSelector(s=>s.filter.countries)
   const navigate = useNavigate()
     

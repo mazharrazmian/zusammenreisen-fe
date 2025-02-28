@@ -2,14 +2,13 @@ import React from "react";
 import {
   Box,
   Button,
-  Grid,
   TextField,
   Typography,
   Autocomplete,
+  Grid2 as Grid,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { homePageStyles } from "../../pages/styles";
-import { AddCircleOutline } from "@mui/icons-material";
 
 interface Place {
   id: string;
@@ -41,7 +40,7 @@ console.log(params)
   return (
     <Box sx={homePageStyles.searchBox}>
       <Grid container spacing={2}>
-        <Grid item xs={12} md={6}>
+        <Grid size={{xs:12,md:4}}>
           <Typography sx={{ paddingLeft: "10px", fontSize: "14px" }}>
             Select Your Destination
           </Typography>
@@ -59,7 +58,7 @@ console.log(params)
             )}
           />
         </Grid>
-        <Grid item xs={12} md={3}>
+        <Grid size={{xs:12,md:3}}>
           <Box>
             <Typography sx={{ paddingLeft: "10px", fontSize: "14px" }}>
               Departure Date
@@ -79,7 +78,7 @@ console.log(params)
             />
           </Box>
         </Grid>
-        <Grid item xs={12} md={3}>
+        <Grid size={{xs:12,md:3}}>
           <Box>
             <Typography sx={{ paddingLeft: "10px", fontSize: "14px" }}>
               Return Date
@@ -96,8 +95,7 @@ console.log(params)
         </Grid>
 
         <Grid
-          item
-          xs={12}
+          size={12}
           sx={{
             display: "flex",
             justifyContent: "flex-end",

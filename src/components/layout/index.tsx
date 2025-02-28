@@ -1,14 +1,6 @@
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import Navbar from "../navbar";
-import { Box, Fab, Typography } from "@mui/material";
-import ChatIcon from "@mui/icons-material/Chat"; // Import the chat icon
-import { useState } from "react";
-import ChatDrawer from "../chat/index"; // Import the ChatDrawer
-import { AddCircleOutline } from "@mui/icons-material";
-import Cookies from "js-cookie";
 const Layout = () => {
-  const navigate = useNavigate();
-  const [openChat, setOpenChat] = useState(false); // State for chat visibility
 
   return (
     <>

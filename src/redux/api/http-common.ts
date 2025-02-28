@@ -2,7 +2,8 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { toast } from "react-toastify";
 
-export const API_URL = "http://localhost:8000/api";
+export const API_URL = import.meta.env.VITE_API_URL;
+
 
 export const callAPi = axios.create({
   baseURL: API_URL,

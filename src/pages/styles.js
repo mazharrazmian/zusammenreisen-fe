@@ -1,7 +1,7 @@
 import signUpImg from "../assets/signUp.jpg";
 import listPageBg from "../assets/listBg.jpg";
 import loginImg from "../assets/login.png";
-import homebg from "../assets/homebg.jpg";
+import homebg from "../assets/homebg.webp";
 
 export const authStyles = {
   vector1: {
