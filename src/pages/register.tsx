@@ -118,6 +118,9 @@ const RegisterPage = () => {
                 error.response.data.errors.forEach((err) => {
                     // Convert backend field names to frontend field names
                     const fieldName = err.attr.replace("profile.", ""); // Remove "profile." prefix
+                    if (fieldName == 'languages'){
+                        toast.error("You must select the languages")
+                    }
                     fieldErrors[fieldName] = err.detail; // Set the error message
                 });
 
