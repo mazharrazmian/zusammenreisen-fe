@@ -209,6 +209,7 @@ export const homePageStyles = {
     backgroundPosition: "center",
     backgroundSize: "cover",
     display: "flex",
+    flexDirection : 'column',
     justifyContent: "center",
     alignItems: "center",
     color: "white",

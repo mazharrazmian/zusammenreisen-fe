@@ -26,8 +26,7 @@ import { useAppSelector } from "../../redux/store";
 
 const pages = [
   { id: 1, pageName: "Home", path: "/" },
-  { id: 2, pageName: "List", path: "/list" },
-  { id: 3, pageName: "Blog", path: "/blog" },
+  { id: 2, pageName: "Blog", path: "/blog" },
 ];
 
 const Navbar = React.memo(()=>{
@@ -86,6 +85,7 @@ const Navbar = React.memo(()=>{
 
 
   const fetchNotifications = async ()=>{
+    if (profile?.profile == null) return
     chatServices.getNotifications().then(response=>{
         setNotifications(response.data)
     })
@@ -247,6 +247,7 @@ const Navbar = React.memo(()=>{
               color: scrolled ? "#000" : "#fff",
               textDecoration: "none",
             }}
+            onClick={()=>navigate('/')}
           >
             LOGO
           </Typography>

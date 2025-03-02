@@ -66,7 +66,7 @@ const AnimatedText: React.FC = () => {
       <Box className="text-line fade-in delay-0">
         <Typography
           variant="h2"
-          component="h1"
+          component="h2"
           sx={{
             fontWeight: "bold",
             color: "#FFFFFF",
@@ -75,12 +75,12 @@ const AnimatedText: React.FC = () => {
             fontSize: {
               xs: "1.5rem", // Smaller font size for mobile
               sm: "2rem", // Medium font size for tablets
-              md: "3rem", // Larger font size for desktops
+              md: "2.5rem", // Larger font size for desktops
             },
           }}
         >
-          Zussamenreisen <span className="highlight">Cuts</span> The{" "}
-          <span className="highlight">Costs!</span>
+          <span className="highlight"> Explore</span> Together | <span className="highlight">Joy</span> Forever{" "}
+          {/* <span className="highlight">Costs!</span> */}
         </Typography>
         <Box
           className="underline width-300 delay-1"
@@ -101,7 +101,7 @@ const AnimatedText: React.FC = () => {
       </Box>
 
       {/* Secondary text */}
-      <Box className="text-line fade-in delay-0-5">
+      {/* <Box className="text-line fade-in delay-0-5">
         <Typography
           variant="h2"
           component="h2"
@@ -117,7 +117,7 @@ const AnimatedText: React.FC = () => {
             },
           }}
         >
-          Elevates <span className="highlight">The Fun</span>
+          Elevate <span className="highlight">The Fun</span>
         </Typography>
         <Box
           className="underline width-200 delay-1-5"
@@ -135,7 +135,7 @@ const AnimatedText: React.FC = () => {
             },
           }}
         />
-      </Box>
+      </Box> */}
     </Box>
   );
 };

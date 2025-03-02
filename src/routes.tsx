@@ -1,6 +1,5 @@
 import { Navigate, useRoutes } from "react-router-dom";
 import Layout from "./components/layout";
-import List from "./pages/list";
 import HomePage from "./pages/homePgae";
 import Page404 from "./pages/Page404";
 import LoginPage from "./pages/login";
@@ -13,6 +12,7 @@ import ProtectedRoute from "./hoc/protectedRoute";
 import ActivateAccount from "./pages/activateAccount";
 import ResetPassword from "./pages/passwordReset";
 import ProfilePage from "./pages/accountPage";
+import TravelBuddyBlog from "./pages/blogList";
 
 export default function Router() {
     const routes = useRoutes([
@@ -21,11 +21,10 @@ export default function Router() {
         element: <Layout />,
         children: [
           { element: <HomePage />, index: true },
-          { path: "list", element: <List /> },
         ],
       },
       { path: "details/:id", element: <Details /> },
-      
+      {path : "blog",element : <TravelBuddyBlog/>},
       { 
         path: "add/post", 
         element: (
