@@ -21,6 +21,8 @@ export interface FilterState {
   date_from : string,
   date_to : string,
   page : number,
+  group_size : number | "",
+  age_group : string,
 }
 
 

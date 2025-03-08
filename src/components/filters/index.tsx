@@ -10,11 +10,12 @@ import {
     TextField,
     Divider,
     Paper,
+    Autocomplete,
 } from "@mui/material";
-import { City, FilterState } from "../../types";
+import { City, Country, FilterState } from "../../types";
 import { filterStyles } from "../../pages/styles";
 import postServices from "../../redux/api/postService";
-import { GENDERS } from "../../Constants";
+import { ageGroups, GENDERS } from "../../Constants";
 import { useAppSelector } from "../../redux/store";
 
 interface FiltersProps {
@@ -61,6 +62,8 @@ const Filters: React.FC<FiltersProps> = ({ filters, setFilters }) => {
             gender: "",
             date_from: '',
             date_to: '',
+            age_group : 'any',
+            group_size : '',
             page: 1,
         };
 
@@ -80,37 +83,40 @@ const Filters: React.FC<FiltersProps> = ({ filters, setFilters }) => {
                 </Typography>
 
                 {/* country_from Filter */}
-                <FormControl fullWidth variant="outlined" sx={{ mt: 1 }}>
-                    <InputLabel>Country</InputLabel>
-                    <Select 
-                        name="country_from" 
-                        value={filters.country_from} 
-                        onChange={handleChange}
-                    >
-                        <MenuItem value="">All Countries</MenuItem>
-                        {countries?.map((country) => (
-                            <MenuItem key={country.id} value={country.id}>
-                                {country.name}
-                            </MenuItem>
-                        ))}
-                    </Select>
+                <FormControl fullWidth variant="outlined" sx={{ mt: 1 }}>                    
+                    <Autocomplete
+                        value={countries.find(c => c.id === filters.country_from) || null} // Ensure the value matches an option
+                        disablePortal
+                        isOptionEqualToValue={(option, value) => option.id === value.id} // Ensure correct equality check
+                        options={countries}
+                        getOptionLabel={(option) => option.name}
+                        renderInput={(params) => <TextField {...params} name="country_from" label="Country" />}
+                        onChange={(event: any, newValue: any) => {
+                            setFilters((prev: FilterState) => ({
+                                ...prev,
+                                country_from: newValue ? newValue.id : "", // Store only the country ID
+                            }));
+                        }}                 
+                        />
                 </FormControl>
 
                 {/* city_from Filter */}
                 <FormControl fullWidth variant="outlined" sx={{ mt: 2 }}>
-                    <InputLabel> City</InputLabel>
-                    <Select 
-                        name="city_from" 
-                        value={filters.city_from} 
-                        onChange={handleChange}
-                    >
-                        <MenuItem value="">All Cities</MenuItem>
-                        {fromCities.map((city) => (
-                            <MenuItem key={city.id} value={city.id}>
-                                {city.name}
-                            </MenuItem>
-                        ))}
-                    </Select>
+                <Autocomplete
+                        value={fromCities.find(c => c.id === filters.city_from) || null} // Ensure the value matches an option
+                        disablePortal
+                        isOptionEqualToValue={(option, value) => option.id === value.id} // Ensure correct equality check
+                        options={fromCities}
+                        getOptionLabel={(option) => option.name}
+                        renderInput={(params) => <TextField {...params} name="city_from" label="City" />}
+                        onChange={(event: any, newValue: City) => {
+                            setFilters((prev: FilterState) => ({
+                                ...prev,
+                                city_from: newValue ? newValue.id : "", // Store only the country ID
+                            }));
+                        }}                 
+                        />
+    
                 </FormControl>
             </Paper>
 
@@ -122,36 +128,38 @@ const Filters: React.FC<FiltersProps> = ({ filters, setFilters }) => {
 
                 {/* country_to Filter */}
                 <FormControl fullWidth variant="outlined" sx={{ mt: 1 }}>
-                    <InputLabel shrink={!!filters.country_to}>Country</InputLabel>
-                    <Select 
-                        name="country_to" 
-                        value={filters.country_to} 
-                        onChange={handleChange}
-                    >
-                        <MenuItem value="">All Countries</MenuItem>
-                        {countries?.map((country) => (
-                            <MenuItem key={country.id} value={country.id}>
-                                {country.name}
-                            </MenuItem>
-                        ))}
-                    </Select>
+                    <Autocomplete
+                        value={countries.find(c => c.id === filters.country_to) || null} // Ensure the value matches an option
+                        disablePortal
+                        isOptionEqualToValue={(option, value) => option.id === value.id} // Ensure correct equality check
+                        options={countries}
+                        getOptionLabel={(option) => option.name}
+                        renderInput={(params) => <TextField {...params} name="country_to" label="Country" />}
+                        onChange={(event: any, newValue: any) => {
+                            setFilters((prev: FilterState) => ({
+                                ...prev,
+                                country_to: newValue ? newValue.id : "", // Store only the country ID
+                            }));
+                        }}                 
+                        />
                 </FormControl>
 
                 {/* city_to Filter */}
                 <FormControl fullWidth variant="outlined" sx={{ mt: 2 }}>
-                    <InputLabel>City</InputLabel>
-                    <Select 
-                        name="city_to" 
-                        value={filters.city_to} 
-                        onChange={handleChange}
-                    >
-                        <MenuItem value="">All Cities</MenuItem>
-                        {toCities.map((city) => (
-                            <MenuItem key={city.id} value={city.id}>
-                                {city.name}
-                            </MenuItem>
-                        ))}
-                    </Select>
+                <Autocomplete
+                        value={toCities.find(c => c.id === filters.city_to) || null} // Ensure the value matches an option
+                        disablePortal
+                        isOptionEqualToValue={(option, value) => option.id === value.id} // Ensure correct equality check
+                        options={fromCities}
+                        getOptionLabel={(option) => option.name}
+                        renderInput={(params) => <TextField {...params} name="city_to" label="City" />}
+                        onChange={(event: any, newValue: City) => {
+                            setFilters((prev: FilterState) => ({
+                                ...prev,
+                                city_from: newValue ? newValue.id : "", // Store only the country ID
+                            }));
+                        }}                 
+                        />
                 </FormControl>
             </Paper>
 
@@ -160,7 +168,7 @@ const Filters: React.FC<FiltersProps> = ({ filters, setFilters }) => {
                 <Typography variant="subtitle1" color="primary" sx={{ mb: 1, fontWeight: 'bold' }}>
                     Additional Filters
                 </Typography>
-
+                    
                 {/* Gender Filter */}
                 <FormControl fullWidth variant="outlined" sx={{ mt: 1 }}>
                     <InputLabel>Gender</InputLabel>
@@ -179,6 +187,36 @@ const Filters: React.FC<FiltersProps> = ({ filters, setFilters }) => {
                     </Select>
                 </FormControl>
 
+                <FormControl fullWidth variant="outlined" sx={{ mt: 3 }}>
+                    <InputLabel>Age Group</InputLabel>
+                    <Select 
+                        name="age_group" 
+                        value={filters.age_group} 
+                        onChange={handleChange}
+                        label='Age Group'
+                    >
+                        {ageGroups.map((age) => (
+                            <MenuItem key={age} value={age}>
+                                {age.toUpperCase()}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
+
+                <FormControl fullWidth variant="outlined" sx={{ mt: 3 }}>
+                    <TextField 
+                    fullWidth
+                    type="number"
+                    value = {filters.group_size}
+                    onChange={handleChange}
+                    name="group_size"
+                    label='Group Size'
+                    />
+
+
+                </FormControl>
+
+
                 {/* Date From Filter */}
                 <TextField
                     fullWidth
@@ -188,7 +226,7 @@ const Filters: React.FC<FiltersProps> = ({ filters, setFilters }) => {
                     onChange={handleChange}
                     value={filters.date_from}
                     name="date_from"
-                    sx={{ mt: 2 }}
+                    sx={{ mt: 3 }}
                     InputLabelProps={{ shrink: true }}
                     helperText='Date Greater Than Or Equal To'
                 />
@@ -202,7 +240,7 @@ const Filters: React.FC<FiltersProps> = ({ filters, setFilters }) => {
                     onChange={handleChange}
                     value={filters.date_to}
                     name="date_to"
-                    sx={{ mt: 2 }}
+                    sx={{ mt: 3 }}
                     InputLabelProps={{ shrink: true }}
                     helperText='Date Less Than Or Equal To'
                 />

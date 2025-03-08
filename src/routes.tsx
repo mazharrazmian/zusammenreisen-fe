@@ -1,6 +1,6 @@
 import { Navigate, useRoutes } from "react-router-dom";
 import Layout from "./components/layout";
-import HomePage from "./pages/homePgae";
+import HomePage from "./pages/homePage";
 import Page404 from "./pages/Page404";
 import LoginPage from "./pages/login";
 import RegisterPage from "./pages/register";
@@ -13,6 +13,7 @@ import ActivateAccount from "./pages/activateAccount";
 import ResetPassword from "./pages/passwordReset";
 import ProfilePage from "./pages/accountPage";
 import TravelBuddyBlog from "./pages/blogList";
+import CreateTour from "./pages/createTour";
 
 export default function Router() {
     const routes = useRoutes([
@@ -23,13 +24,21 @@ export default function Router() {
           { element: <HomePage />, index: true },
         ],
       },
-      { path: "details/:id", element: <Details /> },
+      { path: "posts/:id", element: <Details /> },
       {path : "blog",element : <TravelBuddyBlog/>},
+    //   { 
+    //     path: "add/post", 
+    //     element: (
+    //       <ProtectedRoute>
+    //         <AddPost />
+    //       </ProtectedRoute>
+    //     ) 
+    //   },
       { 
         path: "add/post", 
         element: (
           <ProtectedRoute>
-            <AddPost />
+            <CreateTour />
           </ProtectedRoute>
         ) 
       },

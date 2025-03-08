@@ -45,4 +45,17 @@ const GenderIcon = ({ gender }: { gender: number }) => {
   
 };
 
+
+export const tourTypes = [
+    "adventure", "cultural", "beach", "mountain", "city", "wildlife", 
+    "food", "photography", "backpacking", "luxury", "budget", "other"
+];
+
+export const accommodationTypes = [
+    "hotel", "hostel", "apartment", "camping", "homestay", "resort", "not_included", "other"
+];
+
+export const ageGroups = ["18-24", "25-34", "35-44", "45-54", "55-64", "65-over", "any"];
+
+
 export default GenderIcon;
