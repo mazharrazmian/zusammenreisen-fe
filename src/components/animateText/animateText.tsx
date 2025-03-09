@@ -63,7 +63,8 @@ const AnimatedText: React.FC = () => {
       />
 
       {/* Main text */}
-      <Box className="text-line fade-in delay-0">
+      {/* <Box className="text-line fade-in delay-0"> */}
+        <Box >
         <Typography
           variant="h2"
           component="h2"
@@ -90,7 +91,7 @@ const AnimatedText: React.FC = () => {
             backgroundColor: "#1877F2",
             width: "0%",
             margin: "0 auto",
-            animation: "drawLine 1s ease-out forwards 1s",
+            //animation: "drawLine 1s ease-out forwards 1s",
             maxWidth: {
               xs: "200px", // Smaller width for mobile
               sm: "250px", // Medium width for tablets

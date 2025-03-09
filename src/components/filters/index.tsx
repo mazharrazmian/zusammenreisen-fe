@@ -72,13 +72,13 @@ const Filters: React.FC<FiltersProps> = ({ filters, setFilters }) => {
 
     return (
         <Box sx={filterStyles.mainWrapper}>
-            <Typography variant="h6" color="primary" sx={{ mb: 2 }}>
+            <Typography variant="h6" color="info.dark" sx={{ mb: 2 }}>
                 Filters
             </Typography>
 
             {/* From Location Section */}
             <Paper elevation={1} sx={{ p: 2, mb: 3, bgcolor: '#f5f5f5', border: '1px solid #e0e0e0' }}>
-                <Typography variant="subtitle1" color="primary" sx={{ mb: 1, fontWeight: 'bold' }}>
+                <Typography variant="subtitle1" color="info.main" sx={{ mb: 1, fontWeight: 'bold' }}>
                     From Location
                 </Typography>
 
@@ -122,7 +122,7 @@ const Filters: React.FC<FiltersProps> = ({ filters, setFilters }) => {
 
             {/* To Location Section */}
             <Paper elevation={1} sx={{ p: 2, mb: 3, border: '1px solid #bbdefb' }}>
-                <Typography variant="subtitle1" color="primary" sx={{ mb: 1, fontWeight: 'bold' }}>
+                <Typography variant="subtitle1" color="info.main" sx={{ mb: 1, fontWeight: 'bold' }}>
                     To Location
                 </Typography>
 
@@ -165,7 +165,7 @@ const Filters: React.FC<FiltersProps> = ({ filters, setFilters }) => {
 
             {/* Other Filters Section */}
             <Paper elevation={1} sx={{ p: 2, mb: 3 }}>
-                <Typography variant="subtitle1" color="primary" sx={{ mb: 1, fontWeight: 'bold' }}>
+                <Typography variant="subtitle1" color="info.main" sx={{ mb: 1, fontWeight: 'bold' }}>
                     Additional Filters
                 </Typography>
                     
@@ -249,9 +249,9 @@ const Filters: React.FC<FiltersProps> = ({ filters, setFilters }) => {
             {/* Reset Button */}
             <Button
                 variant="contained"
-                color="primary"
                 onClick={handleReset}
                 fullWidth
+                color="info"
             >
                 Reset Filters
             </Button>

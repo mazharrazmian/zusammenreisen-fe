@@ -20,6 +20,12 @@ export const GENDERS = [
    
 ]
 
+export const REQUESTSTATUS = {
+    'Pending' : 1,
+    'Rejected' : 2,
+    'Accepted' : 3
+}
+
 
 // Map gender values to icons
 const genderIconMap = {

@@ -76,3 +76,76 @@ export interface Profile {
     created_at : string,
     chat_room : null | number
   }
+
+
+
+
+
+
+  interface User {
+    name: string;
+    email: string;
+  }
+  
+  interface Language {
+    name: string;
+  }
+  
+  interface Trip {
+    id: number;
+    posted_by: Profile;
+    travel_to_country: string;
+    travel_to_city: string;
+    travel_from_country: string;
+    travel_from_city: string;
+    image: string | null;
+    date_from: string;
+    date_to: string;
+    dates_flexible: boolean;
+    age_group: string;
+    group_size: number;
+    current_travellers: number;
+    tour_type: string;
+    activities: string[];
+    title: string;
+    accommodation_type: string;
+    estimated_cost: number | null;
+    cost_includes: string;
+    requirements: string;
+    itinerary: string;
+    description: string;
+    posted_on: string;
+    travel_to_postal_code: string | null;
+  }
+  
+  interface TripRequest {
+    id: number;
+    from_profile: Profile;
+    status: number;
+    trip: Trip;
+    message: string;
+    post: number;
+    to_profile: number;
+  }
+  
+  // Optional enums for better type safety:
+  enum Gender {
+    Male = 1,
+    Female = 2,
+    Other = 3
+  }
+  
+  enum RequestStatus {
+    Pending = 1,
+    Approved = 2,
+    Rejected = 3
+  }
+  
+  // Example usage with more specific types:
+  interface EnhancedTripRequest extends Omit<TripRequest, 'status'> {
+    status: RequestStatus;
+  }
+  
+  interface EnhancedProfile extends Omit<Profile, 'gender'> {
+    gender: Gender;
+  }

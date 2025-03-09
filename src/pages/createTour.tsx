@@ -32,6 +32,7 @@ import CitySelect from "../components/shared/RichTextEditor/citySelect";
 import Navbar from "../components/navbar";
 import { useAppSelector } from "../redux/store";
 import postServices from "../redux/api/postService"; // You'll need to update this to tourServices
+import { accommodationTypes, ageGroups, tourTypes } from "../Constants";
 
 export interface TourDataInterface {
     title: string,
@@ -148,6 +149,8 @@ const CreateTour = () => {
             activities: prevData.activities.filter((_, i) => i !== index)
         }));
     };
+
+    
 
     const validations = (fieldValue = formData) => {
         const temp: { [key: string]: string } = { ...errors };

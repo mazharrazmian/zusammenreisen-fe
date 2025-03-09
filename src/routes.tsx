@@ -4,7 +4,7 @@ import HomePage from "./pages/homePage";
 import Page404 from "./pages/Page404";
 import LoginPage from "./pages/login";
 import RegisterPage from "./pages/register";
-import Details from "./pages/details";
+import Details from "./pages/postDetails";
 import AddPost from "./pages/addPost";
 import ChatPage from "./pages/chatPage";
 import EditPost from "./pages/editPost";
@@ -14,6 +14,7 @@ import ResetPassword from "./pages/passwordReset";
 import ProfilePage from "./pages/accountPage";
 import TravelBuddyBlog from "./pages/blogList";
 import CreateTour from "./pages/createTour";
+import RequestManagementTab from "./pages/requestManagement";
 
 export default function Router() {
     const routes = useRoutes([
@@ -25,6 +26,7 @@ export default function Router() {
         ],
       },
       { path: "posts/:id", element: <Details /> },
+      { path: "requests", element: <RequestManagementTab/> },
       {path : "blog",element : <TravelBuddyBlog/>},
     //   { 
     //     path: "add/post", 

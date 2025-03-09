@@ -18,10 +18,13 @@ import CommentIcon from "@mui/icons-material/Comment";
 import Filters from "../components/filters";
 import postServices from "../redux/api/postService";
 import { accommodationTypes, ageGroups, tourTypes } from "../Constants";
+import { get_profile } from "../redux/slice/profileSlice";
+import { useAppSelector } from "../redux/store";
 
 const HomePage: React.FC = () => {
   const isMobile = useMediaQuery("(max-width: 960px)");
-  
+  const profile = useAppSelector((s) => s.profile);
+
   // Tours list state
   const [posts, setPosts] = useState([]);
   const [count, setCount] = useState(0);
@@ -94,6 +97,7 @@ const HomePage: React.FC = () => {
     }));
   };
 
+  
   const memoizedAnimatedText = useMemo(() => <AnimatedText />, []);
 
 
@@ -129,7 +133,12 @@ const HomePage: React.FC = () => {
           <Button
             variant="outlined"
             color="primary"
-            onClick={() => navigate('/create-tour')}
+            onClick={() => {
+                profile?.profile ? 
+                navigate('/add/post')
+                :
+                navigate('/register')
+            }}
             sx={{
               borderRadius: "30px",
               textTransform: "none",

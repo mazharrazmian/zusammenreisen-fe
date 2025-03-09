@@ -20,6 +20,7 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { authStyles, login } from "./styles";
 import LanguageSelector from "../components/language";
+import { ArrowBack } from "@mui/icons-material";
 
 
 const initialValues = {
@@ -196,6 +197,13 @@ const RegisterPage = () => {
                         }}
                     >
                         <Box component={'form'} sx={authStyles.formWrapper}>
+                            <Button 
+                                startIcon={<ArrowBack />}
+                                onClick={() =>  navigate("/")}
+                                sx={{ mb: 2 }}
+                                >
+                                Checkout Tours
+                            </Button>
                             <Grid container spacing={2} sx={{ padding: "0rem 2rem" }}>
                                 <Grid size={12} sx={{ justifyContent: "center", display: "flex" }}>
                                     <label htmlFor="menuItemImg" style={{ width: "100%", height: "100%", cursor: "pointer" }}>
@@ -409,7 +417,7 @@ const RegisterPage = () => {
                                     display: { xs: "block", md: "none" },
                                 }}
                             >
-                                <Box sx={authStyles.IocnMainWrapper}>
+                                {/* <Box sx={authStyles.IocnMainWrapper}>
                                     <Box sx={authStyles.IconWrapper}>
                                         <IconButton>
                                             <Iconify width={18} icon="flat-color-icons:google" />
@@ -420,7 +428,7 @@ const RegisterPage = () => {
                                             <Iconify width={18} icon="logos:facebook" />
                                         </IconButton>
                                     </Box>
-                                </Box>
+                                </Box> */}
                                 <Box mt={2}>
                                     <Typography
                                         sx={{

@@ -20,6 +20,8 @@ import { useNavigate } from "react-router-dom";
 import { authStyles, login } from "./styles";
 import { useDispatch } from "react-redux";
 import { get_profile } from "../redux/slice/profileSlice";
+import Navbar from "../components/navbar";
+import { ArrowBack } from "@mui/icons-material";
 const initialValues = {
   email: "",
   password: "",
@@ -141,7 +143,10 @@ const LoginPage = () => {
     }
   };
   return (
+    <>
+    
     <Box component="form" sx={{ overflow: "auto", height: "100vh" }} onSubmit={handleSubmit}>
+    
       <Box sx={authStyles.vector1}>
         <img src={vector1} alt="" />
       </Box>
@@ -168,7 +173,15 @@ const LoginPage = () => {
             }}
           >
             <Box>
+                
               <Box sx={authStyles.formWrapper}>
+              <Button 
+          startIcon={<ArrowBack />}
+          onClick={() => navigate('/')}
+          sx={{ mb: 2 }}
+        >
+          Back to Homepage
+        </Button>
                 <Box>
                   <Typography variant="h2" textAlign={"center"}>
                     Welcome
@@ -289,6 +302,7 @@ const LoginPage = () => {
         </Grid>
       </Box>
     </Box>
+    </>
   );
 };
 
