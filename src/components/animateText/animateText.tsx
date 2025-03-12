@@ -15,6 +15,7 @@ const AnimatedText: React.FC = () => {
       top: "80%",
       left: "10%",
       animation: "sizeAnimation 3s infinite, floatAnimation1 4s infinite",
+      textWrap:'wrap'
     },
   };
 

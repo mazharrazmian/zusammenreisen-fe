@@ -46,7 +46,7 @@ export default function Router() {
       },
 
       { 
-        path: "edit/post/:id", 
+        path: "edit/post/:tourId", 
         element: (
           <ProtectedRoute>
             <EditPost />

@@ -214,16 +214,7 @@ export const homePageStyles = {
     alignItems: "center",
     color: "white",
   },
-  searchBox: {
-    boxShadow: "0px 10px 10px rgba(0,0,0, 0.1)",
-    background: "#fff",
-    borderRadius: "12px",
-    width: { md: "70%", sm: "80%", xs: "90%" },
-    margin: "auto",
-    transform: "translate(0,-50%)",
-    padding: "2rem",
-    marginTop: { xs: "2.5rem", md: "0rem" },
-  },
+  
 };
 
 export const addPostStyles = {

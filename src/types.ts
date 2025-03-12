@@ -90,43 +90,33 @@ export interface Profile {
   interface Language {
     name: string;
   }
+
   
-  interface Trip {
-    id: number;
-    posted_by: Profile;
-    travel_to_country: string;
-    travel_to_city: string;
-    travel_from_country: string;
-    travel_from_city: string;
-    image: string | null;
-    date_from: string;
-    date_to: string;
-    dates_flexible: boolean;
-    age_group: string;
-    group_size: number;
-    current_travellers: number;
-    tour_type: string;
-    activities: string[];
-    title: string;
-    accommodation_type: string;
-    estimated_cost: number | null;
-    cost_includes: string;
-    requirements: string;
-    itinerary: string;
-    description: string;
-    posted_on: string;
-    travel_to_postal_code: string | null;
-  }
+export interface TourDataInterface {
+    title: string,
+    description: string,
+    itinerary: string,
+    fromCountry: any | null,
+    fromCity: any | null,
+    toCountry: any | null,
+    toCity: any | null,
+    departureDate: string,
+    returnDate: string,
+    groupSize: number,
+    currentTravellers: number,
+    tourType: string,
+    activities: string[],
+    accommodationType: string,
+    estimatedCost: number,
+    ageGroup: string,
+    costIncludes: string,
+    requirements: string,
+    images: [],
+    dates_flexible: boolean,
+}
+
   
-  interface TripRequest {
-    id: number;
-    from_profile: Profile;
-    status: number;
-    trip: Trip;
-    message: string;
-    post: number;
-    to_profile: number;
-  }
+
   
   // Optional enums for better type safety:
   enum Gender {
@@ -141,11 +131,3 @@ export interface Profile {
     Rejected = 3
   }
   
-  // Example usage with more specific types:
-  interface EnhancedTripRequest extends Omit<TripRequest, 'status'> {
-    status: RequestStatus;
-  }
-  
-  interface EnhancedProfile extends Omit<Profile, 'gender'> {
-    gender: Gender;
-  }

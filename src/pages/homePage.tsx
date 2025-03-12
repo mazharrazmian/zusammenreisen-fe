@@ -98,7 +98,7 @@ const HomePage: React.FC = () => {
   };
 
   
-  const memoizedAnimatedText = useMemo(() => <AnimatedText />, []);
+   const memoizedAnimatedText = useMemo(() => <AnimatedText />, []);
 
 
   return (
@@ -106,62 +106,69 @@ const HomePage: React.FC = () => {
       {/* Hero section with background and animated text */}
       <Box sx={homePageStyles.mainWrapper}>
         {memoizedAnimatedText}
-        <Box>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => document.getElementById('explore-tours').scrollIntoView({behavior: 'smooth'})}
-            sx={{
-              borderRadius: "30px",
-              textTransform: "none",
-              fontWeight: "600",
-              fontSize: "1.1rem",
-              padding: "12px 30px",
-              boxShadow: "0 8px 16px rgba(0, 0, 0, 0.2)",
-              backgroundColor: "primary.main",
-              
-              "&:hover": {
-                backgroundColor: "primary.dark",
-                transform: "translateY(-3px)",
-                boxShadow: "0 12px 20px rgba(0, 0, 0, 0.3)"
-              },
-              transition: "all 0.3s ease"
-            }}
-          >
-            Explore Tours
-          </Button>
-          <Button
-            variant="outlined"
-            color="primary"
-            onClick={() => {
-                profile?.profile ? 
-                navigate('/add/post')
-                :
-                navigate('/register')
-            }}
-            sx={{
-              borderRadius: "30px",
-              textTransform: "none",
-              fontWeight: "600",
-              fontSize: "1.1rem",
-              padding: "12px 30px",
-              ml: 2,
-              borderColor: "white",
-              color: "white",
-              backgroundColor: "rgba(255, 255, 255, 0.1)",
-              
-              "&:hover": {
-                backgroundColor: "rgba(255, 255, 255, 0.2)",
-                borderColor: "white",
-                transform: "translateY(-3px)",
-                boxShadow: "0 12px 20px rgba(0, 0, 0, 0.2)"
-              },
-              transition: "all 0.3s ease"
-            }}
-          >
-            Create Your Tour
-          </Button>
-        </Box>
+        
+        <Box sx={{
+  display: "flex",
+  flexDirection: { xs: "column", sm: "row" },
+  alignItems: "center",
+  justifyContent: "center",
+  gap: 2
+}}>
+  <Button 
+    variant="contained" 
+    color="primary" 
+    onClick={() => document.getElementById('explore-tours').scrollIntoView({behavior: 'smooth'})} 
+    sx={{ 
+      borderRadius: "30px", 
+      textTransform: "none", 
+      fontWeight: "600", 
+      fontSize: { xs: "0.9rem", sm: "1.1rem" }, 
+      padding: { xs: "10px 25px", sm: "12px 30px" }, 
+      boxShadow: "0 8px 16px rgba(0, 0, 0, 0.2)", 
+      backgroundColor: "primary.main",
+      width: { xs: "100%", sm: "220px" },
+      "&:hover": { 
+        backgroundColor: "primary.dark", 
+        transform: "translateY(-3px)", 
+        boxShadow: "0 12px 20px rgba(0, 0, 0, 0.3)" 
+      }, 
+      transition: "all 0.3s ease" 
+    }} 
+  > 
+    Explore Tours 
+  </Button> 
+  <Button 
+    variant="outlined" 
+    color="primary" 
+    onClick={() => { 
+      profile?.profile ?  
+      navigate('/add/post') 
+      : 
+      navigate('/register') 
+    }} 
+    sx={{ 
+      borderRadius: "30px", 
+      textTransform: "none", 
+      fontWeight: "600", 
+      fontSize: { xs: "0.9rem", sm: "1.1rem" }, 
+      padding: { xs: "10px 25px", sm: "12px 30px" }, 
+      borderColor: "white", 
+      color: "white", 
+      backgroundColor: "rgba(255, 255, 255, 0.1)", 
+      width: { xs: "100%", sm: "220px" },
+      "&:hover": { 
+        backgroundColor: "rgba(255, 255, 255, 0.2)", 
+        borderColor: "white", 
+        transform: "translateY(-3px)", 
+        boxShadow: "0 12px 20px rgba(0, 0, 0, 0.2)" 
+      }, 
+      transition: "all 0.3s ease" 
+    }} 
+  > 
+    Create Your Tour 
+  </Button> 
+</Box>
+
       </Box>
 
       {/* How It Works Section */}

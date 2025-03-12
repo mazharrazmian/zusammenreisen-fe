@@ -47,7 +47,7 @@ export const signUp = async (data: signup) => {
   };
 
   export const updateProfile = async (id : any ,data : any) => {
-      const response = await callAPi.patch(`users/profile/${id}`,data=data);
+      const response = await callAPiMultiPart.patch(`users/profile/${id}`,data=data);
       return response
   };
 
