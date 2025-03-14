@@ -91,7 +91,7 @@ const Sidebar = ({ pages, navigate }) => {
   const [activePage, setActivePage] = useState(pages[0]?.id);
 
   const handleNavigate = (page) => {
-    sessionStorage.setItem("postsFilters", JSON.stringify({}));
+    sessionStorage.setItem("toursFilters", JSON.stringify({}));
     navigate(page.path);
     setActivePage(page.id);
   };

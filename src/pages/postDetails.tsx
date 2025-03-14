@@ -296,12 +296,29 @@ const TravelDetails = () => {
                         </Card>
 
                         {/* Tabs Section */}
-                        <Card elevation={2} sx={{ borderRadius: 2, overflow: 'hidden' }}>
+                        <Card elevation={2} sx={{ borderRadius: 2, overflow: 'auto', }}>
                             <Tabs
                                 value={activeTab}
                                 onChange={handleTabChange}
-                                variant="fullWidth"
-                                sx={{ borderBottom: 1, borderColor: 'divider' }}
+                                variant="scrollable"
+                                scrollButtons="auto"
+                                allowScrollButtonsMobile
+                                sx={{
+                                    borderBottom: 1,
+                                    borderColor: 'divider',
+                                    '& .MuiTabs-scrollButtons.Mui-disabled': {
+                                        opacity: 0.3,
+                                    },
+                                    '& .MuiTabs-flexContainer': {
+                                        display: 'flex',
+                                        justifyContent: 'space-around',
+                                        width: '100%',
+                                    },
+                                    // Make sure the scroller doesn't limit width
+                                        '& .MuiTabs-scroller': {
+                                            width: '100% !important',
+                                        }
+                                }}
                             >
                                 <Tab label="Overview" icon={<Info />} iconPosition="start" />
                                 <Tab label="Itinerary" icon={<EventNote />} iconPosition="start" />
@@ -632,16 +649,10 @@ const TravelDetails = () => {
                                 elevation={2}
                             >
                                 <CardContent sx={{ textAlign: 'center' }}>
-                                    <Typography variant="h6" gutterBottom>
-                                        Interested in joining?
-                                    </Typography>
-                                    <Typography variant="body2" sx={{ mb: 2 }}>
-                                        Send a request to {postData?.posted_by?.user?.name} to be accepted to this Tour.
-                                    </Typography>
 
                                     <>
                                         {isMobile ? (
-                                        // Send Request button if Mobile
+                                            // Send Request button if Mobile
 
                                             <>
                                                 {accessToken === undefined ?
@@ -693,6 +704,13 @@ const TravelDetails = () => {
 
                                             // Send Request button if Desktop
                                             <>
+                                                <Typography variant="h6" gutterBottom>
+                                                    Interested in joining?
+                                                </Typography>
+                                                <Typography variant="body2" sx={{ mb: 2 }}>
+                                                    Send a request to {postData?.posted_by?.user?.name} to be accepted to this Tour.
+                                                </Typography>
+
                                                 {accessToken === undefined ?
 
                                                     <Button

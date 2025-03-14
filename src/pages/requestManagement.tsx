@@ -109,7 +109,7 @@ const RequestManagementTab = () => {
         {/* Header Section */}
         <Grid item xs={12}>
           <Typography variant="h5" gutterBottom>
-            post Requests
+            Trip Requests
             <Chip 
               label={`${requests.filter(r => r.status === 'pending').length} Pending`} 
               color="primary" 

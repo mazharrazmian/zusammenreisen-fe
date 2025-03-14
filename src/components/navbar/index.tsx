@@ -25,10 +25,14 @@ import Iconify from "../iconify";
 import { useAppSelector } from "../../redux/store";
 import Sidebar from "./sidebar";
 
-const pages = [
+const normalPages = [
     { id: 1, pageName: "Home", path: "/" },
-    { id: 2, pageName: "Blog", path: "/blog" },
+    { id: 2, pageName: "Blog", path: "/blog" },  
 ];
+
+const loggedInPages = [
+    {id : 3 , pageName : "My Requests", path : '/requests'}
+]
 
 const Navbar = React.memo(() => {
 
@@ -46,6 +50,8 @@ const Navbar = React.memo(() => {
     const [scrolled, setScrolled] = React.useState(false);
 
     const profile: any = useAppSelector((s) => s?.profile);
+
+    const pages = profile?.profile ? normalPages.concat(loggedInPages) : normalPages
 
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElNav(event.currentTarget);
@@ -207,7 +213,7 @@ const Navbar = React.memo(() => {
                         variant="h5"
                         noWrap
                         component="a"
-                        href="#app-bar-with-responsive-menu"
+                        // href="#app-bar-with-responsive-menu"
                         sx={{
                             mr: 2,
                             display: { xs: "flex", md: "none" },
@@ -218,7 +224,12 @@ const Navbar = React.memo(() => {
                             color: scrolled ? "#000" : "#fff",
                             textDecoration: "none",
                         }}
-                        onClick={() => navigate('/')}
+                        onClick={(e) => {
+                            e.preventDefault()
+                            sessionStorage.setItem("toursFilters", JSON.stringify({}));
+                            navigate('/');
+                            handleCloseNavMenu();
+                        }}
                     >
                         LOGO
                     </Typography>
@@ -233,7 +244,7 @@ const Navbar = React.memo(() => {
                                 href={page.path}
                                 onClick={(e) => {
                                     e.preventDefault()
-                                    sessionStorage.setItem("postsFilters", JSON.stringify({}));
+                                    sessionStorage.setItem("toursFilters", JSON.stringify({}));
                                     navigate(page.path);
                                     handleCloseNavMenu();
                                 }}

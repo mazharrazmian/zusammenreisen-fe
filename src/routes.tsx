@@ -7,7 +7,7 @@ import RegisterPage from "./pages/register";
 import Details from "./pages/postDetails";
 import AddPost from "./pages/addPost";
 import ChatPage from "./pages/chatPage";
-import EditPost from "./pages/editPost";
+import EditPost from "./pages/editTour";
 import ProtectedRoute from "./hoc/protectedRoute";
 import ActivateAccount from "./pages/activateAccount";
 import ResetPassword from "./pages/passwordReset";
@@ -28,14 +28,6 @@ export default function Router() {
       { path: "posts/:id", element: <Details /> },
       { path: "requests", element: <RequestManagementTab/> },
       {path : "blog",element : <TravelBuddyBlog/>},
-    //   { 
-    //     path: "add/post", 
-    //     element: (
-    //       <ProtectedRoute>
-    //         <AddPost />
-    //       </ProtectedRoute>
-    //     ) 
-    //   },
       { 
         path: "add/post", 
         element: (
@@ -50,6 +42,14 @@ export default function Router() {
         element: (
           <ProtectedRoute>
             <EditPost />
+          </ProtectedRoute>
+        ) 
+      },
+      { 
+        path: "requests", 
+        element: (
+          <ProtectedRoute>
+            <RequestManagementTab />
           </ProtectedRoute>
         ) 
       },

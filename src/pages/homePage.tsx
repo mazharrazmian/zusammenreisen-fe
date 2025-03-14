@@ -98,15 +98,17 @@ const HomePage: React.FC = () => {
   };
 
   
-   const memoizedAnimatedText = useMemo(() => <AnimatedText />, []);
+//    const memoizedAnimatedText = useMemo(() => <AnimatedText />, []);
 
 
   return (
     <>
       {/* Hero section with background and animated text */}
       <Box sx={homePageStyles.mainWrapper}>
-        {memoizedAnimatedText}
-        
+
+    <Typography variant="h3" sx={{textAlign:'center',marginBottom:2}}>
+    Where Solo Travelers Become Travel Mates.
+    </Typography>        
         <Box sx={{
   display: "flex",
   flexDirection: { xs: "column", sm: "row" },
@@ -448,7 +450,7 @@ const HomePage: React.FC = () => {
                             height: '100%',
                             display: 'flex',
                             flexDirection: 'column',
-                            transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+                            transition: 'transform 0.3s ease',
                             '&:hover': {
                               transform: 'translateY(-8px)',
                               boxShadow: '0 12px 20px rgba(0, 0, 0, 0.1)',
@@ -603,7 +605,12 @@ const HomePage: React.FC = () => {
                     <Button 
                       variant="outlined" 
                       color="primary"
-                      onClick={() => navigate('add/post')}
+                      onClick={() => { 
+                        profile?.profile ?  
+                        navigate('/add/post') 
+                        : 
+                        navigate('/register') 
+                      }} 
                       sx={{ 
                         borderRadius: "8px",
                         textTransform: "none",
