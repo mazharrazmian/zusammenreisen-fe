@@ -26,6 +26,9 @@ export const REQUESTSTATUS = {
     'Accepted' : 3
 }
 
+export function getKeyByValue(object, value) {
+    return Object.keys(object).find(key => object[key] === value);
+  }
 
 // Map gender values to icons
 const genderIconMap = {

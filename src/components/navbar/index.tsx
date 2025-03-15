@@ -27,11 +27,11 @@ import Sidebar from "./sidebar";
 
 const normalPages = [
     { id: 1, pageName: "Home", path: "/" },
-    { id: 2, pageName: "Blog", path: "/blog" },  
+    // { id: 2, pageName: "Blog", path: "/blog" },  
 ];
 
 const loggedInPages = [
-    {id : 3 , pageName : "My Requests", path : '/requests'}
+    {id : 3 , pageName : "Requests", path : '/requests'}
 ]
 
 const Navbar = React.memo(() => {
@@ -107,7 +107,7 @@ const Navbar = React.memo(() => {
         // Set up polling interval
         const pollingInterval = setInterval(() => {
             fetchNotifications();
-        }, 5 * 60 * 1000);
+        }, 2 * 60 * 1000);
 
         return () => clearInterval(pollingInterval);
 

@@ -113,9 +113,19 @@ export interface TourDataInterface {
     requirements: string,
     images: [],
     dates_flexible: boolean,
+    posted_on : string,
 }
 
   
+export interface tripRequest {
+    from_profile : Profile,
+    id : number,
+    message : string,
+    post : number,
+    status : RequestStatus,
+    to_profile : number,
+    trip : TourDataInterface
+}
 
   
   // Optional enums for better type safety:

@@ -137,9 +137,14 @@ const NotificationComponent : React.FC<NotificationComponentProps> = ({ notifica
               </Box>
               <Typography 
                 variant="body2" 
+                
                 sx={{ 
                   color: notification.unread ? 'text.primary' : 'text.secondary',
-                  mb: 0.5 
+                  mb: 0.5,
+                  whiteSpace: 'normal',    // Allows text to wrap
+                    wordWrap: 'break-word',  // Ensures long words wrap
+                    overflow: 'visible',     // Prevents hiding text
+                    display: 'block'         // Ensures proper wrapping
                 }}
               >
                 {notification.message}

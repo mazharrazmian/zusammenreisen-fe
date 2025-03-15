@@ -17,8 +17,6 @@ import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import CommentIcon from "@mui/icons-material/Comment";
 import Filters from "../components/filters";
 import postServices from "../redux/api/postService";
-import { accommodationTypes, ageGroups, tourTypes } from "../Constants";
-import { get_profile } from "../redux/slice/profileSlice";
 import { useAppSelector } from "../redux/store";
 
 const HomePage: React.FC = () => {

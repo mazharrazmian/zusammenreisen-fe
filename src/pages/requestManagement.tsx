@@ -14,7 +14,8 @@ import {
   IconButton,
   Menu,
   MenuItem,
-  Box
+  Box,
+  useMediaQuery
 } from '@mui/material';
 import {
   CheckCircle,
@@ -24,18 +25,31 @@ import {
   LocalActivity,
   MoreVert,
   EventAvailable,
-  CreditCard
+  CreditCard,
+  Chat
 } from '@mui/icons-material';
+import { useTheme } from "@mui/material/styles";
 import Navbar from '../components/navbar';
 import postRequestService from '../redux/api/tripRequestService';
 import { handleApiError } from '../redux/api/http-common';
+import { tripRequest } from '../types';
+import { getKeyByValue, REQUESTSTATUS } from '../Constants';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
+import chatServices from '../redux/api/chatServices';
 
 
 const RequestManagementTab = () => {
-  const [requests,setRequests ] = useState([])
+    const navigate = useNavigate()
+  const [requests,setRequests ] = useState<Array<tripRequest>>([])
   const [tabValue, setTabValue] = useState(0);
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedRequest, setSelectedRequest] = useState(null);
+  const [refresh, setRefresh] = useState(false);
+
+  const theme = useTheme()
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
 
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
@@ -55,20 +69,77 @@ const RequestManagementTab = () => {
 
     postRequestService.getAllRequests()
     .then(response=>{
+        console.log(response.data)
         setRequests(response.data)
     })
     .catch(error=>{
         handleApiError(error)
     })
-  },[])
+  },[refresh])
 
-  const getStatusChip = (status) => {
+
+  const handleAcceptRequest = async (id : string)=>{
+
+    postRequestService.acceptRequest(id)
+    .then(res=>{
+        toast('Request Accepted Succesfully. Notification Sent To User')
+    })
+    .catch(error=>{
+        console.log(error)
+        toast("There was an error accepting request, please try later. Or contact Support")
+    })
+    .finally(()=>{
+        setRefresh(!refresh)
+    })
+  }
+
+  const handleRejectRequest = async (id : string ) =>{
+    postRequestService.rejectRequest(id)
+    .then(res=>{
+        toast("Request Rejected. Notification Sent to User")
+    })
+    .catch(error=>{
+        console.log(error)
+        toast("There was an error rejecting the request. Try again or contact support")
+
+    })
+    .finally(()=>{
+        setRefresh(!refresh)
+    })
+  }
+
+  const handleChat = (email : string)=>{
+    console.log(email)
+    chatServices.getChatRooms(email)
+    .then(response=>{
+        if (response.data.length > 0){
+            navigate(`/chat/${response.data[0].id}`)
+        }
+        else{
+            let chatData = {
+                'second_participant' : email
+            }
+            chatServices.createRoom(chatData)
+            .then(response=>{
+                if (response?.status == 201){
+                    navigate(`chat/${response.data.id}`)
+                }
+            })
+            .catch(error=>{
+                handleApiError(error)
+            })
+        }
+    })
+  }
+
+  const getStatusChip = (status : any) => {
     const statusConfig = {
-      pending: { color: 'default', icon: <AccessTime fontSize="small" /> },
-      accepted: { color: 'primary', icon: <CheckCircle fontSize="small" /> },
-      rejected: { color: 'default', icon: <Cancel fontSize="small" /> }
+      Pending: { color: 'default', icon: <AccessTime fontSize="small" /> },
+      Accepted: { color: 'primary', icon: <CheckCircle fontSize="small" /> },
+      Rejected: { color: 'default', icon: <Cancel fontSize="small" /> }
     };
 
+    status = getKeyByValue(REQUESTSTATUS,status)
     return (
       <Chip
         label={status.charAt(0).toUpperCase() + status.slice(1)}
@@ -81,9 +152,9 @@ const RequestManagementTab = () => {
 
   // Filter requests based on tab
   const filteredRequests = requests.filter(request => {
-    if (tabValue === 0) return request.status === 'pending';
-    if (tabValue === 1) return request.status === 'accepted';
-    if (tabValue === 2) return request.status === 'rejected';
+    if (tabValue === 0) return request.status === REQUESTSTATUS.Pending;
+    if (tabValue === 1) return request.status === REQUESTSTATUS.Accepted;
+    if (tabValue === 2) return request.status === REQUESTSTATUS.Rejected;
     return true;
   });
 
@@ -111,7 +182,7 @@ const RequestManagementTab = () => {
           <Typography variant="h5" gutterBottom>
             Trip Requests
             <Chip 
-              label={`${requests.filter(r => r.status === 'pending').length} Pending`} 
+              label={`${requests.filter(r => r.status === REQUESTSTATUS.Pending).length} Pending`} 
               color="primary" 
               size="small" 
               sx={{ ml: 1.5 }} 
@@ -129,20 +200,21 @@ const RequestManagementTab = () => {
               variant="fullWidth"
             >
               <Tab 
-                label={`Pending (${requests.filter(r => r.status === 'pending').length})`} 
+                label={`Pending (${requests.filter(r => r.status === REQUESTSTATUS.Pending).length})`} 
                 icon={<AccessTime />} 
-                iconPosition="start" 
+                iconPosition={isMobile ? "top" : "start"}
+                
               />
               <Tab 
-                label={`Accepted (${requests.filter(r => r.status === 'accepted').length})`} 
+                label={`Accepted (${requests.filter(r => r.status === REQUESTSTATUS.Accepted).length})`} 
                 icon={<CheckCircle />} 
-                iconPosition="start" 
-              />
+                iconPosition={isMobile ? "top" : "start"}
+                />
               <Tab 
-                label={`Rejected (${requests.filter(r => r.status === 'rejected').length})`} 
+                label={`Rejected (${requests.filter(r => r.status === REQUESTSTATUS.Rejected).length})`} 
                 icon={<Cancel />} 
-                iconPosition="start" 
-              />
+                iconPosition={isMobile ? "top" : "start"}
+                />
             </Tabs>
             <Divider />
 
@@ -156,10 +228,6 @@ const RequestManagementTab = () => {
                         sx={{ 
                           p: 2, 
                           position: 'relative',
-                          ...(request.priority === 'high' && {
-                            borderLeft: '3px solid',
-                            borderLeftColor: 'text.primary'
-                          })
                         }}
                       >
                         <Grid container spacing={2} alignItems="center">
@@ -172,7 +240,7 @@ const RequestManagementTab = () => {
                               invisible={false}
                             >
                               <Avatar 
-                                src={request.user.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(request.user.name)}&background=random`} 
+                                src={request.from_profile.picture || `https://ui-avatars.com/api/?name=${encodeURIComponent(request.from_profile.name)}&background=random`} 
                                 sx={{ width: 56, height: 56, mx: 'auto' }} 
                               />
                             </Badge>
@@ -180,33 +248,33 @@ const RequestManagementTab = () => {
 
                           <Grid item xs={12} sm={8}>
                             <Typography variant="subtitle1">
-                              {request.user.name}
+                              {request.from_profile.name}
                             </Typography>
                             
                             <Stack direction="row" spacing={1} sx={{ my: 1 }}>
                               <Chip 
                                 size="small" 
                                 icon={<EventAvailable fontSize="small" />} 
-                                label={request.post.date} 
+                                label={request.trip.date_from} 
                                 variant="outlined"
                               />
                               <Chip 
                                 size="small" 
                                 icon={<Group fontSize="small" />} 
-                                label={`${request.post.seats} seat${request.post.seats > 1 ? 's' : ''}`} 
+                                label={`${request.trip.group_size} seat${request.trip.group_size> 1 ? 's' : ''}`} 
                                 variant="outlined"
                               />
                               <Chip 
                                 size="small" 
                                 icon={<CreditCard fontSize="small" />} 
-                                label={`$${request.post.price}`} 
+                                label={`$${request.trip.estimated_cost}`} 
                                 variant="outlined"
                               />
                             </Stack>
                             
                             <Typography variant="body1" sx={{ display: 'flex', alignItems: 'center' }}>
                               <LocalActivity fontSize="small" sx={{ mr: 0.5 }} />
-                              {request.post.title}
+                              {request.trip.title}
                             </Typography>
                           </Grid>
 
@@ -234,12 +302,13 @@ const RequestManagementTab = () => {
                           </>
                         )}
 
-                        {request.status === 'pending' && (
-                          <Stack direction="row" spacing={1} sx={{ mt: 2 }}>
+                        {request.status === REQUESTSTATUS.Pending && (
+                          <Stack direction={isMobile ? 'column' : 'row'} spacing={1} sx={{ mt: 2 }}>
                             <Button 
                               variant="contained" 
                               startIcon={<CheckCircle />}
                               fullWidth
+                              onClick={()=>handleAcceptRequest(String(request.id))}
                             >
                               Accept
                             </Button>
@@ -247,8 +316,19 @@ const RequestManagementTab = () => {
                               variant="outlined" 
                               startIcon={<Cancel />}
                               fullWidth
+                              onClick={()=>handleRejectRequest(String(request.id))}
+
                             >
                               Reject
+                            </Button>
+                            <Button 
+                              variant="outlined" 
+                              startIcon={<Chat />}
+                              fullWidth
+                              onClick={()=>handleChat(request.from_profile.user.email)}
+
+                            >
+                              Chat With User
                             </Button>
                           </Stack>
                         )}
@@ -283,7 +363,7 @@ const RequestManagementTab = () => {
                   <Stack direction="row" justifyContent="space-between">
                     <Typography variant="body2">Pending</Typography>
                     <Typography variant="body1">
-                      {requests.filter(r => r.status === 'pending').length}
+                      {requests.filter(r => r.status === REQUESTSTATUS.Pending).length}
                     </Typography>
                   </Stack>
                   <Box 
@@ -303,7 +383,7 @@ const RequestManagementTab = () => {
                         bottom: 0,
                         bgcolor: 'primary.main', 
                         borderRadius: 1,
-                        width: `${(requests.filter(r => r.status === 'pending').length / requests.length) * 100}%`
+                        width: `${(requests.filter(r => r.status === REQUESTSTATUS.Pending).length / requests.length) * 100}%`
                       }} 
                     />
                   </Box>
@@ -313,7 +393,7 @@ const RequestManagementTab = () => {
                   <Stack direction="row" justifyContent="space-between">
                     <Typography variant="body2">Accepted</Typography>
                     <Typography variant="body1">
-                      {requests.filter(r => r.status === 'accepted').length}
+                      {requests.filter(r => r.status === REQUESTSTATUS.Accepted).length}
                     </Typography>
                   </Stack>
                   <Box 
@@ -333,7 +413,7 @@ const RequestManagementTab = () => {
                         bottom: 0,
                         bgcolor: 'primary.main', 
                         borderRadius: 1,
-                        width: `${(requests.filter(r => r.status === 'accepted').length / requests.length) * 100}%`
+                        width: `${(requests.filter(r => r.status === REQUESTSTATUS.Accepted).length / requests.length) * 100}%`
                       }} 
                     />
                   </Box>
@@ -343,7 +423,7 @@ const RequestManagementTab = () => {
                   <Stack direction="row" justifyContent="space-between">
                     <Typography variant="body2">Rejected</Typography>
                     <Typography variant="body1">
-                      {requests.filter(r => r.status === 'rejected').length}
+                      {requests.filter(r => r.status === REQUESTSTATUS.Rejected).length}
                     </Typography>
                   </Stack>
                   <Box 
@@ -363,7 +443,7 @@ const RequestManagementTab = () => {
                         bottom: 0,
                         bgcolor: 'primary.main', 
                         borderRadius: 1,
-                        width: `${(requests.filter(r => r.status === 'rejected').length / requests.length) * 100}%`
+                        width: `${(requests.filter(r => r.status === REQUESTSTATUS.Rejected).length / requests.length) * 100}%`
                       }} 
                     />
                   </Box>
@@ -371,48 +451,6 @@ const RequestManagementTab = () => {
               </Stack>
             </Card>
             
-            <Card sx={{ p: 3 }}>
-              <Typography variant="h6" gutterBottom>
-                High Priority Requests
-              </Typography>
-              <Divider sx={{ mb: 2 }} />
-              
-              {requests.filter(r => r.priority === 'high').length > 0 ? (
-                <Stack spacing={2}>
-                  {requests
-                    .filter(r => r.priority === 'high')
-                    .map(request => (
-                      <Box key={request.id} sx={{ 
-                        p: 1.5, 
-                        borderRadius: 1, 
-                        bgcolor: 'action.hover',
-                        borderLeft: '3px solid',
-                        borderLeftColor: 'text.primary'
-                      }}>
-                        <Stack direction="row" spacing={1.5} alignItems="center">
-                          <Avatar 
-                            src={request.user.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(request.user.name)}&background=random`} 
-                            sx={{ width: 40, height: 40 }} 
-                          />
-                          <Box>
-                            <Typography variant="body2">
-                              {request.user.name}
-                            </Typography>
-                            <Typography variant="caption" color="text.secondary">
-                              {request.post.title} • {request.post.date}
-                            </Typography>
-                          </Box>
-                        </Stack>
-                      </Box>
-                    ))
-                  }
-                </Stack>
-              ) : (
-                <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'center', py: 2 }}>
-                  No high priority requests
-                </Typography>
-              )}
-            </Card>
           </Stack>
         </Grid>
       </Grid>
