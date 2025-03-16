@@ -9,9 +9,10 @@ import {
   Divider
 } from "@mui/material";
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import { Notification } from '../../types';
+import { Notification, Profile } from '../../types';
 import chatServices from '../../redux/api/chatServices';
 import { Circle as CircleIcon } from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
 
 type OnNotificationClick = (notification: Notification) => void;
 type updateNotification = (notification: Notification) => void;
@@ -19,18 +20,20 @@ type updateNotification = (notification: Notification) => void;
 
 
 interface NotificationComponentProps {
-    notifications: Array<Notification>; // Array of notifications
-    onNotificationClick: OnNotificationClick; // Function to handle notification clicks
-    updateNotification : updateNotification;
     scrolled?: boolean; // Optional boolean to indicate if the component is scrolled
-  }
+    profile : Profile
+    }
 
 
-const NotificationComponent : React.FC<NotificationComponentProps> = ({ notifications=[],
-     onNotificationClick,
+const NotificationComponent : React.FC<NotificationComponentProps> = ({ 
       scrolled = false,
-      updateNotification,
+      profile,
     }) => {
+
+
+  const navigate = useNavigate()
+  const [notifications, setNotifications] = React.useState<Array<Notification>>([]);
+
   const [anchorEl, setAnchorEl] = React.useState(null);
   
   const unreadCount = notifications.filter(notif => notif.unread).length;
@@ -42,15 +45,62 @@ const NotificationComponent : React.FC<NotificationComponentProps> = ({ notifica
   const handleCloseMenu = () => {
     setAnchorEl(null);
   };
+
+  console.log(profile)
   
+  const fetchNotifications = async () => {
+    if (profile?.profile == null) return
+    chatServices.getNotifications().then(response => {
+        setNotifications(response.data)
+    })
+        .catch(error => {
+            console.log(error)
+        })
+}
+
+  React.useEffect(() => {
+
+    fetchNotifications()
+    // Set up polling interval
+    const pollingInterval = setInterval(() => {
+        fetchNotifications();
+    }, 2 * 60 * 1000);
+
+    return () => clearInterval(pollingInterval);
+
+}, [])
 
 
-  const handleNotificationClick = (notification : Notification) => {
-    if (onNotificationClick) {
-      onNotificationClick(notification);
-    }
-    handleCloseMenu();
-  };
+const handleNotificationClick = async (notification: Notification) => {
+
+    chatServices.updateNotification(notification)
+        .then(response => {
+            console.log(response.data)
+        })
+        .catch(error => {
+            console.log(error)
+        })
+        .finally(() => {
+            handleCloseMenu();
+            navigate(`/chat/${notification.chat_room}`);
+
+        })
+
+
+}
+
+const handleNotificationRead = async (notification: Notification) => {
+    // When user clicks on small dot, this function is run
+    chatServices.updateNotification(notification)
+        .then(response => {
+            setNotifications(prevNotifications =>
+                prevNotifications.map(notification =>
+                    notification.id === response.data.id ? response.data : notification
+                )
+            );
+        })
+}
+
 
   return (
     <Box>
@@ -159,7 +209,7 @@ const NotificationComponent : React.FC<NotificationComponentProps> = ({ notifica
               size="small"
               onClick={(e) => {
                 e.stopPropagation(); // Prevent MenuItem onClick from firing
-                updateNotification(notification);
+                handleNotificationRead(notification);
               }}
               sx={{
                 ml: 1,

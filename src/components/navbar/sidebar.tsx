@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   List, 
   ListItemButton, 
@@ -21,6 +21,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import HelpIcon from '@mui/icons-material/Help';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 import MenuIcon from '@mui/icons-material/Menu';
+import { useLocation } from 'react-router-dom';
 
 // Create styled components
 const SidebarContainer = styled(Paper)(({ theme, collapsed }) => ({
@@ -78,6 +79,7 @@ const getIconForPage = (pageName) => {
     case 'users':
     case 'team':
     case 'people':
+    case 'requests':
       return <PeopleIcon />;
     case 'settings':
       return <SettingsIcon />;
@@ -86,14 +88,23 @@ const getIconForPage = (pageName) => {
   }
 };
 
-const Sidebar = ({ pages, navigate }) => {
+const Sidebar = ({ pages, navigate, onClose }) => {
   const [collapsed, setCollapsed] = useState(false);
-  const [activePage, setActivePage] = useState(pages[0]?.id);
+  const location = useLocation();
+  
+  // Find active page based on current location path
+  const getActivePageId = () => {
+    const currentPage = pages.find(page => location.pathname === page.path);
+    return currentPage?.id || pages[0]?.id;
+  };
 
   const handleNavigate = (page) => {
     sessionStorage.setItem("toursFilters", JSON.stringify({}));
     navigate(page.path);
-    setActivePage(page.id);
+    // If onClose is provided (for mobile drawer), call it
+    if (onClose) {
+      onClose();
+    }
   };
 
   return (
@@ -115,44 +126,38 @@ const Sidebar = ({ pages, navigate }) => {
       <Divider sx={{ mx: 2, opacity: 0.6 }} />
       
       <List sx={{ mt: 2 }}>
-        {pages.map((page) => (
-          <Tooltip 
-            key={page.id} 
-            title={collapsed ? page.pageName : ""} 
-            placement="right"
-          >
-            <StyledListItemButton
-              onClick={() => handleNavigate(page)}
-              active={activePage === page.id ? 1 : 0}
+        {pages.map((page) => {
+          const isActive = location.pathname === page.path;
+          
+          return (
+            <Tooltip 
+              key={page.id} 
+              title={collapsed ? page.pageName : ""} 
+              placement="right"
             >
-              <ListItemIcon sx={{ minWidth: collapsed ? 'auto' : 40, color: 'text.secondary' }}>
-                {getIconForPage(page.pageName)}
-              </ListItemIcon>
-              {!collapsed && (
-                <ListItemText 
-                  primary={page.pageName} 
-                  primaryTypographyProps={{
-                    fontSize: 15,
-                    fontWeight: activePage === page.id ? 600 : 500,
-                  }}
-                />
-              )}
-            </StyledListItemButton>
-          </Tooltip>
-        ))}
+              <StyledListItemButton
+                onClick={() => handleNavigate(page)}
+                active={isActive ? 1 : 0}
+              >
+                <ListItemIcon sx={{ minWidth: collapsed ? 'auto' : 40, color: 'text.secondary' }}>
+                  {getIconForPage(page.pageName)}
+                </ListItemIcon>
+                {!collapsed && (
+                  <ListItemText 
+                    primary={page.pageName} 
+                    primaryTypographyProps={{
+                      fontSize: 15,
+                      fontWeight: isActive ? 600 : 500,
+                    }}
+                  />
+                )}
+              </StyledListItemButton>
+            </Tooltip>
+          );
+        })}
       </List>
     </SidebarContainer>
   );
 };
 
 export default Sidebar;
-
-// Usage example:
-// const pages = [
-//   { id: 1, pageName: 'Home', path: '/' },
-//   { id: 2, pageName: 'Dashboard', path: '/dashboard' },
-//   { id: 3, pageName: 'Users', path: '/users' },
-//   { id: 4, pageName: 'Settings', path: '/settings' }
-// ];
-//
-// <Sidebar pages={pages} navigate={navigate} />

@@ -29,13 +29,12 @@ import {
   Chat
 } from '@mui/icons-material';
 import { useTheme } from "@mui/material/styles";
-import postRequestService from '../redux/api/tripRequestService';
-import { handleApiError } from '../redux/api/http-common';
-import { tripRequest } from '../types';
-import { getKeyByValue, REQUESTSTATUS } from '../Constants';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-import chatServices from '../redux/api/chatServices';
+import { handleApiError } from '../../redux/api/http-common';
+import chatServices from '../../redux/api/chatServices';
+import { getKeyByValue, REQUESTSTATUS } from '../../Constants';
+import postRequestService from '../../redux/api/tripRequestService';
 
 const ReceivedRequests = () => {
   const navigate = useNavigate();

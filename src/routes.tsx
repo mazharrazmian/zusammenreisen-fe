@@ -4,8 +4,7 @@ import HomePage from "./pages/homePage";
 import Page404 from "./pages/Page404";
 import LoginPage from "./pages/login";
 import RegisterPage from "./pages/register";
-import Details from "./pages/postDetails";
-import AddPost from "./pages/addPost";
+import Details from "./pages/tourDetails";
 import ChatPage from "./pages/chatPage";
 import EditPost from "./pages/editTour";
 import ProtectedRoute from "./hoc/protectedRoute";
@@ -14,7 +13,9 @@ import ResetPassword from "./pages/passwordReset";
 import ProfilePage from "./pages/accountPage";
 import TravelBuddyBlog from "./pages/blogList";
 import CreateTour from "./pages/createTour";
-import RequestManagementTab from "./pages/requestManagement";
+import RequestManagementPage from "./pages/requestManagement";
+import MyTripsPage from "./pages/tripPlannerList";
+import TripPlannerDetail from "./pages/tripPlannerDetail";
 
 export default function Router() {
     const routes = useRoutes([
@@ -26,7 +27,6 @@ export default function Router() {
         ],
       },
       { path: "posts/:id", element: <Details /> },
-      { path: "requests", element: <RequestManagementTab/> },
       {path : "blog",element : <TravelBuddyBlog/>},
       { 
         path: "add/post", 
@@ -49,7 +49,23 @@ export default function Router() {
         path: "requests", 
         element: (
           <ProtectedRoute>
-            <RequestManagementTab />
+            <RequestManagementPage />
+          </ProtectedRoute>
+        ) 
+      },
+      { 
+        path: "mytrips", 
+        element: (
+          <ProtectedRoute>
+            <MyTripsPage/>
+          </ProtectedRoute>
+        ) 
+      },
+      { 
+        path: "mytrips/:id", 
+        element: (
+          <ProtectedRoute>
+            <TripPlannerDetail/>
           </ProtectedRoute>
         ) 
       },

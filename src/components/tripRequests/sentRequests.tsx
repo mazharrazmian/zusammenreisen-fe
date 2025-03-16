@@ -31,13 +31,14 @@ import {
   Edit
 } from '@mui/icons-material';
 import { useTheme } from "@mui/material/styles";
-import postRequestService from '../redux/api/tripRequestService';
-import { handleApiError } from '../redux/api/http-common';
-import { tripRequest } from '../types';
-import { getKeyByValue, REQUESTSTATUS } from '../Constants';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-import chatServices from '../redux/api/chatServices';
+import { handleApiError } from '../../redux/api/http-common';
+import chatServices from '../../redux/api/chatServices';
+import { getKeyByValue, REQUESTSTATUS } from '../../Constants';
+import postRequestService from '../../redux/api/tripRequestService';
+
+
 
 const SentRequests = () => {
   const navigate = useNavigate();
@@ -66,7 +67,7 @@ const SentRequests = () => {
 
   useEffect(() => {
     // This API endpoint needs to be created for sent requests
-    postRequestService.getSentRequests()
+    postRequestService.getAllRequests()
       .then(response => {
         console.log(response.data);
         setRequests(response.data);
@@ -92,7 +93,6 @@ const SentRequests = () => {
   };
 
   const handleChat = (email) => {
-    console.log(email);
     chatServices.getChatRooms(email)
       .then(response => {
         if (response.data.length > 0) {

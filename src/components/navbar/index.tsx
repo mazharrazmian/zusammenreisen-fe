@@ -16,11 +16,8 @@ import Cookies from "js-cookie";
 import { useDispatch } from "react-redux";
 import { clearProfile } from "../../redux/slice/profileSlice";
 import { toast } from "react-toastify";
-import { Chat, SettingsApplications, SettingsVoiceOutlined } from "@mui/icons-material";
 import NotificationComponent from "./notification";
-import chatServices from "../../redux/api/chatServices";
 
-import { Notification } from "../../types";
 import Iconify from "../iconify";
 import { useAppSelector } from "../../redux/store";
 import Sidebar from "./sidebar";
@@ -40,7 +37,6 @@ const Navbar = React.memo(() => {
     const dispatch = useDispatch();
     const location = useLocation();
 
-    const [notifications, setNotifications] = React.useState<Array<Notification>>([]);
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
         null
     );
@@ -51,6 +47,7 @@ const Navbar = React.memo(() => {
 
     const profile: any = useAppSelector((s) => s?.profile);
 
+    console.log(profile)
     const pages = profile?.profile ? normalPages.concat(loggedInPages) : normalPages
 
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -89,59 +86,6 @@ const Navbar = React.memo(() => {
             window.removeEventListener("scroll", handleScroll);
         };
     }, []);
-
-
-    const fetchNotifications = async () => {
-        if (profile?.profile == null) return
-        chatServices.getNotifications().then(response => {
-            setNotifications(response.data)
-        })
-            .catch(error => {
-                console.log(error)
-            })
-    }
-
-    React.useEffect(() => {
-
-        fetchNotifications()
-        // Set up polling interval
-        const pollingInterval = setInterval(() => {
-            fetchNotifications();
-        }, 2 * 60 * 1000);
-
-        return () => clearInterval(pollingInterval);
-
-    }, [])
-
-
-    const handleNotificationClick = async (notification: Notification) => {
-
-        chatServices.updateNotification(notification)
-            .then(response => {
-                console.log(response.data)
-            })
-            .catch(error => {
-                console.log(error)
-            })
-            .finally(() => {
-                navigate(`/chat/${notification.chat_room}`);
-
-            })
-
-
-    }
-
-    const handleNotificationRead = async (notification: Notification) => {
-        // When user clicks on small dot, this function is run
-        chatServices.updateNotification(notification)
-            .then(response => {
-                setNotifications(prevNotifications =>
-                    prevNotifications.map(notification =>
-                        notification.id === response.data.id ? response.data : notification
-                    )
-                );
-            })
-    }
 
 
 
@@ -204,7 +148,13 @@ const Navbar = React.memo(() => {
                             open={Boolean(anchorElNav)}
                             onClose={handleCloseNavMenu}
                         >
-                            <Sidebar pages={pages} navigate={navigate}/>
+                            <Box sx={{ width: 250 }}>
+                                <Sidebar 
+                                    pages={pages} 
+                                    navigate={navigate} 
+                                    onClose={handleCloseNavMenu} 
+                                />
+                            </Box>
                         </Drawer>
                     </Box>
 
@@ -266,6 +216,7 @@ const Navbar = React.memo(() => {
                                     },
                                 }}
                             >
+                                
                                 {page.pageName}
                             </Button>
                         ))}
@@ -276,10 +227,8 @@ const Navbar = React.memo(() => {
                                 <Button variant="contained" onClick={() => navigate('/add/post')} >Add Post</Button>
                             </Box>
                             <NotificationComponent
-                                notifications={notifications}
-                                onNotificationClick={handleNotificationClick}
                                 scrolled={scrolled}
-                                updateNotification={handleNotificationRead}
+                                profile={profile}
                             />
 
                             <Box sx={{ flexGrow: 0 }}>
