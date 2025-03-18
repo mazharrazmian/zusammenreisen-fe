@@ -36,9 +36,8 @@ import chatServices from '../../redux/api/chatServices';
 import { getKeyByValue, REQUESTSTATUS } from '../../Constants';
 import postRequestService from '../../redux/api/tripRequestService';
 
-const ReceivedRequests = () => {
+const ReceivedRequests = ({requests , handleAcceptRequest , handleRejectRequest}) => {
   const navigate = useNavigate();
-  const [requests, setRequests] = useState([]);
   const [tabValue, setTabValue] = useState(0);
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedRequest, setSelectedRequest] = useState(null);
@@ -61,45 +60,8 @@ const ReceivedRequests = () => {
     setSelectedRequest(null);
   };
 
-  useEffect(() => {
-    postRequestService.getAllRequests()
-      .then(response => {
-        console.log(response.data);
-        setRequests(response.data);
-      })
-      .catch(error => {
-        handleApiError(error);
-      });
-  }, [refresh]);
-
-  const handleAcceptRequest = async (id) => {
-    postRequestService.acceptRequest(id)
-      .then(res => {
-        toast('Request Accepted Successfully. Notification Sent To User');
-      })
-      .catch(error => {
-        console.log(error);
-        toast("There was an error accepting request, please try later. Or contact Support");
-      })
-      .finally(() => {
-        setRefresh(!refresh);
-      });
-  };
-
-  const handleRejectRequest = async (id) => {
-    postRequestService.rejectRequest(id)
-      .then(res => {
-        toast("Request Rejected. Notification Sent to User");
-      })
-      .catch(error => {
-        console.log(error);
-        toast("There was an error rejecting the request. Try again or contact support");
-      })
-      .finally(() => {
-        setRefresh(!refresh);
-      });
-  };
-
+  
+  
   const handleChat = (email) => {
     console.log(email);
     chatServices.getChatRooms(email)

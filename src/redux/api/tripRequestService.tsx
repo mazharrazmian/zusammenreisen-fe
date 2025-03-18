@@ -11,14 +11,15 @@ export const updateRequest = (id : string ,data : any) => callAPiMultiPart.patch
 
 export const acceptRequest = (id : string) => callAPi.post(`/reisapp/post-requests/${id}/accept/`)
 export const rejectRequest = (id : string) => callAPi.post(`/reisapp/post-requests/${id}/deny/`)
-
+export const deleteRequest = (id : string) => callAPi.delete(`/reisapp/post-requests/${id}`)
 
 const postRequestService = {
     createRequest,
     updateRequest,
     getAllRequests,
     acceptRequest,
-    rejectRequest
+    rejectRequest,
+    deleteRequest
 }
 
 export default postRequestService;

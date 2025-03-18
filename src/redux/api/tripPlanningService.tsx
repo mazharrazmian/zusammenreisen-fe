@@ -23,7 +23,7 @@ export const tripService = {
   
   createComment : async (comment) => callAPiMultiPart.post(`${API_URL}/planner/comments/`,comment),
 
-  deleteComment : async (commentId) => callAPi.delete(`${API_URL}/planner/comments/${commentId}`),
+  deleteComment : async (commentId,tripId) => callAPi.delete(`${API_URL}/planner/comments/${commentId}?post_id=${tripId}`),
 
   // The Backend API gets 'next' as a complete url for next page. When the user clicks on it.
   // More comments are loaded. This way, pagination is completely done through backend.

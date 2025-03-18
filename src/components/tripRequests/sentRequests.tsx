@@ -40,9 +40,8 @@ import postRequestService from '../../redux/api/tripRequestService';
 
 
 
-const SentRequests = () => {
+const SentRequests = ({requests}) => {
   const navigate = useNavigate();
-  const [requests, setRequests] = useState([]);
   const [tabValue, setTabValue] = useState(0);
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedRequest, setSelectedRequest] = useState(null);
@@ -65,22 +64,12 @@ const SentRequests = () => {
     setSelectedRequest(null);
   };
 
-  useEffect(() => {
-    // This API endpoint needs to be created for sent requests
-    postRequestService.getAllRequests()
-      .then(response => {
-        console.log(response.data);
-        setRequests(response.data);
-      })
-      .catch(error => {
-        handleApiError(error);
-      });
-  }, [refresh]);
-
   const handleCancelRequest = async (id) => {
     // This API endpoint needs to be created
-    postRequestService.cancelRequest(id)
+    postRequestService.deleteRequest(id)
       .then(res => {
+        //TODO : Delete the notification sent to user 
+        // when the sent request is deleted
         toast('Request Canceled Successfully');
       })
       .catch(error => {
