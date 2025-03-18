@@ -18,12 +18,16 @@ export const tripService = {
     
   },
 
-  getTripComments : async (tripId) => callAPi.get(`${API_URL}/planner/trips/${tripId}/comments`),
+  getTripComments : async (tripId) => callAPi.get(`${API_URL}/planner/comments?post_id=${tripId}`),
 
   
   createComment : async (comment) => callAPiMultiPart.post(`${API_URL}/planner/comments/`,comment),
 
-  deleteComment : async (commentId) => callAPi.delete(`${API_URL}/planner/comments/${commentId}`)
+  deleteComment : async (commentId) => callAPi.delete(`${API_URL}/planner/comments/${commentId}`),
+
+  // The Backend API gets 'next' as a complete url for next page. When the user clicks on it.
+  // More comments are loaded. This way, pagination is completely done through backend.
+  loadMoreComments : async (url : string) => callAPi.get(url) 
 
 };
 

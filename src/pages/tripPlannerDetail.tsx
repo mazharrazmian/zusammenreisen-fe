@@ -29,77 +29,7 @@ const TripPlannerPage = () => {
         setLoading(false)
     })
   },[id])
-
-
-  // Function to poll comments
-  const fetchComments = () => {
-    tripService.getTripComments(id)
-      .then(res => {
-        setTripDetails(prev => ({
-          ...prev,
-          comments: res.data, // Update only the comments array
-        }));
-      })
-      .catch(err => {
-        console.error("Error fetching comments:", err);
-      });
-  };
-
-  useEffect(() => {
-    let interval;
-
-    const startPolling = () => {
-      fetchComments(); // Fetch immediately when the user is active
-      interval = setInterval(fetchComments, 10 * 1000); // Fetch every 60 sec
-    };
-
-    const stopPolling = () => {
-      if (interval) {
-        clearInterval(interval);
-      }
-    };
-
-    // Listen to page visibility changes
-    const handleVisibilityChange = () => {
-      if (document.visibilityState === "visible") {
-        startPolling();
-      } else {
-        stopPolling();
-      }
-    };
-
-    // Start polling when the component mounts
-    startPolling();
-    document.addEventListener("visibilitychange", handleVisibilityChange);
-
-    // Cleanup function: stop polling and remove event listener on unmount
-    return () => {
-      stopPolling();
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
-    };
-  }, [id]); // Re-run effect when the trip ID changes
-
-  const onCommentDelete = (commentId)=>{
-    tripService.deleteComment(commentId)
-    .then(res=>{
-        toast('Comment Deleted')
-        fetchComments()
-    })
-  }
-
-  const onCommentAdd = (comment) =>{
-    tripService.createComment(comment)
-    .then(res=>{
-        setTripDetails((prev) => ({
-            ...prev,
-            comments: [...(prev?.comments || []), res.data], // Append new comment
-          }));
-    })
-    .catch(err=>{
-        console.log(err)
-        handleApiError(err)
-    })
-  }
+  
 
   return (
     
@@ -109,9 +39,7 @@ const TripPlannerPage = () => {
         
         <Grid container spacing={4}>
           <Grid item xs={12} md={8}>
-            <CommentsSection comments={tripDetails?.comments} loading={loading} postID={id}
-            onCommentDelete={onCommentDelete}
-            onCommentAdd = {onCommentAdd}
+            <CommentsSection loading={loading} postID={id}
             />
           </Grid>
           <Grid item xs={12} md={4}>
