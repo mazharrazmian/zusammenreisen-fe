@@ -15,7 +15,7 @@ import TravelBuddyBlog from "./pages/blogList";
 import CreateTour from "./pages/createTour";
 import RequestManagementPage from "./pages/requestManagement";
 import MyTripsPage from "./pages/tripPlannerList";
-import TripPlannerDetail from "./pages/tripPlannerDetail";
+import TripPlannerPage from "./pages/tripPlannerDetail";
 
 export default function Router() {
     const routes = useRoutes([
@@ -65,7 +65,7 @@ export default function Router() {
         path: "mytrips/:id", 
         element: (
           <ProtectedRoute>
-            <TripPlannerDetail/>
+            <TripPlannerPage/>
           </ProtectedRoute>
         ) 
       },

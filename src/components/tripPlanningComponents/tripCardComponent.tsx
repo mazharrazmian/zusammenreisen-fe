@@ -18,7 +18,6 @@ import PersonIcon from '@mui/icons-material/Person';
 
 const TripCard = ({ trip }) => {
   const navigate = useNavigate();
-  console.log(trip)
   const getStatusColor = (status) => {
     switch(status) {
       case 'upcoming':
@@ -39,8 +38,9 @@ const TripCard = ({ trip }) => {
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
   
-  const handleTripClick = () => {
-    navigate(`/trips/${trip.id}`);
+  const handleTripClick = (e) => {
+    e.stopPropagation()
+    navigate(`/mytrips/${trip.id}`);
   };
 
   return (
@@ -113,8 +113,7 @@ const TripCard = ({ trip }) => {
       </CardContent>
       <CardActions>
         <Button size="small" color="primary" onClick={(e) => {
-          e.stopPropagation();
-          navigate(`/trips/${trip.id}`);
+            handleTripClick(e)
         }}>
           View Details
         </Button>

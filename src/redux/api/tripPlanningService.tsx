@@ -12,33 +12,19 @@ export const tripService = {
   },
 
   // Get a specific trip by ID
-  getTripById: async (tripId) => {
-    try {
-      const response = await axios.get(`${API_URL}/trips/${tripId}`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-      });
-      return response.data;
-    } catch (error) {
-      console.error(`Error fetching trip ${tripId}:`, error);
-      throw error;
-    }
+  getTripById: async (tripId) => {    
+    const response = await callAPi.get(`${API_URL}/planner/trips/${tripId}`)
+    return response;
+    
   },
 
+  getTripComments : async (tripId) => callAPi.get(`${API_URL}/planner/trips/${tripId}/comments`),
+
   
-  // Update notification settings for a trip
-  updateNotificationSettings: async (tripId, settings) => {
-    try {
-      const response = await axios.put(
-        `${API_URL}/trips/${tripId}/notifications`, 
-        settings,
-        { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
-      );
-      return response.data;
-    } catch (error) {
-      console.error('Error updating notification settings:', error);
-      throw error;
-    }
-  }
+  createComment : async (comment) => callAPiMultiPart.post(`${API_URL}/planner/comments/`,comment),
+
+  deleteComment : async (commentId) => callAPi.delete(`${API_URL}/planner/comments/${commentId}`)
+
 };
 
 // messageService.js

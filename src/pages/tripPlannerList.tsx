@@ -16,9 +16,6 @@ import SearchIcon from '@mui/icons-material/Search';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import TripCard from '../components/tripPlanningComponents/tripCardComponent';
 import { tripService } from '../redux/api/tripPlanningService';
-import postServices from '../redux/api/postService';
-// import TripFilters from '../components/tripPlanningComponents/tripFilters';
-
 
 const MyTripsPage = () => {
   const [trips, setTrips] = useState([]);
@@ -36,7 +33,6 @@ const MyTripsPage = () => {
   useEffect(() => {
     tripService.getUserTrips('')
     .then(res=>{
-        console.log(res.data)
         setTrips(res.data)
     })
     .catch(err=>{
