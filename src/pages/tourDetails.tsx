@@ -100,29 +100,6 @@ const TravelDetails = () => {
             });
     }, [id]);
 
-    //   const handleChat = () => {
-    //     if (!postData?.posted_by?.user.email) return;
-
-    //     chatServices.getChatRooms(postData.posted_by.user.email)
-    //       .then(response => {
-    //         if (response.data.length > 0) {
-    //           navigate(`/chat/${response.data[0].id}`);
-    //         } else {
-    //           let chatData = {
-    //             'second_participant': postData.posted_by.user.email
-    //           };
-    //           chatServices.createRoom(chatData)
-    //             .then(response => {
-    //               if (response?.status === 201) {
-    //                 navigate(`/chat/${response.data.id}`);
-    //               }
-    //             })
-    //             .catch(error => {
-    //               handleApiError(error);
-    //             });
-    //         }
-    //       });
-    //   };
 
 
     const handleEdit = () => {
@@ -184,7 +161,6 @@ const TravelDetails = () => {
     if (loading) {
         return (
             <Box sx={{ mt: 12 }}>
-                <Navbar />
                 <Container>
                     <LinearProgress />
                     <Typography variant="h6" sx={{ mt: 2, textAlign: 'center' }}>
@@ -197,19 +173,6 @@ const TravelDetails = () => {
 
     return (
         <>
-            <Box
-                sx={{
-                    background: "#000",
-                    position: "fixed",
-                    top: "0",
-                    left: "0",
-                    right: "0",
-                    height: "100px",
-                    zIndex: '3',
-                }}
-            >
-                <Navbar />
-            </Box>
 
             <Container maxWidth="lg" sx={{ mt: 12, mb: 6 }}>
                 {/* Back button */}

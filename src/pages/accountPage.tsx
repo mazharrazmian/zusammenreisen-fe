@@ -88,20 +88,49 @@ const ProfilePage = () => {
 
     return (
         <>
-            <Box sx={{ background: "#000", top: "0", left: "0", right: "0", height: "100px" }}>
-                <Navbar />
-            </Box>
-
             <div style={{ maxWidth: "500px", margin: "auto", textAlign: "center" }}>
                 <h2>Profile</h2>
                 
-                {/* Profile Picture Upload */}
-                <div style={{ position: "relative", display: "inline-block", cursor: "pointer" }}>
-                    <img 
-                        src={previewImage} 
-                        alt="Profile" 
-                        style={{ width: 120, height: 120, borderRadius: "50%", objectFit: "cover" }} 
-                    />
+                {/* Updated Profile Picture Upload - entire area clickable */}
+                <div style={{ position: "relative", display: "inline-block" }}>
+                    <label htmlFor="fileUpload" style={{ 
+                        display: "block", 
+                        cursor: "pointer",
+                        position: "relative"
+                    }}>
+                        <div style={{
+                            width: 120,
+                            height: 120,
+                            borderRadius: "50%",
+                            overflow: "hidden",
+                            position: "relative"
+                        }}>
+                            <img 
+                                src={previewImage} 
+                                alt="Profile" 
+                                style={{ 
+                                    width: "100%", 
+                                    height: "100%", 
+                                    objectFit: "cover" 
+                                }} 
+                            />
+                            <div style={{
+                                position: "absolute",
+                                bottom: 0,
+                                left: 0,
+                                right: 0,
+                                background: "rgba(0, 0, 0, 0.5)",
+                                color: "white",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                padding: "4px 0"
+                            }}>
+                                <CloudUpload fontSize="small" style={{ marginRight: "4px" }} />
+                                <small>Change</small>
+                            </div>
+                        </div>
+                    </label>
                     <input 
                         type="file" 
                         accept="image/*" 
@@ -109,20 +138,6 @@ const ProfilePage = () => {
                         style={{ display: "none" }} 
                         id="fileUpload"
                     />
-                    <label htmlFor="fileUpload" style={{
-                        position: "absolute", 
-                        bottom: 0, 
-                        right: 0, 
-                        background: "rgba(0, 0, 0, 0.5)", 
-                        color: "white", 
-                        borderRadius: "50%", 
-                        padding: "8px", 
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center"
-                    }}>
-                        <CloudUpload fontSize="small" />
-                    </label>
                 </div>
 
                 <TextField fullWidth label="Name" value={user.name} disabled margin="normal" />

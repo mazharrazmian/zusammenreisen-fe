@@ -13,225 +13,235 @@ import { Notification, Profile } from '../../types';
 import chatServices from '../../redux/api/chatServices';
 import { Circle as CircleIcon } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
-
-type OnNotificationClick = (notification: Notification) => void;
-type updateNotification = (notification: Notification) => void;
-
+import { ContentTypeMap } from '../../Constants';
 
 
 interface NotificationComponentProps {
     scrolled?: boolean; // Optional boolean to indicate if the component is scrolled
-    profile : Profile
-    }
+    profile : Profile;
+    isTransparent : boolean,
+}
 
 
 const NotificationComponent : React.FC<NotificationComponentProps> = ({ 
-      scrolled = false,
-      profile,
-    }) => {
-
-
-  const navigate = useNavigate()
-  const [notifications, setNotifications] = React.useState<Array<Notification>>([]);
-
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  
-  const unreadCount = notifications.filter(notif => notif.unread).length;
-  
-  const handleOpenMenu = (event : any) => {
-    setAnchorEl(event.currentTarget);
-  };
-  
-  const handleCloseMenu = () => {
-    setAnchorEl(null);
-  };
-
-  console.log(profile)
-  
-  const fetchNotifications = async () => {
-    if (profile?.profile == null) return
-    chatServices.getNotifications().then(response => {
-        setNotifications(response.data)
-    })
-        .catch(error => {
-            console.log(error)
-        })
-}
-
-  React.useEffect(() => {
-
-    fetchNotifications()
-    // Set up polling interval
-    const pollingInterval = setInterval(() => {
+    scrolled = false,
+    profile,
+    isTransparent
+}) => {
+    const navigate = useNavigate()
+    const [notifications, setNotifications] = React.useState<Array<Notification>>([]);
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const [lastUpdate, setLastUpdate] = React.useState(Date.now());
+    
+    const unreadCount = notifications.filter(notif => notif.unread).length;
+    
+    const handleOpenMenu = (event : any) => {
+        setAnchorEl(event.currentTarget);
+        // Fetch latest notifications when menu is opened
         fetchNotifications();
-    }, 2 * 60 * 1000);
+    };
+    
+    const handleCloseMenu = () => {
+        setAnchorEl(null);
+    };
+    
+    const fetchNotifications = async () => {
+        if (!profile?.profile) return;
+        
+        try {
+            const response = await chatServices.getNotifications();
+            setNotifications(response.data);
+            setLastUpdate(Date.now());
+        } catch (error) {
+            console.log("Error fetching notifications:", error);
+        }
+    }
 
-    return () => clearInterval(pollingInterval);
+    React.useEffect(() => {
+        // Initial fetch
+        if (profile?.profile) {
+            fetchNotifications();
+        }
+        
+        // Set up polling interval
+        const pollingInterval = setInterval(() => {
+            fetchNotifications();
+        }, 30 * 1000); // Reduced to 30 seconds for more frequent updates
+        
+        return () => clearInterval(pollingInterval);
+    }, [profile?.profile]); // Add profile as dependency
 
-}, [])
-
-
-const handleNotificationClick = async (notification: Notification) => {
-
-    chatServices.updateNotification(notification)
-        .then(response => {
-            console.log(response.data)
-        })
-        .catch(error => {
-            console.log(error)
-        })
-        .finally(() => {
-            handleCloseMenu();
-            navigate(`/chat/${notification.chat_room}`);
-
-        })
-
-
-}
-
-const handleNotificationRead = async (notification: Notification) => {
-    // When user clicks on small dot, this function is run
-    chatServices.updateNotification(notification)
-        .then(response => {
+    const handleNotificationClick = async (notification: Notification) => {
+        try {
+            // Mark as read in the backend
+            await chatServices.updateNotification(notification);
+            
+            // Update local state immediately
             setNotifications(prevNotifications =>
-                prevNotifications.map(notification =>
-                    notification.id === response.data.id ? response.data : notification
+                prevNotifications.map(notif =>
+                    notif.id === notification.id ? { ...notif, unread: false } : notif
                 )
             );
-        })
-}
-
-
-  return (
-    <Box>
-      <IconButton onClick={handleOpenMenu}>
-        <Badge badgeContent={unreadCount} color="error">
-          <NotificationsIcon 
-            sx={{
-              color: scrolled ? "#000" : "#fff",
-              ":hover": { color: "#1877F2" },
-              transition: "color 0.3s ease"
-            }}
-          />
-        </Badge>
-      </IconButton>
-      
-      <Menu
-        sx={{ mt: 2 }}
-        id="notifications-menu"
-        anchorEl={anchorEl}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
-        }}
-        keepMounted
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
-        }}
-        open={Boolean(anchorEl)}
-        onClose={handleCloseMenu}
-        PaperProps={{
-          sx: {
-            maxHeight: 400,
-            width: '300px',
-            overflowY: 'auto'
-          }
-        }}
-      >
-        {(!notifications || notifications.length === 0) ? (
-          <MenuItem>
-            <Typography sx={{ color: 'text.secondary' }}>
-              No notifications
-            </Typography>
-          </MenuItem>
-        ) : (
-          notifications.map((notification) => (
-            <MenuItem
-            key={notification.id}
-            onClick={() => handleNotificationClick(notification)}
-            sx={{
-              bgcolor: notification.unread ? '#EBF5FF' : 'transparent',
-              '&:hover': {
-                bgcolor: '#F5F9FF'
-              },
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'flex-start',
-              p: 2,
-              borderBottom: '1px solid #E0E0E0'
-            }}
-          >
-            <Box sx={{ flex: 1 }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 0.5 }}>
-                {notification.unread && (
-                  <Box
-                    sx={{
-                      width: 8,
-                      height: 8,
-                      borderRadius: '50%',
-                      bgcolor: '#1976d2',
-                      flexShrink: 0
-                    }}
-                  />
-                )}
-                <Typography 
-                  variant="subtitle2" 
-                  sx={{ 
-                    fontWeight: notification.unread ? 700 : 500,
-                    color: notification.unread ? '#1976d2' : 'text.primary'
-                  }}
-                >
-                  {notification.title}
-                </Typography>
-              </Box>
-              <Typography 
-                variant="body2" 
-                
-                sx={{ 
-                  color: notification.unread ? 'text.primary' : 'text.secondary',
-                  mb: 0.5,
-                  whiteSpace: 'normal',    // Allows text to wrap
-                    wordWrap: 'break-word',  // Ensures long words wrap
-                    overflow: 'visible',     // Prevents hiding text
-                    display: 'block'         // Ensures proper wrapping
-                }}
-              >
-                {notification.message}
-              </Typography>
-              <Typography variant="caption" sx={{ color: 'text.disabled' }}>
-                {new Date(notification.created_at).toLocaleDateString()}
-              </Typography>
-            </Box>
             
+            handleCloseMenu();
+            // If the notification is about a request, just go to the requests page.
+            // No need to go to trip detail, as the user isn't allowed there anyways.
+            let page = ContentTypeMap[notification.content_type]
+            if (page == 'requests'){
+                navigate(`/${page}`);
+            }
+            else{
+                navigate(`/${page}/${notification.object_id}`)
+            }
+        } catch (error) {
+            console.log("Error updating notification:", error);
+        }
+    }
 
-            <IconButton 
-              size="small"
-              onClick={(e) => {
-                e.stopPropagation(); // Prevent MenuItem onClick from firing
-                handleNotificationRead(notification);
-              }}
-              sx={{
-                ml: 1,
-                opacity: notification.unread ? 1 : 0.3,
-                '&:hover': {
-                  bgcolor: 'rgba(25, 118, 210, 0.04)'
-                }
-              }}
-            >
-              <CircleIcon 
-                sx={{ 
-                  fontSize: 16,
-                  color: notification.unread ? '#1976d2' : '#bdbdbd'
-                }} 
-              />
+    const handleNotificationRead = async (notification: Notification, event: React.MouseEvent) => {
+        // Prevent the parent MenuItem click event
+        event.stopPropagation();
+        
+        try {
+            // Mark as read in the backend
+            const response = await chatServices.updateNotification(notification);
+            
+            // Update local state with the response data
+            setNotifications(prevNotifications =>
+                prevNotifications.map(notif =>
+                    notif.id === notification.id ? response.data : notif
+                )
+            );
+        } catch (error) {
+            console.log("Error marking notification as read:", error);
+        }
+    }
+
+    return (
+        <Box>
+            <IconButton onClick={handleOpenMenu}>
+                <Badge badgeContent={unreadCount} color="error">
+                    <NotificationsIcon 
+                        sx={{
+                            color: !isTransparent ? "#000" : "#fff",
+                            ":hover": { color: "#1877F2" },
+                            transition: "color 0.3s ease"
+                        }}
+                    />
+                </Badge>
             </IconButton>
-          </MenuItem>
-          ))
-        )}
-      </Menu>
-    </Box>
-  );
+            
+            <Menu
+                sx={{ mt: 2 }}
+                id="notifications-menu"
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                }}
+                open={Boolean(anchorEl)}
+                onClose={handleCloseMenu}
+                PaperProps={{
+                    sx: {
+                        maxHeight: 400,
+                        width: '300px',
+                        overflowY: 'auto'
+                    }
+                }}
+            >
+                {(!notifications || notifications.length === 0) ? (
+                    <MenuItem>
+                        <Typography sx={{ color: 'text.secondary' }}>
+                            No notifications
+                        </Typography>
+                    </MenuItem>
+                ) : (
+                    notifications.map((notification) => (
+                        <MenuItem
+                            key={`${notification.id}-${notification.unread}`}
+                            onClick={() => handleNotificationClick(notification)}
+                            sx={{
+                                bgcolor: notification.unread ? '#EBF5FF' : 'transparent',
+                                '&:hover': {
+                                    bgcolor: '#F5F9FF'
+                                },
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                alignItems: 'flex-start',
+                                p: 2,
+                                borderBottom: '1px solid #E0E0E0'
+                            }}
+                        >
+                            <Box sx={{ flex: 1 }}>
+                                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 0.5 }}>
+                                    {notification.unread && (
+                                        <Box
+                                            sx={{
+                                                width: 8,
+                                                height: 8,
+                                                borderRadius: '50%',
+                                                bgcolor: '#1976d2',
+                                                flexShrink: 0
+                                            }}
+                                        />
+                                    )}
+                                    <Typography 
+                                        variant="subtitle2" 
+                                        sx={{ 
+                                            fontWeight: notification.unread ? 700 : 500,
+                                            color: notification.unread ? '#1976d2' : 'text.primary'
+                                        }}
+                                    >
+                                        {notification.title}
+                                    </Typography>
+                                </Box>
+                                <Typography 
+                                    variant="body2" 
+                                    sx={{ 
+                                        color: notification.unread ? 'text.primary' : 'text.secondary',
+                                        mb: 0.5,
+                                        whiteSpace: 'normal',
+                                        wordWrap: 'break-word',
+                                        overflow: 'visible',
+                                        display: 'block'
+                                    }}
+                                >
+                                    {notification.message}
+                                </Typography>
+                                <Typography variant="caption" sx={{ color: 'text.disabled' }}>
+                                    {new Date(notification.created_at).toLocaleDateString()}
+                                </Typography>
+                            </Box>
+                            
+                            <IconButton 
+                                size="small"
+                                onClick={(e) => handleNotificationRead(notification, e)}
+                                sx={{
+                                    ml: 1,
+                                    opacity: notification.unread ? 1 : 0.3,
+                                    '&:hover': {
+                                        bgcolor: 'rgba(25, 118, 210, 0.04)'
+                                    }
+                                }}
+                            >
+                                <CircleIcon 
+                                    sx={{ 
+                                        fontSize: 16,
+                                        color: notification.unread ? '#1976d2' : '#bdbdbd'
+                                    }} 
+                                /> 
+                            </IconButton>
+                        </MenuItem>
+                    ))
+                )}
+            </Menu>
+        </Box>
+    );
 };
 
 export default NotificationComponent;

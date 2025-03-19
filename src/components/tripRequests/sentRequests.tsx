@@ -82,6 +82,7 @@ const SentRequests = ({requests}) => {
   };
 
   const handleChat = (email) => {
+    console.log(email)
     chatServices.getChatRooms(email)
       .then(response => {
         if (response.data.length > 0) {

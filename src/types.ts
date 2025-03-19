@@ -74,8 +74,9 @@ export interface Profile {
     message : string,
     unread : boolean,
     created_at : string,
-    chat_room : null | number
-  }
+    content_type : string,
+    object_id : number,
+}
 
 
 

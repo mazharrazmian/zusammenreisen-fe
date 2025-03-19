@@ -36,7 +36,7 @@ import chatServices from '../../redux/api/chatServices';
 import { getKeyByValue, REQUESTSTATUS } from '../../Constants';
 import postRequestService from '../../redux/api/tripRequestService';
 
-const ReceivedRequests = ({requests , handleAcceptRequest , handleRejectRequest}) => {
+const ReceivedRequests = ({requests , handleAcceptRequest , handleRejectRequest , handleRequestDelete}) => {
   const navigate = useNavigate();
   const [tabValue, setTabValue] = useState(0);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -50,9 +50,9 @@ const ReceivedRequests = ({requests , handleAcceptRequest , handleRejectRequest}
     setTabValue(newValue);
   };
 
-  const handleMenuOpen = (event, requestId) => {
+  const handleMenuOpen = (event, request) => {
     setAnchorEl(event.currentTarget);
-    setSelectedRequest(requestId);
+    setSelectedRequest(request);
   };
 
   const handleMenuClose = () => {
@@ -60,10 +60,7 @@ const ReceivedRequests = ({requests , handleAcceptRequest , handleRejectRequest}
     setSelectedRequest(null);
   };
 
-  
-  
   const handleChat = (email) => {
-    console.log(email);
     chatServices.getChatRooms(email)
       .then(response => {
         if (response.data.length > 0) {
@@ -205,7 +202,7 @@ const ReceivedRequests = ({requests , handleAcceptRequest , handleRejectRequest}
                             {getStatusChip(request.status)}
                             <IconButton
                               size="small"
-                              onClick={(e) => handleMenuOpen(e, request.id)}
+                              onClick={(e) => handleMenuOpen(e, request)}
                             >
                               <MoreVert />
                             </IconButton>
@@ -379,12 +376,12 @@ const ReceivedRequests = ({requests , handleAcceptRequest , handleRejectRequest}
         open={Boolean(anchorEl)}
         onClose={handleMenuClose}
       >
-        <MenuItem onClick={handleMenuClose}>View Full Profile</MenuItem>
-        <MenuItem onClick={handleMenuClose}>Message User</MenuItem>
-        <MenuItem onClick={handleMenuClose}>Check User History</MenuItem>
-        <Divider />
-        <MenuItem onClick={handleMenuClose}>
-          Archive Request
+        {/* <MenuItem onClick={handleMenuClose}>View Full Profile</MenuItem> */}
+        <MenuItem onClick={() => handleChat(selectedRequest?.from_profile.user.email)}>Message User</MenuItem>
+        {/* <MenuItem onClick={handleMenuClose}>Check User History</MenuItem>
+        <Divider /> */}
+        <MenuItem onClick={()=>handleRequestDelete(selectedRequest.id)}>
+          Delete Request
         </MenuItem>
       </Menu>
     </Grid>

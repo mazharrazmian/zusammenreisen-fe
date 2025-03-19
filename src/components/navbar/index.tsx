@@ -17,10 +17,37 @@ import { useDispatch } from "react-redux";
 import { clearProfile } from "../../redux/slice/profileSlice";
 import { toast } from "react-toastify";
 import NotificationComponent from "./notification";
+import { motion, AnimatePresence } from "framer-motion";
 
 import Iconify from "../iconify";
 import { useAppSelector } from "../../redux/store";
 import Sidebar from "./sidebar";
+
+import Logo from "../../assets/apdown.svg";
+
+// Define page transition variants
+const pageTransitionVariants = {
+  initial: {
+    opacity: 0,
+    x: 20
+  },
+  animate: {
+    opacity: 1,
+    x: 0,
+    transition: {
+      type: "spring",
+      stiffness: 260,
+      damping: 20,
+    }
+  },
+  exit: {
+    opacity: 0,
+    x: -20,
+    transition: {
+      duration: 0.2
+    }
+  }
+};
 
 const normalPages = [
     { id: 1, pageName: "Home", path: "/" },
@@ -28,10 +55,14 @@ const normalPages = [
 ];
 
 const loggedInPages = [
-    {id : 3 , pageName : "Requests", path : '/requests'}
+    { id: 3, pageName: "Requests", path: '/requests' },
+    {id : 4 , pageName : "My Trips" , path : '/tripplanner'}
 ]
 
-const Navbar = React.memo(() => {
+// Motion button component for nav links
+const MotionButton = motion(Button);
+
+const Navbar = React.memo(({ transparentOnHome }) => {
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -44,10 +75,10 @@ const Navbar = React.memo(() => {
         null
     );
     const [scrolled, setScrolled] = React.useState(false);
+    const [previousPath, setPreviousPath] = React.useState(location.pathname);
 
     const profile: any = useAppSelector((s) => s?.profile);
 
-    console.log(profile)
     const pages = profile?.profile ? normalPages.concat(loggedInPages) : normalPages
 
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -72,6 +103,22 @@ const Navbar = React.memo(() => {
         toast.success("Logout successful");
     };
 
+    // Calculate direction of transition based on page index
+    const getTransitionDirection = (targetPath) => {
+        const currentPageIndex = pages.findIndex(page => page.path === location.pathname);
+        const targetPageIndex = pages.findIndex(page => page.path === targetPath);
+        
+        return targetPageIndex > currentPageIndex ? 1 : -1;
+    };
+
+    // Custom navigation function with animation
+    const navigateWithAnimation = (path) => {
+        setPreviousPath(location.pathname);
+        sessionStorage.setItem("toursFilters", JSON.stringify({}));
+        navigate(path);
+        handleCloseNavMenu();
+    };
+
     React.useEffect(() => {
         const handleScroll = () => {
             if (window.scrollY > 80) {
@@ -87,14 +134,19 @@ const Navbar = React.memo(() => {
         };
     }, []);
 
-
+    // Use transparentOnHome to determine background
+    const isTransparent = transparentOnHome && !scrolled;
 
     return (
         <AppBar
+            component={motion.div}
+            initial={{ y: -20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.5 }}
             sx={{
-                background: scrolled ? "#fff" : "transparent",
+                background: !isTransparent ? "#fff" : "transparent",
                 transition: "background 0.3s ease",
-                boxShadow: scrolled ? "0px 4px 6px rgba(0, 0, 0, 0.1)" : "none",
+                boxShadow: !isTransparent ? "0px 4px 6px rgba(0, 0, 0, 0.1)" : "none",
                 padding: "1rem 0rem",
             }}
         >
@@ -104,31 +156,32 @@ const Navbar = React.memo(() => {
                     sx={{ display: "flex", justifyContent: "space-between" }}
                 >
                     <Box sx={{ display: "flex", alignItems: "center" }}>
-                        <AdbIcon
-                            sx={{
-                                display: { xs: "none", md: "flex" },
-                                mr: 1,
-                                color: scrolled ? "#000" : "#fff",
-                            }}
-                        />
-                        <Typography
-                            variant="h6"
-                            noWrap
-                            component="a"
-                            href="#app-bar-with-responsive-menu"
-                            sx={{
-                                mr: 2,
-                                display: { xs: "none", md: "flex" },
-                                fontFamily: "monospace",
-                                fontWeight: 700,
-                                letterSpacing: ".3rem",
-                                color: scrolled ? "#000" : "#fff",
-                                textDecoration: "none",
-                            }}
-                            onClick={() => navigate('/')}
-                        >
-                            LOGO
-                        </Typography>
+                        {!isTransparent ?
+                            <Box
+                                component='img'
+                                whileHover={{ scale: 1.05 }}
+                                sx={{
+                                    height: '60px',
+                                    display: { xs: 'none', md: 'flex' },
+                                    transform: 'scale(1.6)',
+                                    transformOrigin: 'left center',
+                                    cursor: 'pointer'
+                                }}
+                                alt="Travel Mates"
+                                src={Logo}
+                                onClick={() => navigateWithAnimation('/')}
+                            />
+                            :
+                            <Typography 
+                                component={'h6'}
+                                whileHover={{ scale: 1.05 }}
+                                color="primary"
+                                sx={{ cursor: 'pointer' }}
+                                onClick={() => navigateWithAnimation('/')}
+                            >
+                                Travel Mates
+                            </Typography>
+                        }
                     </Box>
 
                     <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -137,7 +190,7 @@ const Navbar = React.memo(() => {
                             aria-label="open menu"
                             onClick={handleOpenNavMenu}
                             sx={{
-                                color: scrolled ? "#000" : "#fff",
+                                color: !isTransparent ? "#000" : "#fff",
                             }}
                         >
                             <MenuIcon />
@@ -149,91 +202,125 @@ const Navbar = React.memo(() => {
                             onClose={handleCloseNavMenu}
                         >
                             <Box sx={{ width: 250 }}>
-                                <Sidebar 
-                                    pages={pages} 
-                                    navigate={navigate} 
-                                    onClose={handleCloseNavMenu} 
+                                <Sidebar
+                                    pages={pages}
+                                    navigate={navigateWithAnimation}
+                                    onClose={handleCloseNavMenu}
                                 />
                             </Box>
                         </Drawer>
                     </Box>
-
-                    <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
-                    <Typography
-                        variant="h5"
-                        noWrap
-                        component="a"
-                        // href="#app-bar-with-responsive-menu"
+                    <Box
+                        component={motion.img}
+                        whileHover={{ scale: 1.05 }}
                         sx={{
-                            mr: 2,
-                            display: { xs: "flex", md: "none" },
-                            flexGrow: 1,
-                            fontFamily: "monospace",
-                            fontWeight: 700,
-                            letterSpacing: ".3rem",
-                            color: scrolled ? "#000" : "#fff",
-                            textDecoration: "none",
+                            display: { xs: 'flex', md: 'none' },
+                            height: '60px',
+                            transform: 'scale(1.3)',
+                            transformOrigin: 'left center',
+                            marginRight: 2,
+                            cursor: 'pointer'
                         }}
-                        onClick={(e) => {
-                            e.preventDefault()
-                            sessionStorage.setItem("toursFilters", JSON.stringify({}));
-                            navigate('/');
-                            handleCloseNavMenu();
-                        }}
-                    >
-                        LOGO
-                    </Typography>
+                        alt="Travel Mates"
+                        src={Logo}
+                        onClick={() => navigateWithAnimation('/')}
+                    />
+
                     <Box
                         sx={{
                             display: { xs: "none", md: "flex" },
+                            gap: "8px",
+                            mx: 4
                         }}
                     >
-                        {pages.map((page) => (
-                            <Button
-                                key={page.id}
-                                href={page.path}
-                                onClick={(e) => {
-                                    e.preventDefault()
-                                    sessionStorage.setItem("toursFilters", JSON.stringify({}));
-                                    navigate(page.path);
-                                    handleCloseNavMenu();
-                                }}
-                                sx={{
-                                    my: 2,
-                                    color: scrolled ? "#000" : "#fff",
-                                    display: "block",
-                                    borderRadius: "0px",
-                                    borderBottom: scrolled
-                                        ? location.pathname === page.path
-                                            ? "1px solid #000"
-                                            : "1px solid transparent"
-                                        : location.pathname === page.path
-                                            ? "1px solid #fff"
-                                            : "1px solid transparent",
-                                    ":hover": {
-                                        borderBottom: "1px solid #fff",
-                                        background: "none",
-                                    },
-                                }}
-                            >
-                                
-                                {page.pageName}
-                            </Button>
-                        ))}
+                        {pages.map((page) => {
+                            const isActive = location.pathname === page.path;
+                            
+                            return (
+                                <MotionButton
+                                    key={page.id}
+                                    component="a"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        navigateWithAnimation(page.path);
+                                    }}
+                                    sx={{
+                                        px: 3,
+                                        py: 1,
+                                        mx: 1,
+                                        color: !isTransparent ? "#000" : "#fff",
+                                        position: "relative",
+                                        fontWeight: isActive ? 600 : 400,
+                                        letterSpacing: "0.5px",
+                                        borderRadius: "8px",
+                                        // Remove the border bottom and use underline animation instead
+                                        borderBottom: "none",
+                                        "&:hover": {
+                                            backgroundColor: !isTransparent 
+                                                ? "rgba(0, 0, 0, 0.04)" 
+                                                : "rgba(255, 255, 255, 0.15)",
+                                        }
+                                    }}
+                                    whileHover={{ scale: 1.05 }}
+                                    whileTap={{ scale: 0.95 }}
+                                >
+                                    {page.pageName}
+                                    {isActive && (
+                                        <motion.div
+                                            layoutId="navbar-indicator"
+                                            initial={false}
+                                            style={{
+                                                position: "absolute",
+                                                bottom: "0",
+                                                left: "0",
+                                                right: "0",
+                                                height: "3px",
+                                                borderRadius: "1.5px",
+                                                backgroundColor: !isTransparent ? "#1976d2" : "#fff",
+                                            }}
+                                            transition={{
+                                                type: "spring",
+                                                stiffness: 500,
+                                                damping: 30
+                                            }}
+                                        />
+                                    )}
+                                </MotionButton>
+                            );
+                        })}
                     </Box>
                     {accessToken ? (
                         <Box sx={{ display: "flex", alignItems: "center", gap: "10px" }}>
                             <Box sx={{ flexGrow: 0 }}>
-                                <Button variant="contained" onClick={() => navigate('/add/post')} >Add Post</Button>
+                                <Button 
+                                    component={motion.button}
+                                    whileHover={{ scale: 1.05 }}
+                                    whileTap={{ scale: 0.95 }}
+                                    variant="contained" 
+                                    onClick={() => navigateWithAnimation('/add/post')}
+                                    sx={{
+                                        borderRadius: "8px",
+                                        px: 3,
+                                        fontWeight: 500
+                                    }}
+                                >
+                                    Add Post
+                                </Button>
                             </Box>
                             <NotificationComponent
                                 scrolled={scrolled}
                                 profile={profile}
+                                isTransparent={isTransparent}
                             />
 
                             <Box sx={{ flexGrow: 0 }}>
                                 <Tooltip title={''}>
-                                    <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                                    <IconButton 
+                                        component={motion.button}
+                                        whileHover={{ scale: 1.1 }}
+                                        onClick={handleOpenUserMenu} 
+                                        sx={{ p: 0 }}
+                                    >
                                         <Avatar
                                             alt={profile?.profile?.name}
                                             src={profile?.profile?.profile?.picture}
@@ -268,12 +355,9 @@ const Navbar = React.memo(() => {
                                         </Typography>
                                     </MenuItem>
                                     <Divider />
-                                    <MenuItem onClick={() => navigate('/account')}>
-
+                                    <MenuItem onClick={() => navigateWithAnimation('/account')}>
                                         <Typography sx={{ textAlign: "center", display: 'flex' }}>
-                                            <Iconify icon={'mdi:home'} width={25}
-
-                                            />
+                                            <Iconify icon={'mdi:home'} width={25} />
                                             Profile
                                         </Typography>
                                     </MenuItem>
@@ -287,10 +371,30 @@ const Navbar = React.memo(() => {
                         </Box>
                     ) : (
                         <Stack spacing={2} direction={"row"}>
-                            <Button variant="outlined" onClick={() => navigate("/login")}>
+                            <Button 
+                                component={motion.button}
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                                variant="outlined" 
+                                onClick={() => navigateWithAnimation("/login")}
+                                sx={{
+                                    borderRadius: "8px",
+                                    px: 3
+                                }}
+                            >
                                 Log In
                             </Button>
-                            <Button variant="contained" onClick={() => navigate("/register")}>
+                            <Button 
+                                component={motion.button}
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                                variant="contained" 
+                                onClick={() => navigateWithAnimation("/register")}
+                                sx={{
+                                    borderRadius: "8px",
+                                    px: 3
+                                }}
+                            >
                                 Sign Up
                             </Button>
                         </Stack>
@@ -299,8 +403,33 @@ const Navbar = React.memo(() => {
             </Container>
         </AppBar>
     );
+});
 
-})
-
+// Create a page transition wrapper component
+export const PageTransition = ({ children }) => {
+    const location = useLocation();
+    
+    return (
+        <AnimatePresence mode="wait">
+            <motion.div
+                key={location.pathname}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+                variants={pageTransitionVariants}
+                style={{ 
+                    width: '100%', 
+                    height: '100%',
+                    position: 'absolute', // Add this
+                    left: 0,              // Add this
+                    right: 0,             // Add this
+                    top: 0                // Add this
+                }}
+            >
+                {children}
+            </motion.div>
+        </AnimatePresence>
+    );
+};
 
 export default Navbar;

@@ -16,95 +16,99 @@ import CreateTour from "./pages/createTour";
 import RequestManagementPage from "./pages/requestManagement";
 import MyTripsPage from "./pages/tripPlannerList";
 import TripPlannerPage from "./pages/tripPlannerDetail";
+import { PageTransition } from "./components/navbar";
 
 export default function Router() {
     const routes = useRoutes([
       {
-        path: "/",
         element: <Layout />,
         children: [
-          { element: <HomePage />, index: true },
+          { path: "/", element: <PageTransition> <HomePage /> </PageTransition>, index: true },
+          { path: "posts/:id", element: <Details /> },
+          { path: "blog", element: <TravelBuddyBlog /> },
+          { 
+            path: "add/post", 
+            element: (
+              <ProtectedRoute>
+                <PageTransition>
+                <CreateTour />
+                </PageTransition>
+              </ProtectedRoute>
+            ) 
+          },
+          { 
+            path: "edit/post/:tourId", 
+            element: (
+              <ProtectedRoute>
+                <PageTransition>
+                <EditPost />
+                </PageTransition>
+              </ProtectedRoute>
+            ) 
+          },
+          { 
+            path: "requests", 
+            element: (
+              <ProtectedRoute>
+                <PageTransition>
+                <RequestManagementPage />
+                </PageTransition>
+              </ProtectedRoute>
+            ) 
+          },
+          { 
+            path: "tripplanner", 
+            element: (
+              <ProtectedRoute>
+                <PageTransition>
+                <MyTripsPage />
+                </PageTransition>
+              </ProtectedRoute>
+            ) 
+          },
+          { 
+            path: "tripplanner/:id", 
+            element: (
+              <ProtectedRoute>
+                <PageTransition>
+                <TripPlannerPage />
+                </PageTransition>
+              </ProtectedRoute>
+            ) 
+          },
+          { path: "login", element: <LoginPage /> },
+          { path: "register", element: <RegisterPage /> },
+          { 
+            path: "chat", 
+            element: (
+              <ProtectedRoute>
+                <ChatPage />
+              </ProtectedRoute>
+            ) 
+          },
+          { 
+            path: "chat/:chatId", 
+            element: (
+              <ProtectedRoute>
+                <ChatPage />
+              </ProtectedRoute>
+            ) 
+          },
+          { 
+            path: "account", 
+            element: (
+              <ProtectedRoute>
+                <ProfilePage />
+              </ProtectedRoute>
+            ) 
+          },
+          { path: "activate/:uid/:token", element: <ActivateAccount /> },
+          { path: "password/reset/confirm/:uid/:token", element: <ResetPassword /> },
+          { path: "404", element: <Page404 /> },
+          { path: "*", element: <Navigate to="/404" replace /> },
         ],
       },
-      { path: "posts/:id", element: <Details /> },
-      {path : "blog",element : <TravelBuddyBlog/>},
-      { 
-        path: "add/post", 
-        element: (
-          <ProtectedRoute>
-            <CreateTour />
-          </ProtectedRoute>
-        ) 
-      },
-
-      { 
-        path: "edit/post/:tourId", 
-        element: (
-          <ProtectedRoute>
-            <EditPost />
-          </ProtectedRoute>
-        ) 
-      },
-      { 
-        path: "requests", 
-        element: (
-          <ProtectedRoute>
-            <RequestManagementPage />
-          </ProtectedRoute>
-        ) 
-      },
-      { 
-        path: "mytrips", 
-        element: (
-          <ProtectedRoute>
-            <MyTripsPage/>
-          </ProtectedRoute>
-        ) 
-      },
-      { 
-        path: "mytrips/:id", 
-        element: (
-          <ProtectedRoute>
-            <TripPlannerPage/>
-          </ProtectedRoute>
-        ) 
-      },
-
-      { path: "login", element: <LoginPage /> },
-      { path: "register", element: <RegisterPage /> },
-
-      { 
-        path: "chat", 
-        element: (
-          <ProtectedRoute>
-            <ChatPage />
-          </ProtectedRoute>
-        ) 
-      },
-
-      { 
-        path: "chat/:chatId", 
-        element: (
-          <ProtectedRoute>
-            <ChatPage />
-          </ProtectedRoute>
-        ) 
-      },
-      { 
-        path: "account", 
-        element: (
-          <ProtectedRoute>
-            <ProfilePage/>
-          </ProtectedRoute>
-        ) 
-      },
-      // Add Activation & Reset Password Routes
-    { path: "activate/:uid/:token", element:  <ActivateAccount />},
-    { path: "password/reset/confirm/:uid/:token", element:  <ResetPassword />},
-
-      { path: "404", element: <Page404 /> },
-      { path: "*", element: <Navigate to="/404" replace /> },
     ]);
   
     return routes;
-}
+  }

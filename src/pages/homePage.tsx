@@ -3,7 +3,6 @@ import React, { useEffect, useMemo, useState } from "react";
 import { homePageStyles } from "./styles";
 //import tourServices from "../redux/api/tourService";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import AnimatedText from "../components/animateText/animateText";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import CloseIcon from "@mui/icons-material/Close";
 //import TourFilters from "../components/tourFilters";
@@ -17,7 +16,8 @@ import Filters from "../components/filters";
 import postServices from "../redux/api/postService";
 import { useAppSelector } from "../redux/store";
 import TripList from "../components/tourList";
-
+import { motion, AnimatePresence } from "framer-motion"; // Import framer-motion
+import { AnimateWrapper, animationConfig } from "../components/animations/animateWrapper";
 const HomePage: React.FC = () => {
   const isMobile = useMediaQuery("(max-width: 960px)");
   const profile = useAppSelector((s) => s.profile);
@@ -29,6 +29,7 @@ const HomePage: React.FC = () => {
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
 
   // Get saved filters from session storage
   const getSavedFilters = () => {
@@ -65,7 +66,6 @@ const HomePage: React.FC = () => {
     ...(filters.gender && { gender: String(filters.gender) }),
     ...(filters.group_size && { group_size: String(filters.group_size) }),
     ...(filters.age_group && { age_group: String(filters.age_group) }),
-
   }).toString();
 
   const fetchPosts = async () => {
@@ -75,6 +75,7 @@ const HomePage: React.FC = () => {
       const response = await postServices.getAllPosts(urlParams);
       setPosts(response.data.results);
       setCount(response.data.count);
+      setIsInitialLoad(false);
     } catch (error) {
       console.log(error);
       toast.error("Failed to fetch posts.");
@@ -82,259 +83,187 @@ const HomePage: React.FC = () => {
       setLoading(false);
     }
   };
+
   // Fetch tours when filters or page changes
   useEffect(() => {
     fetchPosts();
   }, [urlParams]);
 
   const handlePageChange = (_event: React.ChangeEvent<unknown>, value: number) => {
+    // Scroll to the top of the tours section when changing page
+    document.getElementById('explore-tours')?.scrollIntoView({behavior: 'smooth'});
+    
     setFilters(prevFilters => ({
       ...prevFilters,
       page: value,
     }));
   };
 
-  
-//    const memoizedAnimatedText = useMemo(() => <AnimatedText />, []);
-
-
   return (
-    <>
+    <motion.div {...animationConfig.page}>
       {/* Hero section with background and animated text */}
       <Box sx={homePageStyles.mainWrapper}>
-
-    <Typography variant="h3" sx={{textAlign:'center',marginBottom:2}}>
-    Where Solo Travelers Become Travel Mates.
-    </Typography>        
+        <AnimateWrapper {...animationConfig.heroTitle}>
+          <Typography variant="h3" sx={{textAlign:'center',marginBottom:2}}>
+            Where Solo Travelers Become Travel Mates.
+          </Typography>        
+        </AnimateWrapper>
+        
         <Box sx={{
-  display: "flex",
-  flexDirection: { xs: "column", sm: "row" },
-  alignItems: "center",
-  justifyContent: "center",
-  gap: 2
-}}>
-  <Button 
-    variant="contained" 
-    color="primary" 
-    onClick={() => document.getElementById('explore-tours').scrollIntoView({behavior: 'smooth'})} 
-    sx={{ 
-      borderRadius: "30px", 
-      textTransform: "none", 
-      fontWeight: "600", 
-      fontSize: { xs: "0.9rem", sm: "1.1rem" }, 
-      padding: { xs: "10px 25px", sm: "12px 30px" }, 
-      boxShadow: "0 8px 16px rgba(0, 0, 0, 0.2)", 
-      backgroundColor: "primary.main",
-      width: { xs: "100%", sm: "220px" },
-      "&:hover": { 
-        backgroundColor: "primary.dark", 
-        transform: "translateY(-3px)", 
-        boxShadow: "0 12px 20px rgba(0, 0, 0, 0.3)" 
-      }, 
-      transition: "all 0.3s ease" 
-    }} 
-  > 
-    Explore Tours 
-  </Button> 
-  <Button 
-    variant="outlined" 
-    color="primary" 
-    onClick={() => { 
-      profile?.profile ?  
-      navigate('/add/post') 
-      : 
-      navigate('/register') 
-    }} 
-    sx={{ 
-      borderRadius: "30px", 
-      textTransform: "none", 
-      fontWeight: "600", 
-      fontSize: { xs: "0.9rem", sm: "1.1rem" }, 
-      padding: { xs: "10px 25px", sm: "12px 30px" }, 
-      borderColor: "white", 
-      color: "white", 
-      backgroundColor: "rgba(255, 255, 255, 0.1)", 
-      width: { xs: "100%", sm: "220px" },
-      "&:hover": { 
-        backgroundColor: "rgba(255, 255, 255, 0.2)", 
-        borderColor: "white", 
-        transform: "translateY(-3px)", 
-        boxShadow: "0 12px 20px rgba(0, 0, 0, 0.2)" 
-      }, 
-      transition: "all 0.3s ease" 
-    }} 
-  > 
-    Create Your Tour 
-  </Button> 
-</Box>
-
+          display: "flex",
+          flexDirection: { xs: "column", sm: "row" },
+          alignItems: "center",
+          justifyContent: "center",
+          gap: 2
+        }}>
+          <AnimateWrapper {...animationConfig.heroButton(0.5)}>
+            <Button 
+              variant="contained" 
+              color="primary" 
+              onClick={() => document.getElementById('explore-tours').scrollIntoView({behavior: 'smooth'})} 
+              sx={{ 
+                borderRadius: "30px", 
+                textTransform: "none", 
+                fontWeight: "600", 
+                fontSize: { xs: "0.9rem", sm: "1.1rem" }, 
+                padding: { xs: "10px 25px", sm: "12px 30px" }, 
+                boxShadow: "0 8px 16px rgba(0, 0, 0, 0.2)", 
+                backgroundColor: "primary.main",
+                width: { xs: "100%", sm: "220px" },
+                "&:hover": { 
+                  backgroundColor: "primary.dark", 
+                  transform: "translateY(-3px)", 
+                  boxShadow: "0 12px 20px rgba(0, 0, 0, 0.3)" 
+                }, 
+                transition: "all 0.3s ease" 
+              }} 
+            > 
+              Explore Tours 
+            </Button> 
+          </AnimateWrapper>
+          
+          <AnimateWrapper {...animationConfig.heroButton(0.7)}>
+            <Button 
+              variant="outlined" 
+              color="primary" 
+              onClick={() => { 
+                profile?.profile ?  
+                navigate('/add/post') 
+                : 
+                navigate('/register') 
+              }} 
+              sx={{ 
+                borderRadius: "30px", 
+                textTransform: "none", 
+                fontWeight: "600", 
+                fontSize: { xs: "0.9rem", sm: "1.1rem" }, 
+                padding: { xs: "10px 25px", sm: "12px 30px" }, 
+                borderColor: "white", 
+                color: "white", 
+                backgroundColor: "rgba(255, 255, 255, 0.1)", 
+                width: { xs: "100%", sm: "220px" },
+                "&:hover": { 
+                  backgroundColor: "rgba(255, 255, 255, 0.2)", 
+                  borderColor: "white", 
+                  transform: "translateY(-3px)", 
+                  boxShadow: "0 12px 20px rgba(0, 0, 0, 0.2)" 
+                }, 
+                transition: "all 0.3s ease" 
+              }} 
+            > 
+              Create Your Tour 
+            </Button> 
+          </AnimateWrapper>
+        </Box>
       </Box>
 
       {/* How It Works Section */}
       <Box sx={{ py: 6, backgroundColor: "#ffffff" }}>
         <Container maxWidth="lg">
-          <Typography 
-            variant="h4" 
-            sx={{ 
-              textAlign: 'center', 
-              fontWeight: "bold", 
-              mb: 5,
-              position: 'relative',
-              "&:after": {
-                content: '""',
-                position: 'absolute',
-                bottom: -12,
-                left: '50%',
-                transform: 'translateX(-50%)',
-                width: 60,
-                height: 3,
-                backgroundColor: 'primary.main'
-              }
-            }}
-          >
-            How Zusammenreisen Tours Works
-          </Typography>
+          <AnimateWrapper {...animationConfig.sectionTitle}>
+            <Typography 
+              variant="h4" 
+              sx={{ 
+                textAlign: 'center', 
+                fontWeight: "bold", 
+                mb: 5,
+                position: 'relative',
+                "&:after": {
+                  content: '""',
+                  position: 'absolute',
+                  bottom: -12,
+                  left: '50%',
+                  transform: 'translateX(-50%)',
+                  width: 60,
+                  height: 3,
+                  backgroundColor: 'primary.main'
+                }
+              }}
+            >
+              How Zusammenreisen Tours Works
+            </Typography>
+          </AnimateWrapper>
           
           <Grid container spacing={4} sx={{ mt: 2 }}>
-            <Grid size={{xs:12, sm:6, md:3}}>
-              <Paper 
-                elevation={0} 
-                sx={{ 
-                  p: 3, 
-                  height: '100%', 
-                  textAlign: 'center',
-                  borderRadius: 2,
-                  transition: "transform 0.3s",
-                  "&:hover": {
-                    transform: "translateY(-10px)",
-                    boxShadow: 3
-                  }
-                }}
-              >
-                <Avatar 
-                  sx={{ 
-                    width: 70, 
-                    height: 70, 
-                    bgcolor: 'primary.light',
-                    mx: 'auto',
-                    mb: 2
-                  }}
-                >
-                  <HikingIcon fontSize="large" />
-                </Avatar>
-                <Typography variant="h6" sx={{ mb: 1, fontWeight: 600 }}>
-                  Create or Find Tours
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Create your own tour or browse existing tours based on activities, destinations, and dates that interest you.
-                </Typography>
-              </Paper>
-            </Grid>
-            
-            <Grid size={{xs:12, sm:6, md:3}}>
-              <Paper 
-                elevation={0} 
-                sx={{ 
-                  p: 3, 
-                  height: '100%', 
-                  textAlign: 'center',
-                  borderRadius: 2,
-                  transition: "transform 0.3s",
-                  "&:hover": {
-                    transform: "translateY(-10px)",
-                    boxShadow: 3
-                  }
-                }}
-              >
-                <Avatar 
-                  sx={{ 
-                    width: 70, 
-                    height: 70, 
-                    bgcolor: 'primary.light',
-                    mx: 'auto',
-                    mb: 2
-                  }}
-                >
-                  <PersonAddIcon fontSize="large" />
-                </Avatar>
-                <Typography variant="h6" sx={{ mb: 1, fontWeight: 600 }}>
-                  Apply to Join
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Find a tour you like? Submit an application to the tour manager explaining why you'd be a great addition to the group.
-                </Typography>
-              </Paper>
-            </Grid>
-            
-            <Grid size={{xs:12, sm:6, md:3}}>
-              <Paper 
-                elevation={0} 
-                sx={{ 
-                  p: 3, 
-                  height: '100%', 
-                  textAlign: 'center',
-                  borderRadius: 2,
-                  transition: "transform 0.3s",
-                  "&:hover": {
-                    transform: "translateY(-10px)",
-                    boxShadow: 3
-                  }
-                }}
-              >
-                <Avatar 
-                  sx={{ 
-                    width: 70, 
-                    height: 70, 
-                    bgcolor: 'primary.light',
-                    mx: 'auto',
-                    mb: 2
-                  }}
-                >
-                  <CommentIcon fontSize="large" />
-                </Avatar>
-                <Typography variant="h6" sx={{ mb: 1, fontWeight: 600 }}>
-                  Connect & Plan
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Once accepted, access the tour group chat to discuss details, coordinate logistics, and get to know your travel companions.
-                </Typography>
-              </Paper>
-            </Grid>
-            
-            <Grid size={{xs:12, sm:6, md:3}}>
-              <Paper 
-                elevation={0} 
-                sx={{ 
-                  p: 3, 
-                  height: '100%', 
-                  textAlign: 'center',
-                  borderRadius: 2,
-                  transition: "transform 0.3s",
-                  "&:hover": {
-                    transform: "translateY(-10px)",
-                    boxShadow: 3
-                  }
-                }}
-              >
-                <Avatar 
-                  sx={{ 
-                    width: 70, 
-                    height: 70, 
-                    bgcolor: 'primary.light',
-                    mx: 'auto',
-                    mb: 2
-                  }}
-                >
-                  <ExploreIcon fontSize="large" />
-                </Avatar>
-                <Typography variant="h6" sx={{ mb: 1, fontWeight: 600 }}>
-                  Embark Together
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Experience amazing adventures with like-minded travelers, share costs, and create unforgettable memories.
-                </Typography>
-              </Paper>
-            </Grid>
+            {[
+              {
+                icon: <HikingIcon fontSize="large" />,
+                title: "Create or Find Tours",
+                description: "Create your own tour or browse existing tours based on activities, destinations, and dates that interest you."
+              },
+              {
+                icon: <PersonAddIcon fontSize="large" />,
+                title: "Apply to Join",
+                description: "Find a tour you like? Submit an application to the tour manager explaining why you'd be a great addition to the group."
+              },
+              {
+                icon: <CommentIcon fontSize="large" />,
+                title: "Connect & Plan",
+                description: "Once accepted, access the tour group chat to discuss details, coordinate logistics, and get to know your travel companions."
+              },
+              {
+                icon: <ExploreIcon fontSize="large" />,
+                title: "Embark Together",
+                description: "Experience amazing adventures with like-minded travelers, share costs, and create unforgettable memories."
+              }
+            ].map((item, index) => (
+              <Grid size={{xs:12, sm:6, md:3}} key={index}>
+                <AnimateWrapper {...animationConfig.card(index)}>
+                  <Paper 
+                    elevation={0} 
+                    sx={{ 
+                      p: 3, 
+                      height: '100%', 
+                      textAlign: 'center',
+                      borderRadius: 2,
+                      transition: "transform 0.3s, box-shadow 0.3s",
+                      "&:hover": {
+                        transform: "translateY(-10px)",
+                        boxShadow: 3
+                      }
+                    }}
+                  >
+                    <Avatar 
+                      sx={{ 
+                        width: 70, 
+                        height: 70, 
+                        bgcolor: 'primary.light',
+                        mx: 'auto',
+                        mb: 2
+                      }}
+                    >
+                      {item.icon}
+                    </Avatar>
+                    <Typography variant="h6" sx={{ mb: 1, fontWeight: 600 }}>
+                      {item.title}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      {item.description}
+                    </Typography>
+                  </Paper>
+                </AnimateWrapper>
+              </Grid>
+            ))}
           </Grid>
         </Container>
       </Box>
@@ -342,64 +271,74 @@ const HomePage: React.FC = () => {
       {/* Tours Section */}
       <Box id="explore-tours" sx={{ backgroundColor: "#f5f7fa", py: 6 }}>
         <Container maxWidth="xl">
-          <Typography 
-            variant="h4" 
-            sx={{ 
-              textAlign: 'center', 
-              fontWeight: "bold", 
-              mb: 1,
-              position: 'relative'
-            }}
-          >
-            Explore Group Tours
-          </Typography>
-          
-          <Typography 
-            variant="body1" 
-            sx={{ 
-              textAlign: 'center', 
-              mb: 5,
-              color: 'text.secondary',
-              maxWidth: '800px',
-              mx: 'auto'
-            }}
-          >
-            Discover exciting tours organized by fellow travelers, join a group that matches your interests, or create your own tour.
-          </Typography>
+          <AnimateWrapper {...animationConfig.sectionTitle}>
+            <Typography 
+              variant="h4" 
+              sx={{ 
+                textAlign: 'center', 
+                fontWeight: "bold", 
+                mb: 1,
+                position: 'relative'
+              }}
+            >
+              Explore Group Tours
+            </Typography>
+            
+            <Typography 
+              variant="body1" 
+              sx={{ 
+                textAlign: 'center', 
+                mb: 5,
+                color: 'text.secondary',
+                maxWidth: '800px',
+                mx: 'auto'
+              }}
+            >
+              Discover exciting tours organized by fellow travelers, join a group that matches your interests, or create your own tour.
+            </Typography>
+          </AnimateWrapper>
           
           <Paper elevation={0} sx={{ borderRadius: '12px', overflow: 'hidden' }}>
             <Box sx={{ display: "flex", gap: 2, p: 3, backgroundColor: '#ffffff' }}>
               {!isMobile && (
-                <Box sx={{ width: "280px", flexShrink: 0 }}>
-                  <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>Filters</Typography>
-                  <Divider sx={{ mb: 2 }} />
-                  <Filters filters={filters} setFilters={setFilters}  />
-                </Box>
+                <AnimateWrapper {...animationConfig.filterPanel}>
+                  <Box sx={{ width: "280px", flexShrink: 0 }}>
+                    <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>Filters</Typography>
+                    <Divider sx={{ mb: 2 }} />
+                    <Filters filters={filters} setFilters={setFilters} />
+                  </Box>
+                </AnimateWrapper>
               )}
 
               <Box sx={{ flex: 1 }}>
                 {isMobile && (
                   <Box sx={{ display: "flex", justifyContent: "center", mb: 3 }}>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={() => setFiltersOpen(true)}
-                      sx={{
-                        width: "100%",
-                        maxHeight: "48px",
-                        borderRadius: "8px",
-                        textTransform: "none",
-                        fontWeight: "600",
-                        boxShadow: 2,
-                        display: "inline-flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        padding: "10px 16px",
-                      }}
+                    <motion.div
+                      whileHover={{ scale: 1.03 }}
+                      whileTap={{ scale: 0.97 }}
+                      style={{ width: "100%" }}
                     >
-                      <FilterAltIcon sx={{ mr: 1 }} />
-                      Filter Tours
-                    </Button>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={() => setFiltersOpen(true)}
+                        sx={{
+                          width: "100%",
+                          maxHeight: "48px",
+                          borderRadius: "8px",
+                          textTransform: "none",
+                          fontWeight: "600",
+                          boxShadow: 2,
+                          display: "inline-flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          padding: "10px 16px",
+                        }}
+                      >
+                        <FilterAltIcon sx={{ mr: 1 }} />
+                        Filter Tours
+                      </Button>
+                    </motion.div>
                   </Box>
                 )}
 
@@ -426,93 +365,113 @@ const HomePage: React.FC = () => {
                   </Box>
                 </Drawer>
 
-                {loading ? (
-                  <Box
-                    sx={{
-                      width: "100%",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      minHeight: "300px",
-                    }}
-                  >
-                    <CircularProgress />
-                  </Box>
-                ) : posts.length > 0 ? (
-                  <Box>
-                    <Grid container spacing={3}>
-                        <TripList posts={posts} />
-                    </Grid>
-                    
-                    <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
-                      <Pagination 
-                        count={Math.ceil(count / 9)} 
-                        page={Number(filters.page)} 
-                        onChange={handlePageChange}
-                        color="primary" 
-                      />
-                    </Box>
-                  </Box>
-                ) : (
-                  <Box sx={{ textAlign: 'center', py: 6 }}>
-                    <Typography
-                      variant="h6"
+                <AnimatePresence mode="wait">
+                  {loading ? (
+                    <Box
                       sx={{
-                        color: "text.secondary",
-                        mb: 2
+                        width: "100%",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        minHeight: "300px",
                       }}
                     >
-                      No tours found matching your filters.
-                    </Typography>
-                    <Button 
-                      variant="contained" 
-                      color="primary"
-                      onClick={() => setFilters({
-                        country_to: '',
-                        city_to: '',
-                        country_from: '',
-                        city_from: '',
-                        gender: "",
-                        date_from: '',
-                        date_to: '',
-                        age_group : 'any',
-                        group_size : '',
-                        page: 1,
-                    })}
-                      sx={{ 
-                        borderRadius: "8px",
-                        textTransform: "none",
-                        fontWeight: 600,
-                        mr: 2
-                      }}
-                    >
-                      Clear Filters
-                    </Button>
-                    <Button 
-                      variant="outlined" 
-                      color="primary"
-                      onClick={() => { 
-                        profile?.profile ?  
-                        navigate('/add/post') 
-                        : 
-                        navigate('/register') 
-                      }} 
-                      sx={{ 
-                        borderRadius: "8px",
-                        textTransform: "none",
-                        fontWeight: 600
-                      }}
-                    >
-                      Create Your Own Tour
-                    </Button>
-                  </Box>
-                )}
+                      <AnimateWrapper key="loading" {...animationConfig.spinner}>
+                        <CircularProgress />
+                      </AnimateWrapper>
+                    </Box>
+                  ) : posts.length > 0 ? (
+                        <>
+                      <Grid container spacing={3}>
+                        <TripList posts={posts} />
+                      </Grid>
+                      
+                      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+                        <AnimateWrapper {...animationConfig.pagination}>
+                          <Pagination 
+                            count={Math.ceil(count / 9)} 
+                            page={Number(filters.page)} 
+                            onChange={handlePageChange}
+                            color="primary" 
+                          />
+                        </AnimateWrapper>
+                      </Box>
+                      </>
+                  ) : (
+                    <AnimateWrapper key="empty" {...animationConfig.emptyState}>
+                      <Box sx={{ textAlign: 'center', py: 6 }}>
+                        <Typography
+                          variant="h6"
+                          sx={{
+                            color: "text.secondary",
+                            mb: 2
+                          }}
+                        >
+                          No tours found matching your filters.
+                        </Typography>
+                        <motion.div
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                          style={{ display: 'inline-block', marginRight: '16px' }}
+                        >
+                          <Button 
+                            variant="contained" 
+                            color="primary"
+                            onClick={() => setFilters({
+                              country_to: '',
+                              city_to: '',
+                              country_from: '',
+                              city_from: '',
+                              gender: "",
+                              date_from: '',
+                              date_to: '',
+                              age_group : 'any',
+                              group_size : '',
+                              page: 1,
+                            })}
+                            sx={{ 
+                              borderRadius: "8px",
+                              textTransform: "none",
+                              fontWeight: 600,
+                              mr: 2
+                            }}
+                          >
+                            Clear Filters
+                          </Button>
+                        </motion.div>
+                        <motion.div
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                          style={{ display: 'inline-block' }}
+                        >
+                          <Button 
+                            variant="outlined" 
+                            color="primary"
+                            onClick={() => { 
+                              profile?.profile ?  
+                              navigate('/add/post') 
+                              : 
+                              navigate('/register') 
+                            }} 
+                            sx={{ 
+                              borderRadius: "8px",
+                              textTransform: "none",
+                              fontWeight: 600
+                            }}
+                          >
+                            Create Your Own Tour
+                          </Button>
+                        </motion.div>
+                      </Box>
+                    </AnimateWrapper>
+                  )}
+                </AnimatePresence>
               </Box>
             </Box>
           </Paper>
         </Container>
       </Box>
-    </>
+    </motion.div>
   );
 };
 

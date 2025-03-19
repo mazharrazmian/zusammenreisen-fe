@@ -165,15 +165,7 @@ import { CHAT_URL } from "../redux/api/http-common";
 
   return (
     <>
-      <Box
-        sx={{
-          background: "#000",
-          width: "100%",
-          height: { md: "100px", xs: "90px" },
-        }}
-      >
-        <Navbar />
-      </Box>
+     
       <Box
         sx={{
           height: { md: "85vh", xs: "89vh" },

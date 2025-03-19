@@ -18,13 +18,14 @@ import { useAppSelector } from '../../redux/store';
 import { REQUESTSTATUS } from '../../Constants';
 
 const JoinTripRequestModal = ({ open, handleClose, tripDetails }) => {
+    console.log(tripDetails)
   const profile = useAppSelector(s=>s.profile)
   const [formData, setFormData] = useState({
     message : '',
     from_email : profile?.profile?.email,
     status : REQUESTSTATUS['Pending'],
     post : tripDetails.id,
-    to_profile : tripDetails.posted_by?.id
+    to_profile_id : tripDetails.posted_by?.id
   });
 
   const handleChange = (e) => {

@@ -40,7 +40,7 @@ const TripCard = ({ trip }) => {
   
   const handleTripClick = (e) => {
     e.stopPropagation()
-    navigate(`/mytrips/${trip.id}`);
+    navigate(`/tripplanner/${trip.id}`);
   };
 
   return (

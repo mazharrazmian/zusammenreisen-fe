@@ -36,6 +36,16 @@ const genderIconMap = {
     2: FemaleIcon,
     3: TransgenderIcon,
   };
+
+
+  //Maps content_type in notification model
+  // in django to apps in React.
+
+  export const ContentTypeMap = {
+    'postrequest' : 'requests',
+    'chatroom' : 'chat', 
+    'post' : 'tripplanner',
+  }
   
 
   // GenderIcon component

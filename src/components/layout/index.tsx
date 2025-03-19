@@ -1,25 +1,23 @@
-import { Outlet } from "react-router-dom";
-import Navbar from "../navbar";
+import { Outlet, useLocation } from "react-router-dom";
+import Navbar, { PageTransition } from "../navbar";
+import { Box } from "@mui/material";
+
 const Layout = () => {
+  const location = useLocation();
+  const isHomePage = location.pathname === "/";
 
   return (
     <>
-      <Navbar />
-      <Outlet />
-      {/* <Fab
-        color="primary"
-        aria-label="chat"
-        sx={{
-          position: "fixed",
-          bottom: 16,
-          right: 16,
-        }}
-        onClick={() => navigate("/chat")}
-      >
-        <ChatIcon />
-      </Fab> */}
-      {/* Chat Drawer */}
-      {/* <ChatDrawer open={openChat} onClose={handleChatClose} /> */}
+      <Navbar transparentOnHome={isHomePage} />
+      
+      <Box sx={{ 
+        position : 'relative',
+        marginTop: isHomePage ? 0 : "92px", // Only add padding when navbar is not transparent
+        minHeight: "100vh"
+      }}>
+        <Outlet />
+      </Box>
+      
     </>
   );
 };
