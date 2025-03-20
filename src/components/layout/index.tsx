@@ -6,10 +6,13 @@ const Layout = () => {
   const location = useLocation();
   const isHomePage = location.pathname === "/";
 
+  const onSidebarToggle = ()=>{
+
+  }
+
+
   return (
-    <>
-      <Navbar transparentOnHome={isHomePage} />
-      
+    <>      
       <Box sx={{ 
         position : 'relative',
         marginTop: isHomePage ? 0 : "92px", // Only add padding when navbar is not transparent

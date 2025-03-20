@@ -16,23 +16,50 @@ import CreateTour from "./pages/createTour";
 import RequestManagementPage from "./pages/requestManagement";
 import MyTripsPage from "./pages/tripPlannerList";
 import TripPlannerPage from "./pages/tripPlannerDetail";
-import { PageTransition } from "./components/navbar";
+import MainLayout from "./components/shared/mainLayout";
+
 
 export default function Router() {
     const routes = useRoutes([
       {
         element: <Layout />,
         children: [
-          { path: "/", element: <PageTransition> <HomePage /> </PageTransition>, index: true },
-          { path: "posts/:id", element: <Details /> },
-          { path: "blog", element: <TravelBuddyBlog /> },
+          { 
+            path: "/", 
+            element: (
+              <MainLayout>
+                
+                  <HomePage />
+                
+              </MainLayout>
+            ), 
+            index: true 
+          },
+          { 
+            path: "posts/:id", 
+            element: (
+              <MainLayout>
+                <Details />
+              </MainLayout>
+            ) 
+          },
+          { 
+            path: "blog", 
+            element: (
+              <MainLayout>
+                <TravelBuddyBlog />
+              </MainLayout>
+            ) 
+          },
           { 
             path: "add/post", 
             element: (
               <ProtectedRoute>
-                <PageTransition>
-                <CreateTour />
-                </PageTransition>
+                <MainLayout>
+                  
+                    <CreateTour />
+                  
+                </MainLayout>
               </ProtectedRoute>
             ) 
           },
@@ -40,9 +67,11 @@ export default function Router() {
             path: "edit/post/:tourId", 
             element: (
               <ProtectedRoute>
-                <PageTransition>
-                <EditPost />
-                </PageTransition>
+                <MainLayout>
+                  
+                    <EditPost />
+                  
+                </MainLayout>
               </ProtectedRoute>
             ) 
           },
@@ -50,9 +79,11 @@ export default function Router() {
             path: "requests", 
             element: (
               <ProtectedRoute>
-                <PageTransition>
-                <RequestManagementPage />
-                </PageTransition>
+                <MainLayout>
+                  
+                    <RequestManagementPage />
+                  
+                </MainLayout>
               </ProtectedRoute>
             ) 
           },
@@ -60,9 +91,11 @@ export default function Router() {
             path: "tripplanner", 
             element: (
               <ProtectedRoute>
-                <PageTransition>
-                <MyTripsPage />
-                </PageTransition>
+                <MainLayout>
+                  
+                    <MyTripsPage />
+                  
+                </MainLayout>
               </ProtectedRoute>
             ) 
           },
@@ -70,19 +103,24 @@ export default function Router() {
             path: "tripplanner/:id", 
             element: (
               <ProtectedRoute>
-                <PageTransition>
-                <TripPlannerPage />
-                </PageTransition>
+                <MainLayout>
+                  
+                    <TripPlannerPage />
+                  
+                </MainLayout>
               </ProtectedRoute>
             ) 
           },
+          // Auth pages without MainLayout
           { path: "login", element: <LoginPage /> },
           { path: "register", element: <RegisterPage /> },
           { 
             path: "chat", 
             element: (
               <ProtectedRoute>
-                <ChatPage />
+                <MainLayout>
+                  <ChatPage />
+                </MainLayout>
               </ProtectedRoute>
             ) 
           },
@@ -90,7 +128,9 @@ export default function Router() {
             path: "chat/:chatId", 
             element: (
               <ProtectedRoute>
-                <ChatPage />
+                <MainLayout>
+                  <ChatPage />
+                </MainLayout>
               </ProtectedRoute>
             ) 
           },
@@ -98,7 +138,9 @@ export default function Router() {
             path: "account", 
             element: (
               <ProtectedRoute>
-                <ProfilePage />
+                <MainLayout>
+                  <ProfilePage />
+                </MainLayout>
               </ProtectedRoute>
             ) 
           },

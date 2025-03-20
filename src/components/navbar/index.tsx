@@ -5,97 +5,74 @@ import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
-import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
-import AdbIcon from "@mui/icons-material/Adb";
-import { Avatar, Divider, Drawer, List, ListItem, ListItemButton, ListItemText, Stack, Tooltip } from "@mui/material";
+import { Avatar, Divider, Stack, Tooltip, useMediaQuery } from "@mui/material";
 import { useNavigate, useLocation } from "react-router-dom";
 import Cookies from "js-cookie";
 import { useDispatch } from "react-redux";
 import { clearProfile } from "../../redux/slice/profileSlice";
 import { toast } from "react-toastify";
 import NotificationComponent from "./notification";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
+import MenuIcon from '@mui/icons-material/Menu'; // Import menu icon for sidebar toggle
 
 import Iconify from "../iconify";
 import { useAppSelector } from "../../redux/store";
-import Sidebar from "./sidebar";
-
 import Logo from "../../assets/logo3.svg";
-
-// Define page transition variants
-const pageTransitionVariants = {
-  initial: {
-    opacity: 0,
-    x: 20
-  },
-  animate: {
-    opacity: 1,
-    x: 0,
-    transition: {
-      type: "spring",
-      stiffness: 260,
-      damping: 20,
-    }
-  },
-  exit: {
-    opacity: 0,
-    x: -20,
-    transition: {
-      duration: 0.2
-    }
-  }
-};
-
-const normalPages = [
-    { id: 1, pageName: "Home", path: "/" },
-    // { id: 2, pageName: "Blog", path: "/blog" },  
-];
-
-const loggedInPages = [
-    { id: 3, pageName: "Requests", path: '/requests' },
-    {id : 4 , pageName : "My Trips" , path : '/tripplanner'},
-    {id: 5 , pageName : 'Chats' , path : '/chat'}
-]
+import { useTheme } from '@mui/material/styles';
 
 // Motion button component for nav links
 const MotionButton = motion(Button);
 
-const Navbar = React.memo(({ transparentOnHome }) => {
-
+// Define page transition variants
+const pageTransitionVariants = {
+    initial: {
+      opacity: 0,
+      x: 20
+    },
+    animate: {
+      opacity: 1,
+      x: 0,
+      transition: {
+        type: "spring",
+        stiffness: 260,
+        damping: 20,
+      }
+    },
+    exit: {
+      opacity: 0,
+      x: -20,
+      transition: {
+        duration: 0.2
+      }
+    }
+};
+  
+const Navbar = React.memo(({ transparentOnHome, onSidebarToggle }) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const location = useLocation();
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
-    const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
-        null
-    );
-    const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
-        null
-    );
+    const [anchorElUser, setAnchorElUser] = React.useState(null);
     const [scrolled, setScrolled] = React.useState(false);
     const [previousPath, setPreviousPath] = React.useState(location.pathname);
 
-    const profile: any = useAppSelector((s) => s?.profile);
+    const profile = useAppSelector((s) => s?.profile);
 
-    const pages = profile?.profile ? normalPages.concat(loggedInPages) : normalPages
-
-    const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-        setAnchorElNav(event.currentTarget);
-    };
-    const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
+    const handleOpenUserMenu = (event) => {
         setAnchorElUser(event.currentTarget);
     };
 
     const accessToken = Cookies.get("accessToken");
-    const handleCloseNavMenu = () => {
-        setAnchorElNav(null);
-    };
+    
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
     };
+    
     const handleLogout = () => {
         setAnchorElUser(null);
         Cookies.remove("accessToken", { path: "/" });
@@ -109,7 +86,15 @@ const Navbar = React.memo(({ transparentOnHome }) => {
         setPreviousPath(location.pathname);
         sessionStorage.setItem("toursFilters", JSON.stringify({}));
         navigate(path);
-        handleCloseNavMenu();
+    };
+
+    // Handle sidebar toggle with debugging
+    const handleSidebarToggle = (e) => {
+        e.stopPropagation(); // Prevent event bubbling
+        console.log("Sidebar toggle clicked");
+        if (onSidebarToggle) {
+            onSidebarToggle();
+        }
     };
 
     React.useEffect(() => {
@@ -141,136 +126,47 @@ const Navbar = React.memo(({ transparentOnHome }) => {
                 transition: "background 0.3s ease",
                 boxShadow: !isTransparent ? "0px 4px 6px rgba(0, 0, 0, 0.1)" : "none",
                 padding: "1rem 0rem",
+                width: '100%',
+                zIndex: 1100,
+                height:'auto',
             }}
         >
             <Container maxWidth="xl">
                 <Toolbar
                     disableGutters
-                    sx={{ display: "flex", justifyContent: "space-between" }}
+                    sx={{ display: "flex", justifyContent: "space-between" }} // Changed to space-between for better layout
                 >
-                    <Box sx={{ display: "flex", justifyContent: "top" }}>
-                        
-                        <Box
-                                component='img'
-                                sx={{
-                                    height: '4rem',
-                                    display: { xs: 'none', md: 'flex' },
-                                    transform: 'scale(2)',
-                                    transformOrigin: 'left center',
-                                    cursor: 'pointer',
-                                    marginTop:1,
-                                }}
-                                alt="Travel Mates"
-                                src={Logo}
-                                onClick={() => navigateWithAnimation('/')}
-                            />
-                        
-                    </Box>
-
-                    <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
+                    {/* Sidebar toggle for mobile */}
+                    {isMobile && (
                         <IconButton
-                            size="large"
-                            aria-label="open menu"
-                            onClick={handleOpenNavMenu}
-                            sx={{
-                                color: !isTransparent ? "#000" : "#fff",
+                            onClick={handleSidebarToggle}
+                            edge="start"
+                            color={isTransparent ? "inherit" : "primary"}
+                            aria-label="menu"
+                            sx={{ 
+                                mr: 2,
+                                zIndex: 1300, // Ensure button is above other elements
+                                position: "relative", // Ensure position context
                             }}
                         >
                             <MenuIcon />
                         </IconButton>
-
-                        <Drawer
-                            anchor="left"
-                            open={Boolean(anchorElNav)}
-                            onClose={handleCloseNavMenu}
-                        >
-                            <Box sx={{ width: 250 }}>
-                                <Sidebar
-                                    pages={pages}
-                                    navigate={navigateWithAnimation}
-                                    onClose={handleCloseNavMenu}
-                                />
-                            </Box>
-                        </Drawer>
-                    </Box>
-                    <Box
-                        component={motion.img}
-                        sx={{
-                            display: { xs: 'flex', md: 'none' },
-                            height: '60px',
-                            transform: 'scale(1.7)',
-                            transformOrigin: 'left center',
-                            marginRight: 3.5,
-                            cursor: 'pointer'
+                    )}
+                    
+                    {/* Logo/App Name centered on mobile */}
+                    <Box 
+                        sx={{ 
+                            display: { xs: 'flex' },
+                            justifyContent: 'center',
+                            height:'65px',
+                            scale: 2,
+                            marginTop: 1,
+                            flexGrow: isMobile ? 0 : 1, // Only flex grow on non-mobile
                         }}
-                        alt="Travel Mates"
+                        component={'img'}
                         src={Logo}
-                        onClick={() => navigateWithAnimation('/')}
                     />
-
-                    <Box
-                        sx={{
-                            display: { xs: "none", md: "flex" },
-                            gap: "8px",
-                            mx: 4
-                        }}
-                    >
-                        {pages.map((page) => {
-                            const isActive = location.pathname === page.path;
-                            
-                            return (
-                                <MotionButton
-                                    key={page.id}
-                                    component="a"
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        navigateWithAnimation(page.path);
-                                    }}
-                                    sx={{
-                                        px: 3,
-                                        py: 1,
-                                        mx: 1,
-                                        color: !isTransparent ? "#000" : "#fff",
-                                        position: "relative",
-                                        fontWeight: isActive ? 600 : 400,
-                                        letterSpacing: "0.5px",
-                                        borderRadius: "8px",
-                                        // Remove the border bottom and use underline animation instead
-                                        borderBottom: "none",
-                                        "&:hover": {
-                                            backgroundColor: !isTransparent 
-                                                ? "rgba(0, 0, 0, 0.04)" 
-                                                : "rgba(255, 255, 255, 0.15)",
-                                        }
-                                    }}
-                                    whileHover={{ scale: 1.05 }}
-                                    whileTap={{ scale: 0.95 }}
-                                >
-                                    {page.pageName}
-                                    {isActive && (
-                                        <motion.div
-                                            layoutId="navbar-indicator"
-                                            initial={false}
-                                            style={{
-                                                position: "absolute",
-                                                bottom: "0",
-                                                left: "0",
-                                                right: "0",
-                                                height: "3px",
-                                                borderRadius: "1.5px",
-                                                backgroundColor: !isTransparent ? "#1976d2" : "#fff",
-                                            }}
-                                            transition={{
-                                                type: "spring",
-                                                stiffness: 500,
-                                                damping: 30
-                                            }}
-                                        />
-                                    )}
-                                </MotionButton>
-                            );
-                        })}
-                    </Box>
+                    
                     {accessToken ? (
                         <Box sx={{ display: "flex", alignItems: "center", gap: "10px" }}>
                             <Box sx={{ flexGrow: 0 }}>
@@ -386,32 +282,5 @@ const Navbar = React.memo(({ transparentOnHome }) => {
         </AppBar>
     );
 });
-
-// Create a page transition wrapper component
-export const PageTransition = ({ children }) => {
-    const location = useLocation();
-    
-    return (
-        <AnimatePresence mode="wait">
-            <motion.div
-                key={location.pathname}
-                initial="initial"
-                animate="animate"
-                exit="exit"
-                variants={pageTransitionVariants}
-                style={{ 
-                    width: '100%', 
-                    height: '100%',
-                    position: 'absolute', // Add this
-                    left: 0,              // Add this
-                    right: 0,             // Add this
-                    top: 0                // Add this
-                }}
-            >
-                {children}
-            </motion.div>
-        </AnimatePresence>
-    );
-};
 
 export default Navbar;
