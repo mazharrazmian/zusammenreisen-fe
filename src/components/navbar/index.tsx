@@ -23,7 +23,7 @@ import Iconify from "../iconify";
 import { useAppSelector } from "../../redux/store";
 import Sidebar from "./sidebar";
 
-import Logo from "../../assets/logo.svg";
+import Logo from "../../assets/logo3.svg";
 
 // Define page transition variants
 const pageTransitionVariants = {
@@ -56,7 +56,8 @@ const normalPages = [
 
 const loggedInPages = [
     { id: 3, pageName: "Requests", path: '/requests' },
-    {id : 4 , pageName : "My Trips" , path : '/tripplanner'}
+    {id : 4 , pageName : "My Trips" , path : '/tripplanner'},
+    {id: 5 , pageName : 'Chats' , path : '/chat'}
 ]
 
 // Motion button component for nav links
@@ -103,14 +104,6 @@ const Navbar = React.memo(({ transparentOnHome }) => {
         toast.success("Logout successful");
     };
 
-    // Calculate direction of transition based on page index
-    const getTransitionDirection = (targetPath) => {
-        const currentPageIndex = pages.findIndex(page => page.path === location.pathname);
-        const targetPageIndex = pages.findIndex(page => page.path === targetPath);
-        
-        return targetPageIndex > currentPageIndex ? 1 : -1;
-    };
-
     // Custom navigation function with animation
     const navigateWithAnimation = (path) => {
         setPreviousPath(location.pathname);
@@ -155,17 +148,17 @@ const Navbar = React.memo(({ transparentOnHome }) => {
                     disableGutters
                     sx={{ display: "flex", justifyContent: "space-between" }}
                 >
-                    <Box sx={{ display: "flex", alignItems: "center" }}>
+                    <Box sx={{ display: "flex", justifyContent: "top" }}>
                         
-                            <Box
+                        <Box
                                 component='img'
-                                whileHover={{ scale: 1.05 }}
                                 sx={{
-                                    height: '60px',
+                                    height: '4rem',
                                     display: { xs: 'none', md: 'flex' },
-                                    transform: 'scale(1.6)',
+                                    transform: 'scale(2)',
                                     transformOrigin: 'left center',
-                                    cursor: 'pointer'
+                                    cursor: 'pointer',
+                                    marginTop:1,
                                 }}
                                 alt="Travel Mates"
                                 src={Logo}
@@ -202,13 +195,12 @@ const Navbar = React.memo(({ transparentOnHome }) => {
                     </Box>
                     <Box
                         component={motion.img}
-                        whileHover={{ scale: 1.05 }}
                         sx={{
                             display: { xs: 'flex', md: 'none' },
                             height: '60px',
-                            transform: 'scale(1.3)',
+                            transform: 'scale(1.7)',
                             transformOrigin: 'left center',
-                            marginRight: 2,
+                            marginRight: 3.5,
                             cursor: 'pointer'
                         }}
                         alt="Travel Mates"
