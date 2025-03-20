@@ -23,7 +23,7 @@ import Iconify from "../iconify";
 import { useAppSelector } from "../../redux/store";
 import Sidebar from "./sidebar";
 
-import Logo from "../../assets/apdown.svg";
+import Logo from "../../assets/logo.svg";
 
 // Define page transition variants
 const pageTransitionVariants = {
@@ -156,7 +156,7 @@ const Navbar = React.memo(({ transparentOnHome }) => {
                     sx={{ display: "flex", justifyContent: "space-between" }}
                 >
                     <Box sx={{ display: "flex", alignItems: "center" }}>
-                        {!isTransparent ?
+                        
                             <Box
                                 component='img'
                                 whileHover={{ scale: 1.05 }}
@@ -171,17 +171,7 @@ const Navbar = React.memo(({ transparentOnHome }) => {
                                 src={Logo}
                                 onClick={() => navigateWithAnimation('/')}
                             />
-                            :
-                            <Typography 
-                                component={'h6'}
-                                whileHover={{ scale: 1.05 }}
-                                color="primary"
-                                sx={{ cursor: 'pointer' }}
-                                onClick={() => navigateWithAnimation('/')}
-                            >
-                                Travel Mates
-                            </Typography>
-                        }
+                        
                     </Box>
 
                     <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>

@@ -16,7 +16,7 @@ const TripPlannerPage = () => {
   const [loading,setLoading] = useState(false)
 
   useEffect(()=>{
-
+    if (id === undefined) return
     tripService.getTripById(id)
     .then(res=>{
         setTripDetails(res.data)
