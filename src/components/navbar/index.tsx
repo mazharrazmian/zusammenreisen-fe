@@ -286,7 +286,7 @@ const Navbar = React.memo(({ transparentOnHome }) => {
                                         fontWeight: 500
                                     }}
                                 >
-                                    Add Post
+                                    Create Tour
                                 </Button>
                             </Box>
                             <NotificationComponent

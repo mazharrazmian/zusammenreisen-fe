@@ -77,7 +77,7 @@ const HomePage: React.FC = () => {
       setIsInitialLoad(false);
     } catch (error) {
       console.log(error);
-      toast.error("Failed to fetch posts.");
+      toast.error("Failed to fetch tours.");
     } finally {
       setLoading(false);
     }
