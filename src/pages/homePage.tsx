@@ -30,7 +30,6 @@ const HomePage: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const [isInitialLoad, setIsInitialLoad] = useState(true);
-
   // Get saved filters from session storage
   const getSavedFilters = () => {
     const savedFilters = sessionStorage.getItem("toursFilters");

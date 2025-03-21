@@ -8,8 +8,9 @@ const Layout = () => {
 
   return (
     <>
+    <nav>
       <Navbar transparentOnHome={isHomePage} />
-      
+      </nav>
       <Box sx={{ 
         position : 'relative',
         marginTop: isHomePage ? 0 : "92px", // Only add padding when navbar is not transparent

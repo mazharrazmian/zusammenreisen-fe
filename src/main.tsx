@@ -11,7 +11,6 @@ import { ToastContainer } from "react-toastify";
 import { store } from "./redux/store";
 
 createRoot(document.getElementById("root")!).render(
-  <StrictMode>
     <HelmetProvider>
       <BrowserRouter>
         <Provider store={store}>
@@ -22,5 +21,4 @@ createRoot(document.getElementById("root")!).render(
         </Provider>
       </BrowserRouter>
     </HelmetProvider>
-  </StrictMode>
 );
