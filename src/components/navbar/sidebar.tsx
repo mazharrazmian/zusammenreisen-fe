@@ -1,15 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  List, 
   ListItemButton, 
   ListItemIcon, 
   ListItemText,
-  Paper,
-  Typography,
   Box,
-  Divider,
-  Tooltip,
-  IconButton
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
@@ -19,21 +13,9 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import PeopleIcon from '@mui/icons-material/People';
 import SettingsIcon from '@mui/icons-material/Settings';
 import HelpIcon from '@mui/icons-material/Help';
-import MenuOpenIcon from '@mui/icons-material/MenuOpen';
-import MenuIcon from '@mui/icons-material/Menu';
 import { useLocation } from 'react-router-dom';
-
-// Create styled components
-const SidebarContainer = styled(Paper)(({ theme, collapsed }) => ({
-  width: collapsed ? 70 : 240,
-  backgroundColor: theme.palette.background.default,
-  borderRadius: theme.shape.borderRadius * 2,
-  boxShadow: '0 8px 24px rgba(0,0,0,0.12)',
-  overflow: 'hidden',
-  transition: 'width 0.3s ease',
-  height: '100%',
-  position: 'relative'
-}));
+import { Chat, Chat as ChatIcon } from '@mui/icons-material';
+import FlightIcon from '@mui/icons-material/Flight';
 
 const SidebarHeader = styled(Box)(({ theme }) => ({
   padding: theme.spacing(3),
@@ -76,9 +58,10 @@ const getIconForPage = (pageName) => {
       return <HomeIcon />;
     case 'dashboard':
       return <DashboardIcon />;
-    case 'users':
-    case 'team':
-    case 'people':
+    case 'chats':
+        return <Chat />
+    case 'my trips':
+        return <FlightIcon/>
     case 'requests':
       return <PeopleIcon />;
     case 'settings':
@@ -108,33 +91,15 @@ const Sidebar = ({ pages, navigate, onClose }) => {
   };
 
   return (
-    <SidebarContainer collapsed={collapsed} elevation={6}>
-      <SidebarHeader>
-        {!collapsed && (
-          <Typography variant="h6" fontWeight="bold" color="primary">
-            App Name
-          </Typography>
-        )}
-        <IconButton 
-          onClick={() => setCollapsed(!collapsed)}
-          size="small"
-        >
-          {collapsed ? <MenuIcon /> : <MenuOpenIcon />}
-        </IconButton>
-      </SidebarHeader>
-      
-      <Divider sx={{ mx: 2, opacity: 0.6 }} />
-      
-      <List sx={{ mt: 2 }}>
+    <>
+    <SidebarHeader>
+        Travel Mates
+        </SidebarHeader>      
+      <ul sx={{ mt: 2 }}>
         {pages.map((page) => {
           const isActive = location.pathname === page.path;
           
           return (
-            <Tooltip 
-              key={page.id} 
-              title={collapsed ? page.pageName : ""} 
-              placement="right"
-            >
               <StyledListItemButton
                 onClick={() => handleNavigate(page)}
                 active={isActive ? 1 : 0}
@@ -152,11 +117,10 @@ const Sidebar = ({ pages, navigate, onClose }) => {
                   />
                 )}
               </StyledListItemButton>
-            </Tooltip>
           );
         })}
-      </List>
-    </SidebarContainer>
+      </ul>
+      </>
   );
 };
 

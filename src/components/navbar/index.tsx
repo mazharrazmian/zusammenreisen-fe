@@ -9,8 +9,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
-import AdbIcon from "@mui/icons-material/Adb";
-import { Avatar, Divider, Drawer, List, ListItem, ListItemButton, ListItemText, Stack, Tooltip } from "@mui/material";
+import { Avatar, Divider, Drawer, Stack, Tooltip } from "@mui/material";
 import { useNavigate, useLocation } from "react-router-dom";
 import Cookies from "js-cookie";
 import { useDispatch } from "react-redux";
@@ -27,26 +26,26 @@ import Logo from "../../assets/logo3.svg";
 
 // Define page transition variants
 const pageTransitionVariants = {
-  initial: {
-    opacity: 0,
-    x: 20
-  },
-  animate: {
-    opacity: 1,
-    x: 0,
-    transition: {
-      type: "spring",
-      stiffness: 260,
-      damping: 20,
+    initial: {
+        opacity: 0,
+        x: 20
+    },
+    animate: {
+        opacity: 1,
+        x: 0,
+        transition: {
+            type: "spring",
+            stiffness: 260,
+            damping: 20,
+        }
+    },
+    exit: {
+        opacity: 0,
+        x: -20,
+        transition: {
+            duration: 0.2
+        }
     }
-  },
-  exit: {
-    opacity: 0,
-    x: -20,
-    transition: {
-      duration: 0.2
-    }
-  }
 };
 
 const normalPages = [
@@ -56,8 +55,8 @@ const normalPages = [
 
 const loggedInPages = [
     { id: 3, pageName: "Requests", path: '/requests' },
-    {id : 4 , pageName : "My Trips" , path : '/tripplanner'},
-    {id: 5 , pageName : 'Chats' , path : '/chat'}
+    { id: 4, pageName: "My Trips", path: '/tripplanner' },
+    { id: 5, pageName: 'Chats', path: '/chat' }
 ]
 
 // Motion button component for nav links
@@ -140,7 +139,9 @@ const Navbar = React.memo(({ transparentOnHome }) => {
                 background: !isTransparent ? "#fff" : "transparent",
                 transition: "background 0.3s ease",
                 boxShadow: !isTransparent ? "0px 4px 6px rgba(0, 0, 0, 0.1)" : "none",
-                padding: "1rem 0rem",
+                height: "70px", // Fixed height for AppBar
+                display: "flex",
+                alignItems: "center",
             }}
         >
             <Container maxWidth="xl">
@@ -149,22 +150,22 @@ const Navbar = React.memo(({ transparentOnHome }) => {
                     sx={{ display: "flex", justifyContent: "space-between" }}
                 >
                     <Box sx={{ display: "flex", justifyContent: "top" }}>
-                        
+
+                        {/* // Desktop logo */}
                         <Box
-                                component='img'
-                                sx={{
-                                    height: '4rem',
-                                    display: { xs: 'none', md: 'flex' },
-                                    transform: 'scale(2)',
-                                    transformOrigin: 'left center',
-                                    cursor: 'pointer',
-                                    marginTop:1,
-                                }}
-                                alt="Travel Mates"
-                                src={Logo}
-                                onClick={() => navigateWithAnimation('/')}
-                            />
-                        
+                            component='img'
+                            sx={{
+                                height: '40px', // Fixed reasonable height
+                                width: 'auto',  // Maintain aspect ratio
+                                display: { xs: 'none', md: 'flex' },
+                                cursor: 'pointer',
+                                marginRight: 2,
+                            }}
+                            alt="Travel Mates"
+                            src={Logo}
+                            onClick={() => navigateWithAnimation('/')}
+                        />
+
                     </Box>
 
                     <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -193,15 +194,15 @@ const Navbar = React.memo(({ transparentOnHome }) => {
                             </Box>
                         </Drawer>
                     </Box>
+                    {/* // Mobile logo */}
                     <Box
                         component={motion.img}
                         sx={{
                             display: { xs: 'flex', md: 'none' },
-                            height: '60px',
-                            transform: 'scale(1.7)',
-                            transformOrigin: 'left center',
-                            marginRight: 3.5,
-                            cursor: 'pointer'
+                            height: '35px', // Slightly smaller height for mobile
+                            width: 'auto',  // Maintain aspect ratio
+                            cursor: 'pointer',
+                            marginRight: 2,
                         }}
                         alt="Travel Mates"
                         src={Logo}
@@ -217,11 +218,11 @@ const Navbar = React.memo(({ transparentOnHome }) => {
                     >
                         {pages.map((page) => {
                             const isActive = location.pathname === page.path;
-                            
+
                             return (
                                 <MotionButton
                                     key={page.id}
-                                    component="a"
+                                    href={page.path} // Set href to make it a real link
                                     onClick={(e) => {
                                         e.preventDefault();
                                         navigateWithAnimation(page.path);
@@ -238,8 +239,8 @@ const Navbar = React.memo(({ transparentOnHome }) => {
                                         // Remove the border bottom and use underline animation instead
                                         borderBottom: "none",
                                         "&:hover": {
-                                            backgroundColor: !isTransparent 
-                                                ? "rgba(0, 0, 0, 0.04)" 
+                                            backgroundColor: !isTransparent
+                                                ? "rgba(0, 0, 0, 0.04)"
                                                 : "rgba(255, 255, 255, 0.15)",
                                         }
                                     }}
@@ -274,11 +275,11 @@ const Navbar = React.memo(({ transparentOnHome }) => {
                     {accessToken ? (
                         <Box sx={{ display: "flex", alignItems: "center", gap: "10px" }}>
                             <Box sx={{ flexGrow: 0 }}>
-                                <Button 
+                                <Button
                                     component={motion.button}
                                     whileHover={{ scale: 1.05 }}
                                     whileTap={{ scale: 0.95 }}
-                                    variant="contained" 
+                                    variant="contained"
                                     onClick={() => navigateWithAnimation('/add/post')}
                                     sx={{
                                         borderRadius: "8px",
@@ -297,10 +298,10 @@ const Navbar = React.memo(({ transparentOnHome }) => {
 
                             <Box sx={{ flexGrow: 0 }}>
                                 <Tooltip title={''}>
-                                    <IconButton 
+                                    <IconButton
                                         component={motion.button}
                                         whileHover={{ scale: 1.1 }}
-                                        onClick={handleOpenUserMenu} 
+                                        onClick={handleOpenUserMenu}
                                         sx={{ p: 0 }}
                                     >
                                         <Avatar
@@ -353,11 +354,11 @@ const Navbar = React.memo(({ transparentOnHome }) => {
                         </Box>
                     ) : (
                         <Stack spacing={2} direction={"row"}>
-                            <Button 
+                            <Button
                                 component={motion.button}
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
-                                variant="outlined" 
+                                variant="outlined"
                                 onClick={() => navigateWithAnimation("/login")}
                                 sx={{
                                     borderRadius: "8px",
@@ -366,11 +367,11 @@ const Navbar = React.memo(({ transparentOnHome }) => {
                             >
                                 Log In
                             </Button>
-                            <Button 
+                            <Button
                                 component={motion.button}
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
-                                variant="contained" 
+                                variant="contained"
                                 onClick={() => navigateWithAnimation("/register")}
                                 sx={{
                                     borderRadius: "8px",
@@ -390,7 +391,7 @@ const Navbar = React.memo(({ transparentOnHome }) => {
 // Create a page transition wrapper component
 export const PageTransition = ({ children }) => {
     const location = useLocation();
-    
+
     return (
         <AnimatePresence mode="wait">
             <motion.div
@@ -399,8 +400,8 @@ export const PageTransition = ({ children }) => {
                 animate="animate"
                 exit="exit"
                 variants={pageTransitionVariants}
-                style={{ 
-                    width: '100%', 
+                style={{
+                    width: '100%',
                     height: '100%',
                     position: 'absolute', // Add this
                     left: 0,              // Add this

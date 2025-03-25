@@ -28,6 +28,7 @@ import postRequestService from '../redux/api/tripRequestService';
 import { handleApiError } from '../redux/api/http-common';
 import { toast } from 'react-toastify';
 import { useAppSelector } from '../redux/store';
+import { REQUESTSTATUS } from '../Constants';
 
 const RequestManagementPage = () => {
     const profile = useAppSelector(s=>s.profile.profile)
@@ -201,7 +202,9 @@ const RequestManagementPage = () => {
                               Received Requests
                             </Typography>
                             <Badge 
-                              badgeContent={receivedRequests?.length} 
+                              badgeContent={receivedRequests.filter((f)=>{
+                               return f.status === REQUESTSTATUS.Pending
+                              }).length} 
                               color="primary" 
                               sx={{ 
                                 ml: 0.5,
@@ -245,7 +248,9 @@ const RequestManagementPage = () => {
                               Sent Requests
                             </Typography>
                             <Badge 
-                              badgeContent={sentRequests?.length} 
+                              badgeContent={sentRequests.filter((f)=>{
+                                return f.status === REQUESTSTATUS.Pending
+                              }).length} 
                               color="primary"
                               sx={{ 
                                 ml: 0.5,

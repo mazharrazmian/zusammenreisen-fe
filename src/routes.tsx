@@ -4,7 +4,7 @@ import HomePage from "./pages/homePage";
 import Page404 from "./pages/Page404";
 import LoginPage from "./pages/login";
 import RegisterPage from "./pages/register";
-import Details from "./pages/tourDetails";
+import Details from "./pages/tripDetails";
 import ChatPage from "./pages/chatPage";
 import EditPost from "./pages/editTour";
 import ProtectedRoute from "./hoc/protectedRoute";

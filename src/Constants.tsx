@@ -1,6 +1,7 @@
 import MaleIcon from '@mui/icons-material/Male';
 import FemaleIcon from '@mui/icons-material/Female';
 import TransgenderIcon from '@mui/icons-material/Transgender';
+import { AttachMoney, Category, CreditCard, DirectionsWalk, LocalActivity, LocalOffer, LocationOn, Luggage } from '@mui/icons-material';
 
 
 export const GENDERS = [
@@ -75,6 +76,36 @@ export const accommodationTypes = [
 ];
 
 export const ageGroups = ["18-24", "25-34", "35-44", "45-54", "55-64", "65-over", "any"];
+
+// Helper functions for icons
+export const getTripTypeIcons = (type) => {
+    switch (type) {
+        case 'adventure':
+            return <DirectionsWalk />;
+        case 'cultural':
+            return <LocalActivity />;
+        case 'beach':
+            return <Luggage />;
+        case 'mountain':
+            return <Luggage />;
+        case 'city':
+            return <LocationOn />;
+        case 'wildlife':
+            return <Luggage />;
+        case 'food':
+            return <LocalOffer />;
+        case 'photography':
+            return <Luggage />;
+        case 'backpacking':
+            return <Luggage />;
+        case 'luxury':
+            return <CreditCard />;
+        case 'budget':
+            return <AttachMoney />;
+        default:
+            return <Category />;
+    }
+};
 
 
 export default GenderIcon;
