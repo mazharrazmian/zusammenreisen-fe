@@ -16,7 +16,9 @@ const Layout = () => {
         marginTop: isHomePage ? 0 : "92px", // Only add padding when navbar is not transparent
         minHeight: "100vh"
       }}>
+        <main>
         <Outlet />
+        </main>
       </Box>
       
     </>
