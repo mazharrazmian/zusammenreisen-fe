@@ -1,5 +1,6 @@
 import signUpImg from "../assets/signUp.jpg";
 import loginImg from "../assets/login.png";
+import homebg from "../assets/homebg.webp";
 
 export const authStyles = {
   vector1: {
@@ -200,26 +201,26 @@ export const listStyles = {
 };
 
 export const homePageStyles = {
-    mainWrapper: {
-        minHeight: { md: "80vh", xs: "60vh" },
-        backgroundImage: `
-          linear-gradient(
-            135deg, 
-            rgba(0, 0, 0, 0.7), 
-            rgba(6, 182, 174, 0.6)
-          )`,
-        backgroundBlendMode: 'multiply',
-        backgroundRepeat: "no-repeat",
-        backgroundPosition: "center",
-        backgroundSize: "cover",
-        display: "flex",
-        flexDirection: 'column',
-        justifyContent: "center",
-        alignItems: "center",
-        color: "white",
-        position: "relative",
-        overflow: "hidden",
-      },
+ mainWrapper: {
+    minHeight: { md: "80vh", xs: "60vh" },
+    backgroundImage: `
+    linear-gradient(
+      135deg, 
+      rgba(0, 0, 0, 0.9), 
+      rgba(3, 135, 128, 0.75)
+    )`,
+    backgroundBlendMode: 'multiply',
+    backgroundRepeat: "no-repeat",
+    backgroundPosition: "center",
+    backgroundSize: "cover",
+    display: "flex",
+    flexDirection: 'column',
+    justifyContent: "center",
+    alignItems: "center",
+    color: "white",
+    position: "relative",
+    overflow: "hidden",
+  },
   
 };
 

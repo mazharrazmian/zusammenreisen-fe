@@ -26,6 +26,7 @@ const TripList = ({posts} : {posts : Array<TourDataInterface>})=>{
               <CardMedia
                 component="img"
                 height="200"
+                loading="lazy"
                 image={tour.image}
                 alt={tour.title}
               />

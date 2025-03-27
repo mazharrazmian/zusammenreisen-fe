@@ -131,6 +131,76 @@ const HomePage: React.FC = () => {
       No more solo travels - find your perfect travel mate here!
     </Typography>
   </AnimateWrapper>
+
+  <Box sx={{
+          display: "flex",
+          flexDirection: { xs: "column", sm: "row" },
+          alignItems: "center",
+          justifyContent: "center",
+          gap: 2
+        }}>
+          <AnimateWrapper {...animationConfig.heroButton(0.5)}>
+            <Button 
+              variant="contained" 
+              color="primary" 
+              onClick={() => document.getElementById('explore-tours').scrollIntoView({behavior: 'smooth'})} 
+              sx={{ 
+                borderRadius: "30px", 
+                textTransform: "none", 
+                fontWeight: "600", 
+                fontSize: { xs: "0.9rem", sm: "1.1rem" }, 
+                padding: { xs: "10px 25px", sm: "12px 30px" }, 
+                boxShadow: "0 8px 16px rgba(0, 0, 0, 0.2)", 
+                backgroundColor: "primary.dark",
+                minWidth : '180px',
+                width: { xs: "100%", sm: "220px" },
+                color : 'primary',
+                "&:hover": { 
+                  backgroundColor: "primary.main", 
+                  transform: "translateY(-3px)", 
+                  boxShadow: "0 12px 20px rgba(0, 0, 0, 0.3)" 
+                }, 
+                transition: "all 0.3s ease" 
+              }} 
+            > 
+              Explore Tours 
+            </Button> 
+          </AnimateWrapper>
+          
+          <AnimateWrapper {...animationConfig.heroButton(0.7)}>
+            <Button 
+              variant="outlined" 
+              color="primary" 
+              onClick={() => { 
+                profile?.profile ?  
+                navigate('/add/post') 
+                : 
+                navigate('/register') 
+              }} 
+              sx={{ 
+                borderRadius: "30px", 
+                textTransform: "none", 
+                fontWeight: "600", 
+                fontSize: { xs: "0.9rem", sm: "1.1rem" }, 
+                padding: { xs: "10px 25px", sm: "12px 30px" }, 
+                borderColor: "white", 
+                color: "white", 
+                backgroundColor: "rgba(255, 255, 255, 0.1)",
+                minWidth : '180px', 
+                width: { xs: "100%", sm: "220px" },
+                "&:hover": { 
+                  backgroundColor: "rgba(255, 255, 255, 0.2)", 
+                  borderColor: "white", 
+                  transform: "translateY(-3px)", 
+                  boxShadow: "0 12px 20px rgba(0, 0, 0, 0.2)" 
+                }, 
+                transition: "all 0.3s ease" 
+              }} 
+            > 
+              Create Your Tour 
+            </Button> 
+          </AnimateWrapper>
+        </Box>
   
   {/* Rest of the component remains the same */}
 </Box>
