@@ -30,10 +30,10 @@ export const secondaryFont = "Barlow, sans-serif";
 export const typography = {
   fontFamily: primaryFont,
   fontSecondaryFamily: secondaryFont,
-  fontWeightRegular: 400,
-  fontWeightMedium: 500,
-  fontWeightSemiBold: 600,
-  fontWeightBold: 700,
+  fontWeightRegular: 500,
+  fontWeightMedium: 600,
+  fontWeightSemiBold: 700,
+  fontWeightBold: 800,
   h1: {
     fontWeight: 800,
     lineHeight: 80 / 64,
