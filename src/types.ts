@@ -59,6 +59,7 @@ export interface Profile {
     created_at: string;
     participants: Participant[];
     messages: Message[];
+    unread_count : number,
   }
   
   export interface UserChats {

@@ -111,9 +111,14 @@ const TripDetailsHeader = ({ tripDetails }: {tripDetails : any}) => {
       </Box>
 
       <Typography variant="h6" mb={1}>Itinerary</Typography>
-      <Typography variant="body2" paragraph>
-        {tripDetails?.itinerary}
-      </Typography>
+      <Typography
+                            sx={{
+                                whiteSpace: 'pre-line',
+                                lineHeight: 1.8
+                            }}
+                        >
+                            {tripDetails?.itinerary}
+                        </Typography>
 
       <Typography variant="h6" mb={1}>Description</Typography>
       <Typography variant="body2" paragraph>

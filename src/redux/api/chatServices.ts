@@ -17,9 +17,7 @@ const createRoom = async (data: createChat) => {
         return res;
     } catch (error) {
         handleApiError(error);
-    }
-    
-    
+    }   
 }
 
 const getNotifications = async ()=>{
@@ -38,6 +36,10 @@ const updateNotification = async (notification : Notification) =>{
 const getChatRooms = (email: string) =>
   callAPi.get(`/chat/chat-rooms?email=${email}`);
 
+const markMessagesAsRead = (chatRoom : number) =>{
+    return callAPi.post(`/chat/chat-rooms/${chatRoom}/mark_as_read/`)
+}
+
 const getChatRoomsCurrUser = ()=> callAPi.get(`/chat/chat-rooms/`);
 const retrieveRoom = (id: number) => callAPi.get(`/chat/chat-rooms/${id}`);
 
@@ -52,6 +54,7 @@ const chatServices = {
   getChatRoomsCurrUser,
   getNotifications,
   updateNotification,
+  markMessagesAsRead
 };
 
 export default chatServices;

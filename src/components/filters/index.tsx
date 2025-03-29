@@ -62,8 +62,8 @@ const Filters: React.FC<FiltersProps> = ({ filters, setFilters }) => {
             gender: "",
             date_from: '',
             date_to: '',
-            age_group : 'any',
-            group_size : '',
+            age_group: 'any',
+            group_size: '',
             page: 1,
         };
 
@@ -83,7 +83,7 @@ const Filters: React.FC<FiltersProps> = ({ filters, setFilters }) => {
                 </Typography>
 
                 {/* country_from Filter */}
-                <FormControl fullWidth variant="outlined" sx={{ mt: 1 }}>                    
+                <FormControl fullWidth variant="outlined" sx={{ mt: 1 }}>
                     <Autocomplete
                         value={countries.find(c => c.id === filters.country_from) || null} // Ensure the value matches an option
                         disablePortal
@@ -96,13 +96,13 @@ const Filters: React.FC<FiltersProps> = ({ filters, setFilters }) => {
                                 ...prev,
                                 country_from: newValue ? newValue.id : "", // Store only the country ID
                             }));
-                        }}                 
-                        />
+                        }}
+                    />
                 </FormControl>
 
                 {/* city_from Filter */}
                 <FormControl fullWidth variant="outlined" sx={{ mt: 2 }}>
-                <Autocomplete
+                    <Autocomplete
                         value={fromCities.find(c => c.id === filters.city_from) || null} // Ensure the value matches an option
                         disablePortal
                         isOptionEqualToValue={(option, value) => option.id === value.id} // Ensure correct equality check
@@ -114,9 +114,9 @@ const Filters: React.FC<FiltersProps> = ({ filters, setFilters }) => {
                                 ...prev,
                                 city_from: newValue ? newValue.id : "", // Store only the country ID
                             }));
-                        }}                 
-                        />
-    
+                        }}
+                    />
+
                 </FormControl>
             </Paper>
 
@@ -140,13 +140,13 @@ const Filters: React.FC<FiltersProps> = ({ filters, setFilters }) => {
                                 ...prev,
                                 country_to: newValue ? newValue.id : "", // Store only the country ID
                             }));
-                        }}                 
-                        />
+                        }}
+                    />
                 </FormControl>
 
                 {/* city_to Filter */}
                 <FormControl fullWidth variant="outlined" sx={{ mt: 2 }}>
-                <Autocomplete
+                    <Autocomplete
                         value={toCities.find(c => c.id === filters.city_to) || null} // Ensure the value matches an option
                         disablePortal
                         isOptionEqualToValue={(option, value) => option.id === value.id} // Ensure correct equality check
@@ -158,8 +158,8 @@ const Filters: React.FC<FiltersProps> = ({ filters, setFilters }) => {
                                 ...prev,
                                 city_from: newValue ? newValue.id : "", // Store only the country ID
                             }));
-                        }}                 
-                        />
+                        }}
+                    />
                 </FormControl>
             </Paper>
 
@@ -168,30 +168,23 @@ const Filters: React.FC<FiltersProps> = ({ filters, setFilters }) => {
                 <Typography variant="subtitle1" color="info.main" sx={{ mb: 1, fontWeight: 'bold' }}>
                     Additional Filters
                 </Typography>
-                    
+
                 {/* Gender Filter */}
                 <FormControl fullWidth variant="outlined" sx={{ mt: 1 }}>
-                    <InputLabel>Gender</InputLabel>
-                    <Select 
-                        name="gender" 
-                        value={filters.gender} 
-                        onChange={handleChange}
-                        label='Gender'
-                    >
-                        <MenuItem value="">All Genders</MenuItem>
-                        {GENDERS.map((gender) => (
-                            <MenuItem key={gender.value} value={gender.value}>
-                                {gender.display}
-                            </MenuItem>
-                        ))}
-                    </Select>
+                    <Autocomplete
+                        options={GENDERS}
+                        getOptionLabel={(option) => option.display}
+                        value={GENDERS.find((g) => g.value === filters.gender) || null}
+                        onChange={(event, newValue) => handleChange({ target: { name: "gender", value: newValue ? newValue.value : "" } })}
+                        renderInput={(params) => <TextField {...params} label="Gender" variant="outlined" fullWidth />}
+                    />
                 </FormControl>
 
                 <FormControl fullWidth variant="outlined" sx={{ mt: 3 }}>
                     <InputLabel>Age Group</InputLabel>
-                    <Select 
-                        name="age_group" 
-                        value={filters.age_group} 
+                    <Select
+                        name="age_group"
+                        value={filters.age_group}
                         onChange={handleChange}
                         label='Age Group'
                     >
@@ -204,13 +197,13 @@ const Filters: React.FC<FiltersProps> = ({ filters, setFilters }) => {
                 </FormControl>
 
                 <FormControl fullWidth variant="outlined" sx={{ mt: 3 }}>
-                    <TextField 
-                    fullWidth
-                    type="number"
-                    value = {filters.group_size}
-                    onChange={handleChange}
-                    name="group_size"
-                    label='Group Size'
+                    <TextField
+                        fullWidth
+                        type="number"
+                        value={filters.group_size}
+                        onChange={handleChange}
+                        name="group_size"
+                        label='Group Size'
                     />
 
 

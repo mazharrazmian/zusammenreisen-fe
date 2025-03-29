@@ -22,7 +22,7 @@ import Iconify from "../iconify";
 import { useAppSelector } from "../../redux/store";
 import Sidebar from "./sidebar";
 
-import Logo from "../../assets/logo3.svg";
+import Logo from "../../assets/logo1.png";
 
 // Define page transition variants
 const pageTransitionVariants = {
@@ -155,7 +155,7 @@ const Navbar = React.memo(({ transparentOnHome }) => {
                         <Box
                             component='img'
                             sx={{
-                                height: '40px', // Fixed reasonable height
+                                height: '70px', // Fixed reasonable height
                                 width: 'auto',  // Maintain aspect ratio
                                 display: { xs: 'none', md: 'flex' },
                                 cursor: 'pointer',
@@ -199,7 +199,7 @@ const Navbar = React.memo(({ transparentOnHome }) => {
                         component={motion.img}
                         sx={{
                             display: { xs: 'flex', md: 'none' },
-                            height: '35px', // Slightly smaller height for mobile
+                            height: '60px', // Slightly smaller height for mobile
                             width: 'auto',  // Maintain aspect ratio
                             cursor: 'pointer',
                             marginRight: 2,
