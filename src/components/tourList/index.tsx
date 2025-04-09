@@ -3,11 +3,13 @@ import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import GroupIcon from "@mui/icons-material/Group";
 import { useNavigate } from "react-router-dom";
 import { TourDataInterface } from "../../types";
+import { useTranslation } from "react-i18next";
 
 
 const TripList = ({posts} : {posts : Array<TourDataInterface>})=>{
 
     const navigate = useNavigate()
+    const {t} = useTranslation('triplist')
     return (
         posts.map(tour=>
             <Grid key={tour.id} size={{xs: 12, sm: 6, lg: 4}}>
@@ -45,7 +47,7 @@ const TripList = ({posts} : {posts : Array<TourDataInterface>})=>{
                 
                 <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
                   <Typography color="text.primary" variant="body2" paddingRight={1}>
-                      From : 
+                      {t("from")} : 
                   </Typography>
                                                   <Typography variant="body2" color="text.secondary">
                     {tour.travel_from_city}, {tour.travel_from_country}
@@ -55,7 +57,7 @@ const TripList = ({posts} : {posts : Array<TourDataInterface>})=>{
                 
                 <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
                 <Typography color="text.primary" variant="body2" paddingRight={1}>
-                      To : 
+                      {t('to')} : 
                   </Typography>
                                  
                   <Typography variant="body2" color="text.secondary">
@@ -116,7 +118,7 @@ const TripList = ({posts} : {posts : Array<TourDataInterface>})=>{
                   }}
                   onClick={() => navigate(`posts/${tour.id}`)}
                 >
-                  View Details
+                  {t("viewDetails")}
                 </Button>
               </Box>
             </Card>

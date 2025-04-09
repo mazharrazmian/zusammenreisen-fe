@@ -1,0 +1,17 @@
+{
+    "filters": "Filter",
+  "fromLocation": "Startort",
+  "toLocation": "Zielort",
+  "country": "Land",
+  "city": "Stadt",
+  "additionalFilters": "Weitere Filter",
+  "gender": "Geschlecht",
+  "ageGroup": "Altersgruppe",
+  "groupSize": "Gruppengröße",
+  "dateFrom": "Datum von",
+  "dateTo": "Datum bis",
+  "dateGreaterThanOrEqual": "Datum größer oder gleich",
+  "dateLessThanOrEqual": "Datum kleiner oder gleich",
+  "resetFilters": "Filter zurücksetzen"
+
+}

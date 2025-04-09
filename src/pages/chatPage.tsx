@@ -128,7 +128,6 @@ const ChatPage: React.FC = () => {
         const loadChatFromUrl = async () => {
             try {
                 const response = await chatServices.retrieveRoom(Number(chatId));
-                console.log(response)
                 setActiveChat(response.data);
                 setMessageList(response.data.messages);
 

@@ -1,6 +1,7 @@
 import { AttachMoney, CalendarMonth, Category, CreditCard, DirectionsWalk, Group as GroupIcon, LocalActivity, LocalOffer, LocationOn, Luggage } from "@mui/icons-material";
 import { Box, Card, CardContent, List, ListItem, ListItemIcon, ListItemText, Typography } from "@mui/material";
 import { getTripTypeIcons } from "../../Constants";
+import { useTranslation } from "react-i18next";
 
 
 // Helper function to calculate trip duration
@@ -16,11 +17,18 @@ const calculateDuration = (startDate, endDate) => {
 };
 
 
-const TripSummaryCardComponent = ({ postData }) => (
+const TripSummaryCardComponent = ({ postData }) => 
+    
+    {
+
+        const {t} = useTranslation('tripdetails')
+
+        return (
+ 
     <Card elevation={2} sx={{ borderRadius: 2, mb: 3 }}>
         <CardContent>
             <Typography variant="h6" gutterBottom>
-                Trip Summary
+                {t('tripSummary')}
             </Typography>
 
             <List disablePadding>
@@ -29,7 +37,7 @@ const TripSummaryCardComponent = ({ postData }) => (
                         <CalendarMonth color="primary" />
                     </ListItemIcon>
                     <ListItemText
-                        primary="Duration"
+                        primary={t('duration')}
                         secondary={calculateDuration(postData?.date_from, postData?.date_to)}
                     />
                 </ListItem>
@@ -39,8 +47,8 @@ const TripSummaryCardComponent = ({ postData }) => (
                         <GroupIcon color="primary" />
                     </ListItemIcon>
                     <ListItemText
-                        primary="Spots Left"
-                        secondary={`${postData?.group_size - postData?.current_travellers} available`}
+                        primary={t("spotsLeft")}
+                        secondary={`${postData?.group_size - postData?.current_travellers} ${t('available')}`}
                     />
                 </ListItem>
 
@@ -49,7 +57,7 @@ const TripSummaryCardComponent = ({ postData }) => (
                         {getTripTypeIcons(postData?.tour_type)}
                     </ListItemIcon>
                     <ListItemText
-                        primary="Tour Type"
+                        primary={t("tourType")}
                         secondary={postData?.tour_type?.charAt(0).toUpperCase() + postData?.tour_type?.slice(1)}
                     />
                 </ListItem>
@@ -57,7 +65,7 @@ const TripSummaryCardComponent = ({ postData }) => (
 
             <Box sx={{ mt: 2, p: 2, bgcolor: '#f8f9fa', borderRadius: 2 }}>
                 <Typography variant="subtitle2" color="text.secondary" gutterBottom>
-                    Posted on
+                    {t("postedOn")}
                 </Typography>
                 <Typography variant="body2">
                     {new Date(postData?.posted_on).toLocaleDateString('en-US', {
@@ -69,6 +77,8 @@ const TripSummaryCardComponent = ({ postData }) => (
             </Box>
         </CardContent>
     </Card>
-);
+)
+    
+};
 
 export default TripSummaryCardComponent

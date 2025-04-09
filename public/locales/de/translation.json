@@ -1,0 +1,21 @@
+{
+    "welcome": "Aus Fremden werden Freunde, die zusammen reisen",
+    "join": "Triff abenteuerlustige Reisende, plane unvergessliche Trips und sammle Erinnerungen fürs Leben. Nie mehr allein reisen – finde hier deinen perfekten Reisepartner!",
+    "exploreTour" : "Touren Erkunden",
+    "createTour" : "Tour Erstellen",
+    "howItWorks" : "Wie Es Funktioniert" ,
+    "createOrFindTitle": "Tour erstellen oder finden",
+    "createOrFindDesc": "Erstelle deine eigene Tour oder durchstöbere bestehende Touren nach Aktivitäten, Zielen und Daten, die dich interessieren.",
+    
+    "applyTitle": "Bewerben & Mitreisen",
+    "applyDesc": "Eine Tour gefunden, die dir gefällt? Bewirb dich beim Tour-Organisator und erzähle, warum du gut ins Team passt.",
+    
+    "connectPlanTitle": "Austauschen & Planen",
+    "connectPlanDesc": "Nach der Zusage kannst du mit der Gruppe chatten, Details besprechen und eure Reise gemeinsam organisieren.",
+    
+    "embarkTitle": "Gemeinsam Aufbrechen",
+    "embarkDesc": "Erlebe unvergessliche Abenteuer mit Gleichgesinnten, teile Kosten und sammle Erinnerungen fürs Leben.",
+ 
+    "exploreGroupTours" : "Gruppenreisen Erkunden",
+    "exploreGroupToursPara" : "Entdecken Sie spannende Touren, die von anderen Reisenden organisiert wurden, schließen Sie sich einer Gruppe an, die Ihren Interessen entspricht, oder erstellen Sie Ihre eigene Tour."
+}

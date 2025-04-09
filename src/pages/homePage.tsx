@@ -18,9 +18,11 @@ import { useAppSelector } from "../redux/store";
 import TripList from "../components/tourList";
 import { motion, AnimatePresence } from "framer-motion"; // Import framer-motion
 import { AnimateWrapper, animationConfig } from "../components/animations/animateWrapper";
+import { useTranslation } from "react-i18next";
 const HomePage: React.FC = () => {
   const isMobile = useMediaQuery("(max-width: 960px)");
   const profile = useAppSelector((s) => s.profile);
+  const {t} = useTranslation('homepage');
 
   // Tours list state
   const [posts, setPosts] = useState([]);
@@ -114,7 +116,7 @@ const HomePage: React.FC = () => {
         maxWidth: { xs: '90%', md: '800px' }
       }}
     >
-      Turn Strangers into Travel Mates
+      {t('welcome')}
     </Typography>
     <Typography 
       variant="h5" 
@@ -127,8 +129,7 @@ const HomePage: React.FC = () => {
         maxWidth: { xs: '90%', md: '700px' }
       }}
     >
-      Connect with adventurers, share incredible journeys, and create memories that last a lifetime. 
-      No more solo travels - find your perfect travel mate here!
+      {t('join')}
     </Typography>
   </AnimateWrapper>
 
@@ -163,7 +164,7 @@ const HomePage: React.FC = () => {
                 transition: "all 0.3s ease" 
               }} 
             > 
-              Explore Tours 
+              {t('exploreTour')}
             </Button> 
           </AnimateWrapper>
           
@@ -197,7 +198,7 @@ const HomePage: React.FC = () => {
                 transition: "all 0.3s ease" 
               }} 
             > 
-              Create Your Tour 
+              {t('createTour')}
             </Button> 
           </AnimateWrapper>
         </Box>
@@ -228,7 +229,7 @@ const HomePage: React.FC = () => {
                 }
               }}
             >
-              How Zusammenreisen Tours Works
+              {t('howItWorks')}
             </Typography>
           </AnimateWrapper>
           
@@ -236,23 +237,23 @@ const HomePage: React.FC = () => {
             {[
               {
                 icon: <HikingIcon fontSize="large" />,
-                title: "Create or Find Tours",
-                description: "Create your own tour or browse existing tours based on activities, destinations, and dates that interest you."
+                title: t("createOrFindTitle"),
+                description: t("createOrFindDesc")
               },
               {
                 icon: <PersonAddIcon fontSize="large" />,
-                title: "Apply to Join",
-                description: "Find a tour you like? Submit an application to the tour manager explaining why you'd be a great addition to the group."
+                title: t("applyTitle"),
+                description: t("applyDesc")
               },
               {
                 icon: <CommentIcon fontSize="large" />,
-                title: "Connect & Plan",
-                description: "Once accepted, access the tour group chat to discuss details, coordinate logistics, and get to know your travel companions."
+                title: t("connectPlanTitle"),
+                description: t("connectPlanDesc")
               },
               {
                 icon: <ExploreIcon fontSize="large" />,
-                title: "Embark Together",
-                description: "Experience amazing adventures with like-minded travelers, share costs, and create unforgettable memories."
+                title: t("embarkTitle"),
+                description: t("embarkDesc")
               }
             ].map((item, index) => (
               <Grid size={{xs:12, sm:6, md:3}} key={index}>
@@ -309,7 +310,7 @@ const HomePage: React.FC = () => {
                 position: 'relative'
               }}
             >
-              Explore Group Tours
+              {t('exploreGroupTours')}
             </Typography>
             
             <Typography 
@@ -322,7 +323,7 @@ const HomePage: React.FC = () => {
                 mx: 'auto'
               }}
             >
-              Discover exciting tours organized by fellow travelers, join a group that matches your interests, or create your own tour.
+                {t('exploreGroupToursPara')}
             </Typography>
           </AnimateWrapper>
           
@@ -331,7 +332,6 @@ const HomePage: React.FC = () => {
               {!isMobile && (
                 <AnimateWrapper {...animationConfig.filterPanel}>
                   <Box sx={{ width: "280px", flexShrink: 0 }}>
-                    <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>Filters</Typography>
                     <Divider sx={{ mb: 2 }} />
                     <Filters filters={filters} setFilters={setFilters} />
                   </Box>

@@ -2,8 +2,15 @@ import { AccessTime ,    Language as LanguageIcon,
 } from "@mui/icons-material";
 import { Avatar, Box, Button, Card, CardContent, Chip, Divider, Typography } from "@mui/material";
 import EditIcon from '@mui/icons-material/Edit';
+import { useTranslation } from "react-i18next";
 
-const ProfileCardComponent = ({ postData, profile, handleEdit }) => (
+const ProfileCardComponent = ({ postData, profile, handleEdit }) => 
+    
+{
+
+    const {t} = useTranslation('tripdetails')
+    
+    return (
     <Card elevation={2} sx={{ mb: 3, borderRadius: 2 }}>
         <CardContent>
             <Box sx={{ textAlign: 'center', mb: 3 }}>
@@ -33,7 +40,7 @@ const ProfileCardComponent = ({ postData, profile, handleEdit }) => (
                         fullWidth
                         sx={{ mb: 1 }}
                     >
-                        Edit Post
+                        {t('editTour')}
                     </Button>
                 }
             </Box>
@@ -41,7 +48,7 @@ const ProfileCardComponent = ({ postData, profile, handleEdit }) => (
             <Divider sx={{ my: 2 }} />
 
             <Typography variant="subtitle1" gutterBottom>
-                Languages
+                {t("languages")}
             </Typography>
             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 3 }}>
                 {postData?.posted_by?.languages.map((lang) => (
@@ -56,7 +63,8 @@ const ProfileCardComponent = ({ postData, profile, handleEdit }) => (
             </Box>
         </CardContent>
     </Card>
-);
+)
+};
 
 
 export default ProfileCardComponent

@@ -5,6 +5,7 @@ import TourDetailImageGallery from "./tripDetailImageGallery";
 import TripSummaryCardComponent from "./tripSummaryCardComponent";
 import TripDetailsTabsComponent from "./tripDetailTabs";
 import { getTripTypeIcons } from "../../Constants";
+import { useTranslation } from "react-i18next";
 
 // Mobile component
 const TripDetailMobileView = ({ 
@@ -17,6 +18,8 @@ const TripDetailMobileView = ({
     handleTabChange, 
     setOpenModal 
 }) => {
+    const { t } = useTranslation('tripdetails');
+
     // Determine which button to show based on user status
     const renderActionButton = () => {
         // Flow 1: User is not logged in
@@ -36,7 +39,7 @@ const TripDetailMobileView = ({
                     onClick={() => navigate('/login')}
                 >
                     <ChatIcon sx={{ mr: 1 }} />
-                    Login To Send Request
+                        {t('loginToSend')}
                 </Fab>
             );
         }
@@ -63,7 +66,7 @@ const TripDetailMobileView = ({
                     onClick={() => navigate(`/tripplanner/${postData?.id}`)}
                 >
                     <DirectionsWalk sx={{ mr: 1 }} />
-                    Plan Your Trip
+                    {t("planYourTrip")}
                 </Fab>
             );
         }
@@ -84,7 +87,7 @@ const TripDetailMobileView = ({
                 onClick={() => setOpenModal(true)}
             >
                 <ChatIcon sx={{ mr: 1 }} />
-                Send Request
+                {t('sendRequest')}
             </Fab>
         );
     };
@@ -97,7 +100,7 @@ const TripDetailMobileView = ({
                 onClick={() => window.history.back()}
                 sx={{ mb: 2 }}
             >
-                Back to search
+                {t('backToSearch')}
             </Button>
 
             {/* Title */}

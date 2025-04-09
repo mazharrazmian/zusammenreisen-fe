@@ -1,0 +1,23 @@
+{
+    "welcome": "Turn Strangers into Wander Buddies",
+    "join": "Connect with adventurers, share incredible journeys, and create memories that last a lifetime. No more solo travels - find your perfect travel mate here!",
+    "exploreTour" : "Explore Tours",
+    "createTour" : "Create Tour",
+    "howItWorks" : "How It Works",
+    "createOrFindTitle": "Create or Find Tours",
+    "createOrFindDesc": "Create your own tour or browse existing tours based on activities, destinations, and dates that interest you.",
+  
+    "applyTitle": "Apply to Join",
+    "applyDesc": "Find a tour you like? Submit an application to the tour manager explaining why you'd be a great addition to the group.",
+  
+    "connectPlanTitle": "Connect & Plan",
+    "connectPlanDesc": "Once accepted, access the tour group chat to discuss details, coordinate logistics, and get to know your travel companions.",
+  
+    "embarkTitle": "Embark Together",
+    "embarkDesc": "Experience amazing adventures with like-minded travelers, share costs, and create unforgettable memories.",
+  
+    "exploreGroupTours" : "Explore Group Tours",
+    "exploreGroupToursPara" : "Discover exciting tours organized by fellow travelers, join a group that matches your interests, or create your own tour."
+
+
+}

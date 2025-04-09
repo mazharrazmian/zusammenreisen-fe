@@ -23,6 +23,7 @@ import { useAppSelector } from "../../redux/store";
 import Sidebar from "./sidebar";
 
 import Logo from "../../assets/logo1.png";
+import LanguageSwitcher from "../shared/languageSwitcher/languageSwitcher";
 
 // Define page transition variants
 const pageTransitionVariants = {
@@ -364,6 +365,7 @@ const Navbar = React.memo(({ transparentOnHome }) => {
                                     borderRadius: "8px",
                                     px: 3
                                 }}
+                                role="navigation"
                             >
                                 Log In
                             </Button>
@@ -377,9 +379,11 @@ const Navbar = React.memo(({ transparentOnHome }) => {
                                     borderRadius: "8px",
                                     px: 3
                                 }}
+                                role="navigation"
                             >
                                 Sign Up
                             </Button>
+                                <LanguageSwitcher/>
                         </Stack>
                     )}
                 </Toolbar>

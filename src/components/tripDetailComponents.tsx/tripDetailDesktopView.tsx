@@ -5,6 +5,7 @@ import TripDetailsTabsComponent from "./tripDetailTabs";
 import TripSummaryCardComponent from "./tripSummaryCardComponent";
 import ProfileCardComponent from "./profileCardComponent";
 import { getTripTypeIcons } from "../../Constants";
+import { useTranslation } from "react-i18next";
 
 const TripDetailDesktopView = ({ 
     postData, 
@@ -16,29 +17,31 @@ const TripDetailDesktopView = ({
     handleTabChange, 
     setOpenModal 
 }) => {
+
+    const { t } = useTranslation('tripdetails');
+    
     // Determine which button to show based on user status
     const renderCardContent = () => {
         // Flow 1: User is not logged in
         if (accessToken === undefined) {
             return (
                 <CardContent sx={{ textAlign: 'center' }}>
-                <Typography variant="h6" gutterBottom>
-                    Interested in joining?
-                </Typography>
-                <Typography variant="body2" sx={{ mb: 2 }}>
-                    Login To Send Request
-                </Typography>
-                <Button
-                    color="primary"
-                    variant="outlined"
-                    startIcon={<ChatIcon />}
-                    onClick={() => navigate('/login')}
-                    fullWidth
-                >
-                    Login To Send Request
-                </Button>
-            </CardContent>
-                
+                    <Typography variant="h6" gutterBottom>
+                        {t('interested')}
+                    </Typography>
+                    <Typography variant="body2" sx={{ mb: 2 }}>
+                        {t('loginToSend')}
+                    </Typography>
+                    <Button
+                        color="primary"
+                        variant="outlined"
+                        startIcon={<ChatIcon />}
+                        onClick={() => navigate('/login')}
+                        fullWidth
+                    >
+                        {t('loginToSend')}
+                    </Button>
+                </CardContent>
             );
         }
         
@@ -46,47 +49,45 @@ const TripDetailDesktopView = ({
         if (postData?.participants?.includes(profile?.profile?.profile?.id)) {
             return (
                 <CardContent sx={{ textAlign: 'center' }}>
-                <Typography variant="h6" gutterBottom>
-                   Already A Member
-                </Typography>
-                <Typography variant="body2" sx={{ mb: 2 }}>
-                    Checkout What Your Trave Mates Are Planning
-                </Typography>
+                    <Typography variant="h6" gutterBottom>
+                        {t('alreadyMember')}
+                    </Typography>
+                    <Typography variant="body2" sx={{ mb: 2 }}>
+                        {t('checkoutPlanning')}
+                    </Typography>
 
-                <Button
-                    variant="contained"
-                    color="primary"
-                    startIcon={<DirectionsWalk />}
-                    onClick={() => navigate(`/tripplanner/${postData?.id}`)}
-                    fullWidth
-                >
-                    Plan Your Trip
-                </Button>
-            </CardContent>
-                
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        startIcon={<DirectionsWalk />}
+                        onClick={() => navigate(`/tripplanner/${postData?.id}`)}
+                        fullWidth
+                    >
+                        {t('planYourTrip')}
+                    </Button>
+                </CardContent>
             );
         }
         
         // Flow 2.2: User is logged in but not a participant
         return (
             <CardContent sx={{ textAlign: 'center' }}>
-                                <Typography variant="h6" gutterBottom>
-                                    Interested in joining?
-                                </Typography>
-                                <Typography variant="body2" sx={{ mb: 2 }}>
-                                    Send a request to {postData?.posted_by?.user?.name} to be accepted to this Tour.
-                                </Typography>
-                                <Button
-                                variant="contained"
-                                color="primary"
-                                startIcon={<ChatIcon />}
-                                onClick={() => setOpenModal(true)}
-                                fullWidth
-                            >
-                                Send Request
-                            </Button>
-                            </CardContent>
-            
+                <Typography variant="h6" gutterBottom>
+                    {t('interested')}
+                </Typography>
+                <Typography variant="body2" sx={{ mb: 2 }}>
+                    {t('sendRequestDesc', { name: postData?.posted_by?.user?.name })}
+                </Typography>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    startIcon={<ChatIcon />}
+                    onClick={() => setOpenModal(true)}
+                    fullWidth
+                >
+                    {t('sendRequest')}
+                </Button>
+            </CardContent>
         );
     };
 
@@ -98,7 +99,7 @@ const TripDetailDesktopView = ({
                 onClick={() => window.history.back()}
                 sx={{ mb: 2 }}
             >
-                Back to search
+                {t('backToSearch')}
             </Button>
 
             {/* Title */}
@@ -148,4 +149,4 @@ const TripDetailDesktopView = ({
     );
 };
 
-export default TripDetailDesktopView
+export default TripDetailDesktopView;

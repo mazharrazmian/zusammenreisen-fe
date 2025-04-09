@@ -17,6 +17,7 @@ import { filterStyles } from "../../pages/styles";
 import postServices from "../../redux/api/postService";
 import { ageGroups, GENDERS } from "../../Constants";
 import { useAppSelector } from "../../redux/store";
+import { useTranslation } from "react-i18next";
 
 interface FiltersProps {
     filters: FilterState;
@@ -24,6 +25,9 @@ interface FiltersProps {
 }
 
 const Filters: React.FC<FiltersProps> = ({ filters, setFilters }) => {
+
+    const {t} = useTranslation('filters')
+
     const countries = useAppSelector(s => s.filter.countries);
     const [toCities, setToCities] = useState<Array<City>>([]);
     const [fromCities, setFromCities] = useState<Array<City>>([]);
@@ -71,184 +75,181 @@ const Filters: React.FC<FiltersProps> = ({ filters, setFilters }) => {
     };
 
     return (
-        <Box sx={filterStyles.mainWrapper}>
-            <Typography variant="h6" color="info.dark" sx={{ mb: 2 }}>
-                Filters
-            </Typography>
+        <Box>
+    <Typography variant="h6" color="info.dark" sx={{ mb: 2 }}>
+        {t('filters')}
+    </Typography>
 
-            {/* From Location Section */}
-            <Paper elevation={1} sx={{ p: 2, mb: 3, bgcolor: '#f5f5f5', border: '1px solid #e0e0e0' }}>
-                <Typography variant="subtitle1" color="info.main" sx={{ mb: 1, fontWeight: 'bold' }}>
-                    From Location
-                </Typography>
+    {/* From Location Section */}
+    <Paper elevation={1} sx={{ p: 2, mb: 3, bgcolor: '#f5f5f5', border: '1px solid #e0e0e0' }}>
+        <Typography variant="subtitle1" color="info.main" sx={{ mb: 1, fontWeight: 'bold' }}>
+            {t('fromLocation')}
+        </Typography>
 
-                {/* country_from Filter */}
-                <FormControl fullWidth variant="outlined" sx={{ mt: 1 }}>
-                    <Autocomplete
-                        value={countries.find(c => c.id === filters.country_from) || null} // Ensure the value matches an option
-                        disablePortal
-                        isOptionEqualToValue={(option, value) => option.id === value.id} // Ensure correct equality check
-                        options={countries}
-                        getOptionLabel={(option) => option.name}
-                        renderInput={(params) => <TextField {...params} name="country_from" label="Country" />}
-                        onChange={(event: any, newValue: any) => {
-                            setFilters((prev: FilterState) => ({
-                                ...prev,
-                                country_from: newValue ? newValue.id : "", // Store only the country ID
-                            }));
-                        }}
-                    />
-                </FormControl>
+        {/* country_from Filter */}
+        <FormControl fullWidth variant="outlined" sx={{ mt: 1 }}>
+            <Autocomplete
+                value={countries.find(c => c.id === filters.country_from) || null}
+                disablePortal
+                isOptionEqualToValue={(option, value) => option.id === value.id}
+                options={countries}
+                getOptionLabel={(option) => option.name}
+                renderInput={(params) => <TextField {...params} name="country_from" label={t('country')} />}
+                onChange={(event: any, newValue: any) => {
+                    setFilters((prev: FilterState) => ({
+                        ...prev,
+                        country_from: newValue ? newValue.id : "",
+                    }));
+                }}
+            />
+        </FormControl>
 
-                {/* city_from Filter */}
-                <FormControl fullWidth variant="outlined" sx={{ mt: 2 }}>
-                    <Autocomplete
-                        value={fromCities.find(c => c.id === filters.city_from) || null} // Ensure the value matches an option
-                        disablePortal
-                        isOptionEqualToValue={(option, value) => option.id === value.id} // Ensure correct equality check
-                        options={fromCities}
-                        getOptionLabel={(option) => option.name}
-                        renderInput={(params) => <TextField {...params} name="city_from" label="City" />}
-                        onChange={(event: any, newValue: City) => {
-                            setFilters((prev: FilterState) => ({
-                                ...prev,
-                                city_from: newValue ? newValue.id : "", // Store only the country ID
-                            }));
-                        }}
-                    />
+        {/* city_from Filter */}
+        <FormControl fullWidth variant="outlined" sx={{ mt: 2 }}>
+            <Autocomplete
+                value={fromCities.find(c => c.id === filters.city_from) || null}
+                disablePortal
+                isOptionEqualToValue={(option, value) => option.id === value.id}
+                options={fromCities}
+                getOptionLabel={(option) => option.name}
+                renderInput={(params) => <TextField {...params} name="city_from" label={t('city')} />}
+                onChange={(event: any, newValue: City) => {
+                    setFilters((prev: FilterState) => ({
+                        ...prev,
+                        city_from: newValue ? newValue.id : "",
+                    }));
+                }}
+            />
+        </FormControl>
+    </Paper>
 
-                </FormControl>
-            </Paper>
+    {/* To Location Section */}
+    <Paper elevation={1} sx={{ p: 2, mb: 3, border: '1px solid #bbdefb' }}>
+        <Typography variant="subtitle1" color="info.main" sx={{ mb: 1, fontWeight: 'bold' }}>
+            {t('toLocation')}
+        </Typography>
 
-            {/* To Location Section */}
-            <Paper elevation={1} sx={{ p: 2, mb: 3, border: '1px solid #bbdefb' }}>
-                <Typography variant="subtitle1" color="info.main" sx={{ mb: 1, fontWeight: 'bold' }}>
-                    To Location
-                </Typography>
+        {/* country_to Filter */}
+        <FormControl fullWidth variant="outlined" sx={{ mt: 1 }}>
+            <Autocomplete
+                value={countries.find(c => c.id === filters.country_to) || null}
+                disablePortal
+                isOptionEqualToValue={(option, value) => option.id === value.id}
+                options={countries}
+                getOptionLabel={(option) => option.name}
+                renderInput={(params) => <TextField {...params} name="country_to" label={t('country')} />}
+                onChange={(event: any, newValue: any) => {
+                    setFilters((prev: FilterState) => ({
+                        ...prev,
+                        country_to: newValue ? newValue.id : "",
+                    }));
+                }}
+            />
+        </FormControl>
 
-                {/* country_to Filter */}
-                <FormControl fullWidth variant="outlined" sx={{ mt: 1 }}>
-                    <Autocomplete
-                        value={countries.find(c => c.id === filters.country_to) || null} // Ensure the value matches an option
-                        disablePortal
-                        isOptionEqualToValue={(option, value) => option.id === value.id} // Ensure correct equality check
-                        options={countries}
-                        getOptionLabel={(option) => option.name}
-                        renderInput={(params) => <TextField {...params} name="country_to" label="Country" />}
-                        onChange={(event: any, newValue: any) => {
-                            setFilters((prev: FilterState) => ({
-                                ...prev,
-                                country_to: newValue ? newValue.id : "", // Store only the country ID
-                            }));
-                        }}
-                    />
-                </FormControl>
+        {/* city_to Filter */}
+        <FormControl fullWidth variant="outlined" sx={{ mt: 2 }}>
+            <Autocomplete
+                value={toCities.find(c => c.id === filters.city_to) || null}
+                disablePortal
+                isOptionEqualToValue={(option, value) => option.id === value.id}
+                options={fromCities}
+                getOptionLabel={(option) => option.name}
+                renderInput={(params) => <TextField {...params} name="city_to" label={t('city')} />}
+                onChange={(event: any, newValue: City) => {
+                    setFilters((prev: FilterState) => ({
+                        ...prev,
+                        city_from: newValue ? newValue.id : "",
+                    }));
+                }}
+            />
+        </FormControl>
+    </Paper>
 
-                {/* city_to Filter */}
-                <FormControl fullWidth variant="outlined" sx={{ mt: 2 }}>
-                    <Autocomplete
-                        value={toCities.find(c => c.id === filters.city_to) || null} // Ensure the value matches an option
-                        disablePortal
-                        isOptionEqualToValue={(option, value) => option.id === value.id} // Ensure correct equality check
-                        options={fromCities}
-                        getOptionLabel={(option) => option.name}
-                        renderInput={(params) => <TextField {...params} name="city_to" label="City" />}
-                        onChange={(event: any, newValue: City) => {
-                            setFilters((prev: FilterState) => ({
-                                ...prev,
-                                city_from: newValue ? newValue.id : "", // Store only the country ID
-                            }));
-                        }}
-                    />
-                </FormControl>
-            </Paper>
+    {/* Other Filters Section */}
+    <Paper elevation={1} sx={{ p: 2, mb: 3 }}>
+        <Typography variant="subtitle1" color="info.main" sx={{ mb: 1, fontWeight: 'bold' }}>
+            {t('additionalFilters')}
+        </Typography>
 
-            {/* Other Filters Section */}
-            <Paper elevation={1} sx={{ p: 2, mb: 3 }}>
-                <Typography variant="subtitle1" color="info.main" sx={{ mb: 1, fontWeight: 'bold' }}>
-                    Additional Filters
-                </Typography>
+        {/* Gender Filter */}
+        <FormControl fullWidth variant="outlined" sx={{ mt: 1 }}>
+            <Autocomplete
+                options={GENDERS}
+                getOptionLabel={(option) => option.display}
+                value={GENDERS.find((g) => g.value === filters.gender) || null}
+                onChange={(event, newValue) => handleChange({ target: { name: "gender", value: newValue ? newValue.value : "" } })}
+                renderInput={(params) => <TextField {...params} label={t('gender')} variant="outlined" fullWidth />}
+            />
+        </FormControl>
 
-                {/* Gender Filter */}
-                <FormControl fullWidth variant="outlined" sx={{ mt: 1 }}>
-                    <Autocomplete
-                        options={GENDERS}
-                        getOptionLabel={(option) => option.display}
-                        value={GENDERS.find((g) => g.value === filters.gender) || null}
-                        onChange={(event, newValue) => handleChange({ target: { name: "gender", value: newValue ? newValue.value : "" } })}
-                        renderInput={(params) => <TextField {...params} label="Gender" variant="outlined" fullWidth />}
-                    />
-                </FormControl>
-
-                <FormControl fullWidth variant="outlined" sx={{ mt: 3 }}>
-                    <InputLabel>Age Group</InputLabel>
-                    <Select
-                        name="age_group"
-                        value={filters.age_group}
-                        onChange={handleChange}
-                        label='Age Group'
-                    >
-                        {ageGroups.map((age) => (
-                            <MenuItem key={age} value={age}>
-                                {age.toUpperCase()}
-                            </MenuItem>
-                        ))}
-                    </Select>
-                </FormControl>
-
-                <FormControl fullWidth variant="outlined" sx={{ mt: 3 }}>
-                    <TextField
-                        fullWidth
-                        type="number"
-                        value={filters.group_size}
-                        onChange={handleChange}
-                        name="group_size"
-                        label='Group Size'
-                    />
-
-
-                </FormControl>
-
-
-                {/* Date From Filter */}
-                <TextField
-                    fullWidth
-                    type="date"
-                    variant="outlined"
-                    label="Date From"
-                    onChange={handleChange}
-                    value={filters.date_from}
-                    name="date_from"
-                    sx={{ mt: 3 }}
-                    InputLabelProps={{ shrink: true }}
-                    helperText='Date Greater Than Or Equal To'
-                />
-
-                {/* Date To Filter */}
-                <TextField
-                    fullWidth
-                    type="date"
-                    variant="outlined"
-                    label="Date To"
-                    onChange={handleChange}
-                    value={filters.date_to}
-                    name="date_to"
-                    sx={{ mt: 3 }}
-                    InputLabelProps={{ shrink: true }}
-                    helperText='Date Less Than Or Equal To'
-                />
-            </Paper>
-
-            {/* Reset Button */}
-            <Button
-                variant="contained"
-                onClick={handleReset}
-                fullWidth
-                color="info"
+        <FormControl fullWidth variant="outlined" sx={{ mt: 3 }}>
+            <InputLabel>{t('ageGroup')}</InputLabel>
+            <Select
+                name="age_group"
+                value={filters.age_group}
+                onChange={handleChange}
+                label={t('ageGroup')}
+                native
             >
-                Reset Filters
-            </Button>
-        </Box>
+                {ageGroups.map((age) => (
+                    <MenuItem key={age} value={age}>
+                        {age.toUpperCase()}
+                    </MenuItem>
+                ))}
+            </Select>
+        </FormControl>
+
+        <FormControl fullWidth variant="outlined" sx={{ mt: 3 }}>
+            <TextField
+                fullWidth
+                type="number"
+                value={filters.group_size}
+                onChange={handleChange}
+                name="group_size"
+                label={t('groupSize')}
+            />
+        </FormControl>
+
+        {/* Date From Filter */}
+        <TextField
+            fullWidth
+            type="date"
+            variant="outlined"
+            label={t('dateFrom')}
+            onChange={handleChange}
+            value={filters.date_from}
+            name="date_from"
+            sx={{ mt: 3 }}
+            InputLabelProps={{ shrink: true }}
+            helperText={t('dateGreaterThanOrEqual')}
+        />
+
+        {/* Date To Filter */}
+        <TextField
+            fullWidth
+            type="date"
+            variant="outlined"
+            label={t('dateTo')}
+            onChange={handleChange}
+            value={filters.date_to}
+            name="date_to"
+            sx={{ mt: 3 }}
+            InputLabelProps={{ shrink: true }}
+            helperText={t('dateLessThanOrEqual')}
+        />
+    </Paper>
+
+    {/* Reset Button */}
+    <Button
+        variant="contained"
+        onClick={handleReset}
+        fullWidth
+        color="info"
+    >
+        {t('resetFilters')}
+    </Button>
+</Box>
     );
 };
 
