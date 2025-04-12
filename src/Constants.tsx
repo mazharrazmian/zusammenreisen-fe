@@ -2,7 +2,7 @@ import MaleIcon from '@mui/icons-material/Male';
 import FemaleIcon from '@mui/icons-material/Female';
 import TransgenderIcon from '@mui/icons-material/Transgender';
 import { AttachMoney, Category, CreditCard, DirectionsWalk, LocalActivity, LocalOffer, LocationOn, Luggage } from '@mui/icons-material';
-
+import i18n from './i18n'; // Import the i18n instance to detect the current language
 
 export const GENDERS = [
     {
@@ -65,15 +65,35 @@ const GenderIcon = ({ gender }: { gender: number }) => {
   
 };
 
+// Add German translations for tourTypes and accommodationTypes
+export const tourTypesTranslations = {
+    en: [
+        "adventure", "cultural", "beach", "mountain", "city", "wildlife", 
+        "food", "photography", "backpacking", "luxury", "budget", "other"
+    ],
+    de: [
+        "Abenteuer", "Kultur", "Strand", "Berg", "Stadt", "Wildtiere", 
+        "Essen", "Fotografie", "Rucksacktour", "Luxus", "Budget", "Andere"
+    ]
+};
 
-export const tourTypes = [
-    "adventure", "cultural", "beach", "mountain", "city", "wildlife", 
-    "food", "photography", "backpacking", "luxury", "budget", "other"
-];
+export const accommodationTypesTranslations = {
+    en: [
+        "hotel", "hostel", "apartment", "camping", "homestay", "resort", "other"
+    ],
+    de: [
+        "Hotel", "Hostel", "Apartment", "Camping", "Gastfamilie", "Resort", "Andere"
+    ]
+};
 
-export const accommodationTypes = [
-    "hotel", "hostel", "apartment", "camping", "homestay", "resort", "not_included", "other"
-];
+// Helper function to get translated values
+export const getTranslatedArray = (key) => {
+    const language = i18n.language || 'en'; // Default to English if no language is set
+    return key[language] || key['en'];
+};
+
+export const tourTypes = tourTypesTranslations.en; // Default export remains in English
+export const accommodationTypes = accommodationTypesTranslations.en; // Default export remains in English
 
 export const ageGroups = ["18-24", "25-34", "35-44", "45-54", "55-64", "65-over", "any"];
 

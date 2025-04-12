@@ -36,6 +36,8 @@ import postServices from "../../redux/api/postService";
 import { TourDataInterface } from "../../types";
 import { useTranslation } from "react-i18next";
 
+import { tourTypesTranslations, accommodationTypesTranslations } from "../../Constants";
+
 const initialValues: TourDataInterface = {
     title: "",
     description: "",
@@ -60,7 +62,9 @@ const initialValues: TourDataInterface = {
 };
 
 const TourForm = () => {
-    const { t } = useTranslation('tourForm'); // Initialize translation hook
+    const { t ,i18n } = useTranslation('tourForm'); // Initialize translation hook
+    const currentLanguage = i18n.language || 'en'; // Get current language, default to English
+
     const { tourId } = useParams(); // Get ID from URL (for edit mode)
     const isEditMode = Boolean(tourId); // Check if it's edit mode
 
@@ -80,6 +84,29 @@ const TourForm = () => {
             fetchTour();
         }
     }, [isEditMode]);
+
+
+    // Helper function to get translated display value while maintaining English value
+    const getTranslatedTourType = (englishValue: string) => {
+        const index = tourTypesTranslations.en.findIndex(type => type === englishValue);
+        return index !== -1 ? tourTypesTranslations[currentLanguage in tourTypesTranslations ? currentLanguage : 'en'][index] : englishValue;
+    };
+
+    const getTranslatedAccommodationType = (englishValue: string) => {
+        const index = accommodationTypesTranslations.en.findIndex(type => type === englishValue);
+        return index !== -1 ? accommodationTypesTranslations[currentLanguage in accommodationTypesTranslations ? currentLanguage : 'en'][index] : englishValue;
+    };
+
+    // Helper function to get English value from translated display value
+    const getEnglishTourType = (translatedValue: string) => {
+        const index = tourTypesTranslations[currentLanguage in tourTypesTranslations ? currentLanguage : 'en'].findIndex(type => type === translatedValue);
+        return index !== -1 ? tourTypesTranslations.en[index] : translatedValue;
+    };
+
+    const getEnglishAccommodationType = (translatedValue: string) => {
+        const index = accommodationTypesTranslations[currentLanguage in accommodationTypesTranslations ? currentLanguage : 'en'].findIndex(type => type === translatedValue);
+        return index !== -1 ? accommodationTypesTranslations.en[index] : translatedValue;
+    };
 
     const convertUrlsToFiles = async (urls: Array<string>) => {
         const filePromises = urls.map(async (url) => {
@@ -166,7 +193,23 @@ const TourForm = () => {
                 ...prevData,
                 [name]: checked,
             }));
-        } else {
+        }
+        else if (name === 'tourType') {
+            // Convert translated value back to English before saving
+            const englishValue = getEnglishTourType(value as string);
+            setFormData((prevData) => ({
+                ...prevData,
+                [name]: englishValue,
+            }));
+        } else if (name === 'accommodationType') {
+            // Convert translated value back to English before saving
+            const englishValue = getEnglishAccommodationType(value as string);
+            setFormData((prevData) => ({
+                ...prevData,
+                [name]: englishValue,
+            }));
+        } 
+        else {
             setFormData((prevData) => ({
                 ...prevData,
                 [name as string]: value,
@@ -366,11 +409,11 @@ const TourForm = () => {
                                     <InputLabel>{t('tourType')}</InputLabel>
                                     <Select
                                         name="tourType"
-                                        value={formData.tourType}
+                                        value={getTranslatedTourType(formData.tourType)}
                                         onChange={handleChange}
                                         label={t('tourType')}
                                     >
-                                        {tourTypes.map((type) => (
+                                        {tourTypesTranslations[currentLanguage in tourTypesTranslations ? currentLanguage : 'en'].map((type, index) => (
                                             <MenuItem key={type} value={type}>
                                                 {type.charAt(0).toUpperCase() + type.slice(1)}
                                             </MenuItem>
@@ -378,19 +421,18 @@ const TourForm = () => {
                                     </Select>
                                 </FormControl>
                             </Grid>
-
                             <Grid size={{ xs: 12, sm: 6 }}>
                                 <FormControl fullWidth variant="outlined">
                                     <InputLabel>{t('accommodationType')}</InputLabel>
                                     <Select
                                         name="accommodationType"
-                                        value={formData.accommodationType}
+                                        value={getTranslatedAccommodationType(formData.accommodationType)}
                                         onChange={handleChange}
                                         label={t('accommodationType')}
                                     >
-                                        {accommodationTypes.map((type) => (
+                                        {accommodationTypesTranslations[currentLanguage in accommodationTypesTranslations ? currentLanguage : 'en'].map((type, index) => (
                                             <MenuItem key={type} value={type}>
-                                                {type.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+                                                {type}
                                             </MenuItem>
                                         ))}
                                     </Select>

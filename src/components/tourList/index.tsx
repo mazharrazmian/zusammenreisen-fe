@@ -1,15 +1,21 @@
-import { Avatar, Box, Button, Card, CardContent, CardMedia, Chip, Divider, Grid2 as Grid, Typography, } from "@mui/material"
+import { Avatar, Box, Button, Card, CardContent, CardMedia, Chip, Divider, Grid2 as Grid, Typography, useMediaQuery, } from "@mui/material"
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import GroupIcon from "@mui/icons-material/Group";
 import { useNavigate } from "react-router-dom";
 import { TourDataInterface } from "../../types";
 import { useTranslation } from "react-i18next";
+import { useTheme } from "@mui/material/styles";
+import { getTranslatedArray, tourTypes } from "../../Constants"; // Import helper and constants
 
+const translatedTourTypes = getTranslatedArray({ en: tourTypes, de: tourTypes });
 
 const TripList = ({posts} : {posts : Array<TourDataInterface>})=>{
 
     const navigate = useNavigate()
     const {t} = useTranslation('triplist')
+
+    const theme = useTheme()
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm')) 
     return (
         posts.map(tour=>
             <Grid key={tour.id} size={{xs: 12, sm: 6, lg: 4}}>
@@ -38,7 +44,7 @@ const TripList = ({posts} : {posts : Array<TourDataInterface>})=>{
                     {tour.title}
                   </Typography>
                   <Chip 
-                    label={tour.tour_type} 
+                    label={translatedTourTypes[tourTypes.indexOf(tour.tour_type)] || tour.tour_type} 
                     size="small" 
                     color="primary" 
                     sx={{ fontWeight: 500 }} 
@@ -86,9 +92,10 @@ const TripList = ({posts} : {posts : Array<TourDataInterface>})=>{
                   </Box>
                 </Box>
                 
-                <Typography variant="body2" color="text.primary" sx={{ mb: 2, height: '60px', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                {!isMobile && ( <Typography variant="body2" color="text.primary" sx={{ mb: 2, height: '60px', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                   {tour.description}
-                </Typography>
+                </Typography>)}
+             
                 
                 <Divider sx={{ my: 2 }} />
                 

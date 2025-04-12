@@ -18,6 +18,7 @@ import { useTheme } from "@mui/material/styles";
 import TripDetailDesktopView from '../components/tripDetailComponents.tsx/tripDetailDesktopView';
 import TripDetailMobileView from '../components/tripDetailComponents.tsx/tripDetailMobileView';
 import { useTranslation } from 'react-i18next';
+import { getTranslatedArray, tourTypes, accommodationTypes } from "../Constants"; // Import helper and constants
 
 // Main component
 const TripDetails = () => {
@@ -33,6 +34,9 @@ const TripDetails = () => {
     const { t } = useTranslation('tripdetails');
     
     const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
+    const translatedTourTypes = getTranslatedArray({ en: tourTypes, de: tourTypes });
+    const translatedAccommodationTypes = getTranslatedArray({ en: accommodationTypes, de: accommodationTypes });
 
     useEffect(() => {
         setLoading(true);
@@ -73,7 +77,11 @@ const TripDetails = () => {
         <>
             {isMobile ? (
                 <TripDetailMobileView
-                    postData={postData}
+                    postData={{
+                        ...postData,
+                        tour_type: translatedTourTypes[tourTypes.indexOf(postData?.tour_type)] || postData?.tour_type,
+                        accommodation_type: translatedAccommodationTypes[accommodationTypes.indexOf(postData?.accommodation_type)] || postData?.accommodation_type,
+                    }}
                     profile={profile}
                     accessToken={accessToken}
                     navigate={navigate}
@@ -84,7 +92,11 @@ const TripDetails = () => {
                 />
             ) : (
                 <TripDetailDesktopView
-                    postData={postData}
+                    postData={{
+                        ...postData,
+                        tour_type: translatedTourTypes[tourTypes.indexOf(postData?.tour_type)] || postData?.tour_type,
+                        accommodation_type: translatedAccommodationTypes[accommodationTypes.indexOf(postData?.accommodation_type)] || postData?.accommodation_type,
+                    }}
                     profile={profile}
                     accessToken={accessToken}
                     navigate={navigate}

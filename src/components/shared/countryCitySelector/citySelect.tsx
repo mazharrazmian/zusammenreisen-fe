@@ -3,6 +3,7 @@ import { Autocomplete, ListItemText, TextField } from "@mui/material";
 import postServices from "../../../redux/api/postService";
 
 import { City } from "../../../types";
+import { useTranslation } from "react-i18next";
 
 interface CitySelectProps {
   countryId: string | null;
@@ -30,6 +31,7 @@ const CitySelect: React.FC<CitySelectProps> = ({ countryId, value, onChange,name
       .finally(() => setLoading(false));
   }, [countryId]);
 
+  const {t} = useTranslation('common');
 
 
   return (
@@ -40,7 +42,7 @@ const CitySelect: React.FC<CitySelectProps> = ({ countryId, value, onChange,name
       onChange={(_, newValue) => onChange(name,newValue)}
       loading={loading}
       disabled={!countryId}
-      renderInput={(params) => <TextField helperText={helperText} error={error} name={name} {...params} label="Select City" variant="outlined" />}
+      renderInput={(params) => <TextField helperText={helperText} error={error} name={name} {...params} label={t('selectCity')} variant="outlined" />}
       renderOption={(props, item) => (
         <li {...props} key={item.id}>
           <ListItemText>{item.name}</ListItemText>

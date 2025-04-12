@@ -10,7 +10,9 @@
     "detailedItinerary": "Detaillierter Reiseplan",
     "detailedItineraryPlaceholder": "Tag 1: Ankunft Und Willkommensdinner\nTag 2: Morgenwanderung, Nachmittag Zur Freien Verfügung\nTag 3: Ganztägiger Ausflug Nach...",
     "tourType": "Tourtyp",
+   
     "accommodationType": "Unterkunftstyp",
+   
     "travelInformation": "Reiseinformationen",
     "departureFrom": "Abfahrt Von",
     "destination": "Ziel",

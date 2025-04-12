@@ -1,5 +1,6 @@
 import React from "react";
 import { Autocomplete, TextField } from "@mui/material";
+import { useTranslation } from "react-i18next";
 
 interface Country {
   id: string;
@@ -16,13 +17,14 @@ interface CountrySelectProps {
 }
 
 const CountrySelect: React.FC<CountrySelectProps> = ({ countries, value, onChange,name,helperText,error }) => {
+    const {t} = useTranslation('common');
   return (
     <Autocomplete
       options={countries}
       getOptionLabel={(option) => option.name}
       value={value}
       onChange={(e, newValue) => onChange(name,newValue)}
-      renderInput={(params) => <TextField helperText={helperText} error={error} name={name} {...params} label="Select Country" variant="outlined" />}
+      renderInput={(params) => <TextField helperText={helperText} error={error} name={name} {...params} label={t('selectCountry')} variant="outlined" />}
     />
   );
 };

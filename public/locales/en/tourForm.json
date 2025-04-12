@@ -10,7 +10,9 @@
     "detailedItinerary": "Detailed Itinerary",
     "detailedItineraryPlaceholder": "Day 1: Arrival and welcome dinner\nDay 2: Morning hike, afternoon free time\nDay 3: Full day excursion to...",
     "tourType": "Tour Type",
+   
     "accommodationType": "Accommodation Type",
+   
     "travelInformation": "Travel Information",
     "departureFrom": "Departure From",
     "destination": "Destination",
