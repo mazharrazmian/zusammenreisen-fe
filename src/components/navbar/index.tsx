@@ -190,7 +190,7 @@ const Navbar = React.memo(({ transparentOnHome }) => {
                             aria-label="open menu"
                             onClick={handleOpenNavMenu}
                             sx={{
-                                color: !isTransparent ? "#000" : "#fff",
+                                color: "#000",
                             }}
                         >
                             <MenuIcon />
@@ -247,7 +247,7 @@ const Navbar = React.memo(({ transparentOnHome }) => {
                                         px: 3,
                                         py: 1,
                                         mx: 1,
-                                        color: !isTransparent ? "#000" : "#fff",
+                                        color: "#000",
                                         position: "relative",
                                         fontWeight: isActive ? 600 : 400,
                                         letterSpacing: "0.5px",
@@ -255,9 +255,9 @@ const Navbar = React.memo(({ transparentOnHome }) => {
                                         // Remove the border bottom and use underline animation instead
                                         borderBottom: "none",
                                         "&:hover": {
-                                            backgroundColor: !isTransparent
-                                                ? "rgba(0, 0, 0, 0.04)"
-                                                : "rgba(255, 255, 255, 0.15)",
+                                            backgroundColor: 
+                                                 "rgba(0, 0, 0, 0.04)"
+                                               
                                         }
                                     }}
                                     whileHover={{ scale: 1.05 }}
@@ -275,7 +275,7 @@ const Navbar = React.memo(({ transparentOnHome }) => {
                                                 right: "0",
                                                 height: "3px",
                                                 borderRadius: "1.5px",
-                                                backgroundColor: !isTransparent ? "#1976d2" : "#fff",
+                                                backgroundColor: "#1976d2",
                                             }}
                                             transition={{
                                                 type: "spring",
@@ -309,7 +309,6 @@ const Navbar = React.memo(({ transparentOnHome }) => {
                             <NotificationComponent
                                 scrolled={scrolled}
                                 profile={profile}
-                                isTransparent={isTransparent}
                             />
 
                             {/* User Profile */}
@@ -371,7 +370,7 @@ const Navbar = React.memo(({ transparentOnHome }) => {
                                 </Box>
                             )}
                             {/* Language Switcher */}
-                           <LanguageSwitcher isTransparent={isTransparent} />
+                           <LanguageSwitcher />
                         </Box>
                     ) : (
                         <Stack spacing={2} direction={"row"}>
@@ -405,7 +404,7 @@ const Navbar = React.memo(({ transparentOnHome }) => {
                             </Button>
                             {/* Language Switcher */}
                             
-                                <LanguageSwitcher isTransparent={isTransparent} />
+                                <LanguageSwitcher />
                         
                         </Stack>
                     )}

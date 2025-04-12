@@ -201,28 +201,21 @@ export const listStyles = {
 };
 
 export const homePageStyles = {
- mainWrapper: {
-    minHeight: { md: "80vh", xs: "60vh" },
-    backgroundImage: `
-    linear-gradient(
-      135deg, 
-      rgba(0, 0, 0, 0.9), 
-      rgba(3, 135, 128, 0.75)
-    )`,
-    backgroundBlendMode: 'multiply',
-    backgroundRepeat: "no-repeat",
-    backgroundPosition: "center",
-    backgroundSize: "cover",
-    display: "flex",
-    flexDirection: 'column',
-    justifyContent: "center",
-    alignItems: "center",
-    color: "white",
-    position: "relative",
-    overflow: "hidden",
-  },
-  
-};
+    mainWrapper: {
+      minHeight: { md: "80vh", xs: "60vh" },
+      backgroundColor: "#FFFFFF",
+      backgroundImage: `linear-gradient(135deg, #F9FAFB, #FFFFFF)`,
+      backgroundRepeat: "no-repeat",
+      backgroundPosition: "center",
+      backgroundSize: "cover",
+      display: "flex",
+      flexDirection: 'column',
+      justifyContent: "center",
+      alignItems: "center",
+      position: "relative",
+      overflow: "hidden",
+    },
+  };
 
 export const addPostStyles = {
   header: {

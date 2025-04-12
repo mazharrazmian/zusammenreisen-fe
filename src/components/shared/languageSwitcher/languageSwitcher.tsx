@@ -5,7 +5,7 @@ import LanguageIcon from "@mui/icons-material/Language";
 import deFlag from "../../../assets/de-flag.png";
 import enFlag from '../../../assets/en-flag.png'
 
-const LanguageSwitcher = ({ isTransparent }: { isTransparent: boolean }) => {
+const LanguageSwitcher = () => {
   const { i18n } = useTranslation();
   const currentLang = i18n.language || "en";
   const isMobile = useMediaQuery("(max-width:600px)");
@@ -29,7 +29,7 @@ const LanguageSwitcher = ({ isTransparent }: { isTransparent: boolean }) => {
   return isMobile ? (
     <div>
       <IconButton onClick={handleOpen}>
-        <LanguageIcon sx={{ color: isTransparent ? "#fff" : "#000" }} />
+        <LanguageIcon sx={{ color: "#000" }} />
       </IconButton>
       <Menu
         anchorEl={anchorEl}

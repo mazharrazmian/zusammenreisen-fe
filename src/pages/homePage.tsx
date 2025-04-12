@@ -105,32 +105,30 @@ const HomePage: React.FC = () => {
       {/* Hero section with background and animated text */}
       <Box sx={homePageStyles.mainWrapper}>
   <AnimateWrapper {...animationConfig.heroTitle}>
-    <Typography 
-      variant="h2" 
-      sx={{
-        textAlign: 'center', 
-        marginBottom: 3,
-        fontWeight: 700,
-        textShadow: '0 4px 6px rgba(0,0,0,0.5)',
-        color: 'common.white',
-        maxWidth: { xs: '90%', md: '800px' }
-      }}
-    >
-      {t('welcome')}
-    </Typography>
-    <Typography 
-      variant="h5" 
-      sx={{
-        textAlign: 'center', 
-        marginBottom: 4,
-        fontWeight: 400,
-        color: 'grey.100', // Slightly lighter than pure white for better readability
-        textShadow: '0 2px 4px rgba(0,0,0,0.3)',
-        maxWidth: { xs: '90%', md: '700px' }
-      }}
-    >
-      {t('join')}
-    </Typography>
+  <Typography 
+  variant="h2" 
+  sx={{
+    textAlign: 'center', 
+    marginBottom: 3,
+    fontWeight: 700,
+    color: 'primary.dark', // Dark teal from your theme
+    maxWidth: { xs: '90%', md: '800px' }
+  }}
+>
+  {t('welcome')}
+</Typography>
+<Typography 
+  variant="h5" 
+  sx={{
+    textAlign: 'center', 
+    marginBottom: 4,
+    fontWeight: 400,
+    color: 'grey.700', // Darker grey for contrast
+    maxWidth: { xs: '90%', md: '700px' }
+  }}
+>
+  {t('join')}
+</Typography>
   </AnimateWrapper>
 
   <Box sx={{
@@ -141,65 +139,57 @@ const HomePage: React.FC = () => {
           gap: 2
         }}>
           <AnimateWrapper {...animationConfig.heroButton(0.5)}>
-            <Button 
-              variant="contained" 
-              color="primary" 
-              onClick={() => document.getElementById('explore-tours').scrollIntoView({behavior: 'smooth'})} 
-              sx={{ 
-                borderRadius: "30px", 
-                textTransform: "none", 
-                fontWeight: "600", 
-                fontSize: { xs: "0.9rem", sm: "1.1rem" }, 
-                padding: { xs: "10px 25px", sm: "12px 30px" }, 
-                boxShadow: "0 8px 16px rgba(0, 0, 0, 0.2)", 
-                backgroundColor: "primary.dark",
-                minWidth : '180px',
-                width: { xs: "100%", sm: "220px" },
-                color : 'primary',
-                "&:hover": { 
-                  backgroundColor: "primary.main", 
-                  transform: "translateY(-3px)", 
-                  boxShadow: "0 12px 20px rgba(0, 0, 0, 0.3)" 
-                }, 
-                transition: "all 0.3s ease" 
-              }} 
-            > 
-              {t('exploreTour')}
-            </Button> 
+          <Button 
+  variant="contained" 
+  color="primary" 
+  sx={{ 
+    borderRadius: "30px", 
+    textTransform: "none", 
+    fontWeight: "600", 
+    fontSize: { xs: "0.9rem", sm: "1.1rem" }, 
+    padding: { xs: "10px 25px", sm: "12px 30px" }, 
+    boxShadow: "0 8px 16px rgba(42, 127, 126, 0.2)", 
+    backgroundColor: "primary.main",
+    minWidth: '180px',
+    width: { xs: "100%", sm: "220px" },
+    "&:hover": { 
+      backgroundColor: "primary.dark", 
+      transform: "translateY(-3px)", 
+      boxShadow: "0 12px 20px rgba(42, 127, 126, 0.3)" 
+    }, 
+    transition: "all 0.3s ease" 
+  }} 
+> 
+  {t('exploreTour')}
+</Button>
           </AnimateWrapper>
           
           <AnimateWrapper {...animationConfig.heroButton(0.7)}>
-            <Button 
-              variant="outlined" 
-              color="primary" 
-              onClick={() => { 
-                profile?.profile ?  
-                navigate('/add/post') 
-                : 
-                navigate('/register') 
-              }} 
-              sx={{ 
-                borderRadius: "30px", 
-                textTransform: "none", 
-                fontWeight: "600", 
-                fontSize: { xs: "0.9rem", sm: "1.1rem" }, 
-                padding: { xs: "10px 25px", sm: "12px 30px" }, 
-                borderColor: "white", 
-                color: "white", 
-                backgroundColor: "rgba(255, 255, 255, 0.1)",
-                minWidth : '180px', 
-                width: { xs: "100%", sm: "220px" },
-                "&:hover": { 
-                  backgroundColor: "rgba(255, 255, 255, 0.2)", 
-                  borderColor: "white", 
-                  transform: "translateY(-3px)", 
-                  boxShadow: "0 12px 20px rgba(0, 0, 0, 0.2)" 
-                }, 
-                transition: "all 0.3s ease" 
-              }} 
-            > 
-              {t('createTour')}
-            </Button> 
+          <Button 
+  variant="outlined" 
+  color="secondary" 
+  sx={{ 
+    borderRadius: "30px", 
+    textTransform: "none", 
+    fontWeight: "600", 
+    fontSize: { xs: "0.9rem", sm: "1.1rem" }, 
+    padding: { xs: "10px 25px", sm: "12px 30px" }, 
+    borderColor: "secondary.main", 
+    color: "secondary.main", 
+    minWidth: '180px', 
+    width: { xs: "100%", sm: "220px" },
+    "&:hover": { 
+      backgroundColor: "secondary.lighter", 
+      borderColor: "secondary.main", 
+      transform: "translateY(-3px)", 
+      boxShadow: "0 12px 20px rgba(42, 79, 126, 0.2)" 
+    }, 
+    transition: "all 0.3s ease" 
+  }} 
+> 
+  {t('createTour')}
+</Button>
+
           </AnimateWrapper>
         </Box>
   

@@ -19,13 +19,11 @@ import { useTranslation } from 'react-i18next';
 interface NotificationComponentProps {
     scrolled?: boolean; // Optional boolean to indicate if the component is scrolled
     profile : Profile;
-    isTransparent : boolean,
 }
 
 const NotificationComponent : React.FC<NotificationComponentProps> = ({ 
     scrolled = false,
     profile,
-    isTransparent
 }) => {
     const { t } = useTranslation('navbar');
     const navigate = useNavigate()
@@ -123,7 +121,7 @@ const NotificationComponent : React.FC<NotificationComponentProps> = ({
                 <Badge badgeContent={unreadCount} color="error">
                     <NotificationsIcon 
                         sx={{
-                            color: !isTransparent ? "#000" : "#fff",
+                            color:  "#000",
                             ":hover": { color: "#1877F2" },
                             transition: "color 0.3s ease"
                         }}
