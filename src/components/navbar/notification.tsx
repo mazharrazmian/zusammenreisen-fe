@@ -14,7 +14,7 @@ import chatServices from '../../redux/api/chatServices';
 import { Circle as CircleIcon } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { ContentTypeMap } from '../../Constants';
-
+import { useTranslation } from 'react-i18next';
 
 interface NotificationComponentProps {
     scrolled?: boolean; // Optional boolean to indicate if the component is scrolled
@@ -22,12 +22,12 @@ interface NotificationComponentProps {
     isTransparent : boolean,
 }
 
-
 const NotificationComponent : React.FC<NotificationComponentProps> = ({ 
     scrolled = false,
     profile,
     isTransparent
 }) => {
+    const { t } = useTranslation('navbar');
     const navigate = useNavigate()
     const [notifications, setNotifications] = React.useState<Array<Notification>>([]);
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -157,7 +157,7 @@ const NotificationComponent : React.FC<NotificationComponentProps> = ({
                 {(!notifications || notifications.length === 0) ? (
                     <MenuItem>
                         <Typography sx={{ color: 'text.secondary' }}>
-                            No notifications
+                            {t('noNotifications')}
                         </Typography>
                     </MenuItem>
                 ) : (

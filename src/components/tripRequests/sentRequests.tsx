@@ -41,7 +41,7 @@ import { useTranslation } from 'react-i18next';
 
 const SentRequests = ({requests}) => {
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t } = useTranslation('requestmanagement');
   const [tabValue, setTabValue] = useState(0);
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedRequest, setSelectedRequest] = useState(null);

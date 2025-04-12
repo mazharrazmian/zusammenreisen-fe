@@ -1,0 +1,15 @@
+{
+    "home": "Home",
+    "requests": "Requests",
+    "myTrips": "My Trips",
+    "chats": "Chats",
+    "createTour": "Create Tour",
+    "profile": "Profile",
+    "logout": "Logout",
+    "notifications": "Notifications",
+    "noNotifications": "No notifications",
+    "settings": "Settings",
+    "help": "Help",
+    "dashboard": "Dashboard",
+    "travelMates": "Travel Mates"
+}

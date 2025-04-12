@@ -4,8 +4,10 @@ import {
   ListItemIcon, 
   ListItemText,
   Box,
+  useMediaQuery,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import { useTranslation } from 'react-i18next';
 
 // Import icons
 import HomeIcon from '@mui/icons-material/Home';
@@ -16,6 +18,7 @@ import HelpIcon from '@mui/icons-material/Help';
 import { useLocation } from 'react-router-dom';
 import { Chat, Chat as ChatIcon } from '@mui/icons-material';
 import FlightIcon from '@mui/icons-material/Flight';
+import { useTheme } from "@mui/material/styles";
 
 const SidebarHeader = styled(Box)(({ theme }) => ({
   padding: theme.spacing(3),
@@ -51,77 +54,81 @@ const StyledListItemButton = styled(ListItemButton)(({ theme, active }) => ({
   })
 }));
 
-// Map icons to pages
-const getIconForPage = (pageName) => {
-  switch (pageName.toLowerCase()) {
-    case 'home':
-      return <HomeIcon />;
-    case 'dashboard':
-      return <DashboardIcon />;
-    case 'chats':
-        return <Chat />
-    case 'my trips':
-        return <FlightIcon/>
-    case 'requests':
-      return <PeopleIcon />;
-    case 'settings':
-      return <SettingsIcon />;
-    default:
-      return <HelpIcon />;
-  }
-};
-
 const Sidebar = ({ pages, navigate, onClose }) => {
-  const [collapsed, setCollapsed] = useState(false);
-  const location = useLocation();
-  
-  // Find active page based on current location path
-  const getActivePageId = () => {
-    const currentPage = pages.find(page => location.pathname === page.path);
-    return currentPage?.id || pages[0]?.id;
-  };
+    const { t } = useTranslation('navbar');
+    const [collapsed, setCollapsed] = useState(false);
+    const location = useLocation();
 
-  const handleNavigate = (page) => {
-    sessionStorage.setItem("toursFilters", JSON.stringify({}));
-    navigate(page.path);
-    // If onClose is provided (for mobile drawer), call it
-    if (onClose) {
-      onClose();
-    }
-  };
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
-  return (
-    <>
-    <SidebarHeader>
-        Travel Mates
-        </SidebarHeader>      
-      <ul sx={{ mt: 2 }}>
-        {pages.map((page) => {
-          const isActive = location.pathname === page.path;
-          
-          return (
-              <StyledListItemButton
-                onClick={() => handleNavigate(page)}
-                active={isActive ? 1 : 0}
-              >
-                <ListItemIcon sx={{ minWidth: collapsed ? 'auto' : 40, color: 'text.secondary' }}>
-                  {getIconForPage(page.pageName)}
-                </ListItemIcon>
-                {!collapsed && (
-                  <ListItemText 
-                    primary={page.pageName} 
-                    primaryTypographyProps={{
-                      fontSize: 15,
-                      fontWeight: isActive ? 600 : 500,
-                    }}
-                  />
-                )}
-              </StyledListItemButton>
-          );
-        })}
-      </ul>
-      </>
-  );
+    // Add 'profile' to pages if isMobile is true
+    const modifiedPages = isMobile
+        ? [...pages, { pageName: 'Profile', path: '/account' }]
+        : pages;
+
+    const handleNavigate = (page) => {
+        sessionStorage.setItem("toursFilters", JSON.stringify({}));
+        navigate(page.path);
+        // If onClose is provided (for mobile drawer), call it
+        if (onClose) {
+            onClose();
+        }
+    };
+
+    const getIconForPage = (pageName) => {
+        switch (pageName.toLowerCase()) {
+            case t('home').toLowerCase():
+                return <HomeIcon />;
+            case t('dashboard').toLowerCase():
+                return <DashboardIcon />;
+            case t('chats').toLowerCase():
+                return <Chat />;
+            case t('myTrips').toLowerCase():
+                return <FlightIcon />;
+            case t('requests').toLowerCase():
+                return <PeopleIcon />;
+            case t('settings').toLowerCase():
+                return <SettingsIcon />;
+            case t('profile').toLowerCase():
+                return <PeopleIcon />;
+            default:
+                return <HelpIcon />;
+        }
+    };
+
+    return (
+        <>
+            <SidebarHeader>
+                {t('travelMates')}
+            </SidebarHeader>      
+            <ul sx={{ mt: 2 }}>
+                {modifiedPages.map((page) => {
+                    const isActive = location.pathname === page.path;
+                    
+                    return (
+                            <StyledListItemButton
+                                onClick={() => handleNavigate(page)}
+                                active={isActive ? 1 : 0}
+                            >
+                                <ListItemIcon sx={{ minWidth: collapsed ? 'auto' : 40, color: 'text.secondary' }}>
+                                    {getIconForPage(page.pageName)}
+                                </ListItemIcon>
+                                {!collapsed && (
+                                    <ListItemText 
+                                        primary={page.pageName} 
+                                        primaryTypographyProps={{
+                                            fontSize: 15,
+                                            fontWeight: isActive ? 600 : 500,
+                                        }}
+                                    />
+                                )}
+                            </StyledListItemButton>
+                    );
+                })}
+            </ul>
+        </>
+    );
 };
 
 export default Sidebar;

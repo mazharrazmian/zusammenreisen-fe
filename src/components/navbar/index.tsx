@@ -9,7 +9,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
-import { Avatar, Divider, Drawer, Stack, Tooltip } from "@mui/material";
+import { Avatar, Divider, Drawer, Stack, Tooltip, useMediaQuery } from "@mui/material";
 import { useNavigate, useLocation } from "react-router-dom";
 import Cookies from "js-cookie";
 import { useDispatch } from "react-redux";
@@ -17,6 +17,9 @@ import { clearProfile } from "../../redux/slice/profileSlice";
 import { toast } from "react-toastify";
 import NotificationComponent from "./notification";
 import { motion, AnimatePresence } from "framer-motion";
+import { useTranslation } from 'react-i18next';
+import LanguageIcon from '@mui/icons-material/Language';
+import { useTheme } from "@mui/material/styles";
 
 import Iconify from "../iconify";
 import { useAppSelector } from "../../redux/store";
@@ -49,21 +52,13 @@ const pageTransitionVariants = {
     }
 };
 
-const normalPages = [
-    { id: 1, pageName: "Home", path: "/" },
-    // { id: 2, pageName: "Blog", path: "/blog" },  
-];
-
-const loggedInPages = [
-    { id: 3, pageName: "Requests", path: '/requests' },
-    { id: 4, pageName: "My Trips", path: '/tripplanner' },
-    { id: 5, pageName: 'Chats', path: '/chat' }
-]
-
 // Motion button component for nav links
 const MotionButton = motion(Button);
 
 const Navbar = React.memo(({ transparentOnHome }) => {
+    const { t, i18n } = useTranslation('navbar');
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -75,18 +70,38 @@ const Navbar = React.memo(({ transparentOnHome }) => {
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
         null
     );
+    const [languageAnchorEl, setLanguageAnchorEl] = React.useState<null | HTMLElement>(null);
     const [scrolled, setScrolled] = React.useState(false);
     const [previousPath, setPreviousPath] = React.useState(location.pathname);
 
     const profile: any = useAppSelector((s) => s?.profile);
 
-    const pages = profile?.profile ? normalPages.concat(loggedInPages) : normalPages
+    const pages = profile?.profile
+        ? [
+            { id: 1, pageName: t('home'), path: '/' },
+            { id: 3, pageName: t('requests'), path: '/requests' },
+            { id: 4, pageName: t('myTrips'), path: '/tripplanner' },
+            { id: 5, pageName: t('chats'), path: '/chat' }
+          ]
+        : [
+            { id: 1, pageName: t('home'), path: '/' }
+          ];
 
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElNav(event.currentTarget);
     };
     const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElUser(event.currentTarget);
+    };
+    const handleLanguageMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+        setLanguageAnchorEl(event.currentTarget);
+    };
+    const handleLanguageMenuClose = () => {
+        setLanguageAnchorEl(null);
+    };
+    const changeLanguage = (lng: string) => {
+        i18n.changeLanguage(lng);
+        handleLanguageMenuClose();
     };
 
     const accessToken = Cookies.get("accessToken");
@@ -101,7 +116,7 @@ const Navbar = React.memo(({ transparentOnHome }) => {
         Cookies.remove("accessToken", { path: "/" });
         Cookies.remove("refreshToken", { path: "/" });
         dispatch(clearProfile())
-        toast.success("Logout successful");
+        toast.success(t('logoutSuccess'));
     };
 
     // Custom navigation function with animation
@@ -162,7 +177,7 @@ const Navbar = React.memo(({ transparentOnHome }) => {
                                 cursor: 'pointer',
                                 marginRight: 2,
                             }}
-                            alt="Travel Mates"
+                            alt={t('travelMates')}
                             src={Logo}
                             onClick={() => navigateWithAnimation('/')}
                         />
@@ -192,24 +207,24 @@ const Navbar = React.memo(({ transparentOnHome }) => {
                                     navigate={navigateWithAnimation}
                                     onClose={handleCloseNavMenu}
                                 />
+                               
                             </Box>
                         </Drawer>
                     </Box>
                     {/* // Mobile logo */}
                     <Box
-                        component={motion.img}
-                        sx={{
-                            display: { xs: 'flex', md: 'none' },
-                            height: '60px', // Slightly smaller height for mobile
-                            width: 'auto',  // Maintain aspect ratio
-                            cursor: 'pointer',
-                            marginRight: 2,
-                        }}
-                        alt="Travel Mates"
-                        src={Logo}
-                        onClick={() => navigateWithAnimation('/')}
-                    />
-
+                            component='img'
+                            sx={{
+                                height: '50px', // Fixed reasonable height
+                                width: 'auto',  // Maintain aspect ratio
+                                display: { xs: 'flex', md: 'none' },
+                                cursor: 'pointer',
+                                marginRight: 2,
+                            }}
+                            alt={t('travelMates')}
+                            src={Logo}
+                            onClick={() => navigateWithAnimation('/')}
+                        />
                     <Box
                         sx={{
                             display: { xs: "none", md: "flex" },
@@ -288,7 +303,7 @@ const Navbar = React.memo(({ transparentOnHome }) => {
                                         fontWeight: 500
                                     }}
                                 >
-                                    Create Tour
+                                    {t('createTour')}
                                 </Button>
                             </Box>
                             <NotificationComponent
@@ -297,61 +312,66 @@ const Navbar = React.memo(({ transparentOnHome }) => {
                                 isTransparent={isTransparent}
                             />
 
-                            <Box sx={{ flexGrow: 0 }}>
-                                <Tooltip title={''}>
-                                    <IconButton
-                                        component={motion.button}
-                                        whileHover={{ scale: 1.1 }}
-                                        onClick={handleOpenUserMenu}
-                                        sx={{ p: 0 }}
+                            {/* User Profile */}
+                            {!isMobile && (
+                                <Box sx={{ flexGrow: 0 }}>
+                                    <Tooltip title={''}>
+                                        <IconButton
+                                            component={motion.button}
+                                            whileHover={{ scale: 1.1 }}
+                                            onClick={handleOpenUserMenu}
+                                            sx={{ p: 0 }}
+                                        >
+                                            <Avatar
+                                                alt={profile?.profile?.name}
+                                                src={profile?.profile?.profile?.picture}
+                                            />
+                                        </IconButton>
+                                    </Tooltip>
+                                    <Menu
+                                        sx={{ mt: "45px", width: "250px" }}
+                                        id="menu-appbar"
+                                        anchorEl={anchorElUser}
+                                        anchorOrigin={{
+                                            vertical: "top",
+                                            horizontal: "right",
+                                        }}
+                                        keepMounted
+                                        transformOrigin={{
+                                            vertical: "top",
+                                            horizontal: "right",
+                                        }}
+                                        open={Boolean(anchorElUser)}
+                                        onClose={handleCloseUserMenu}
                                     >
-                                        <Avatar
-                                            alt={profile?.profile?.name}
-                                            src={profile?.profile?.profile?.picture}
-                                        />
-                                    </IconButton>
-                                </Tooltip>
-                                <Menu
-                                    sx={{ mt: "45px", width: "250px" }}
-                                    id="menu-appbar"
-                                    anchorEl={anchorElUser}
-                                    anchorOrigin={{
-                                        vertical: "top",
-                                        horizontal: "right",
-                                    }}
-                                    keepMounted
-                                    transformOrigin={{
-                                        vertical: "top",
-                                        horizontal: "right",
-                                    }}
-                                    open={Boolean(anchorElUser)}
-                                    onClose={handleCloseUserMenu}
-                                >
-                                    <MenuItem>
-                                        <Typography sx={{ textAlign: "center" }}>
-                                            {profile?.profile?.name || "N/A"}
-                                        </Typography>
-                                    </MenuItem>
-                                    <MenuItem>
-                                        <Typography sx={{ textAlign: "center" }}>
-                                            {" "}
-                                            {profile?.profile?.email || "N/A"}
-                                        </Typography>
-                                    </MenuItem>
-                                    <Divider />
-                                    <MenuItem onClick={() => navigateWithAnimation('/account')}>
-                                        <Typography sx={{ textAlign: "center", display: 'flex' }}>
-                                            <Iconify icon={'mdi:home'} width={25} />
-                                            Profile
-                                        </Typography>
-                                    </MenuItem>
-                                    <MenuItem onClick={handleLogout}>
-                                        <Typography sx={{ textAlign: "center", color: "red" }}>
-                                            Logout
-                                        </Typography>
-                                    </MenuItem>
-                                </Menu>
-                            </Box>
+                                        <MenuItem>
+                                            <Typography sx={{ textAlign: "center" }}>
+                                                {profile?.profile?.name || "N/A"}
+                                            </Typography>
+                                        </MenuItem>
+                                        <MenuItem>
+                                            <Typography sx={{ textAlign: "center" }}>
+                                                {" "}
+                                                {profile?.profile?.email || "N/A"}
+                                            </Typography>
+                                        </MenuItem>
+                                        <Divider />
+                                        <MenuItem onClick={() => navigateWithAnimation('/account')}>
+                                            <Typography sx={{ textAlign: "center", display: 'flex' }}>
+                                                <Iconify icon={'mdi:home'} width={25} />
+                                                {t('profile')}
+                                            </Typography>
+                                        </MenuItem>
+                                        <MenuItem onClick={handleLogout}>
+                                            <Typography sx={{ textAlign: "center", color: "red" }}>
+                                                {t('logout')}
+                                            </Typography>
+                                        </MenuItem>
+                                    </Menu>
+                                </Box>
+                            )}
+                            {/* Language Switcher */}
+                           <LanguageSwitcher isTransparent={isTransparent} />
                         </Box>
                     ) : (
                         <Stack spacing={2} direction={"row"}>
@@ -367,7 +387,7 @@ const Navbar = React.memo(({ transparentOnHome }) => {
                                 }}
                                 role="navigation"
                             >
-                                Log In
+                                {t('logIn')}
                             </Button>
                             <Button
                                 component={motion.button}
@@ -381,9 +401,12 @@ const Navbar = React.memo(({ transparentOnHome }) => {
                                 }}
                                 role="navigation"
                             >
-                                Sign Up
+                                {t('signUp')}
                             </Button>
-                                <LanguageSwitcher isTransparent={isTransparent}/>
+                            {/* Language Switcher */}
+                            
+                                <LanguageSwitcher isTransparent={isTransparent} />
+                        
                         </Stack>
                     )}
                 </Toolbar>

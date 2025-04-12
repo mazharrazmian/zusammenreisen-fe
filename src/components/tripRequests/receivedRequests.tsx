@@ -36,23 +36,31 @@ import chatServices from '../../redux/api/chatServices';
 import { getKeyByValue, REQUESTSTATUS } from '../../Constants';
 import postRequestService from '../../redux/api/tripRequestService';
 import { useTranslation } from 'react-i18next';
+import { Request, RequestStatus } from '../../types'; // Assuming these types are defined in your types.ts file
 
-const ReceivedRequests = ({requests , handleAcceptRequest , handleRejectRequest , handleRequestDelete}) => {
+interface ReceivedRequestsProps {
+  requests: Request[];
+  handleAcceptRequest: (id: string) => void;
+  handleRejectRequest: (id: string) => void;
+  handleRequestDelete: (id: string) => void;
+}
+
+const ReceivedRequests: React.FC<ReceivedRequestsProps> = ({ requests, handleAcceptRequest, handleRejectRequest, handleRequestDelete }) => {
   const navigate = useNavigate();
-  const { t } = useTranslation();
-  const [tabValue, setTabValue] = useState(0);
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [selectedRequest, setSelectedRequest] = useState(null);
-  const [refresh, setRefresh] = useState(false);
+  const { t } = useTranslation('requestmanagement');
+  const [tabValue, setTabValue] = useState<number>(0);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [selectedRequest, setSelectedRequest] = useState<Request | null>(null);
+  const [refresh, setRefresh] = useState<boolean>(false);
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
-  const handleTabChange = (event, newValue) => {
+  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
   };
 
-  const handleMenuOpen = (event, request) => {
+  const handleMenuOpen = (event: React.MouseEvent<HTMLElement>, request: Request) => {
     setAnchorEl(event.currentTarget);
     setSelectedRequest(request);
   };
@@ -62,19 +70,18 @@ const ReceivedRequests = ({requests , handleAcceptRequest , handleRejectRequest 
     setSelectedRequest(null);
   };
 
-  const handleChat = (email) => {
+  const handleChat = (email: string) => {
     chatServices.getChatRooms(email)
       .then(response => {
         if (response.data.length > 0) {
           navigate(`/chat/${response.data[0].id}`);
-        }
-        else {
+        } else {
           let chatData = {
             'second_participant': email
           };
           chatServices.createRoom(chatData)
             .then(response => {
-              if (response?.status == 201) {
+              if (response?.status === 201) {
                 navigate(`/chat/${response.data.id}`);
               }
             })
@@ -85,7 +92,7 @@ const ReceivedRequests = ({requests , handleAcceptRequest , handleRejectRequest 
       });
   };
 
-  const getStatusChip = (status) => {
+  const getStatusChip = (status: RequestStatus) => {
     const statusConfig = {
       Pending: { color: 'default', icon: <AccessTime fontSize="small" /> },
       Accepted: { color: 'primary', icon: <CheckCircle fontSize="small" /> },
@@ -103,8 +110,7 @@ const ReceivedRequests = ({requests , handleAcceptRequest , handleRejectRequest 
     );
   };
 
-  // Filter requests based on tab
-  const filteredRequests = requests.filter(request => {
+  const filteredRequests = requests.filter((request: Request) => {
     if (tabValue === 0) return request.status === REQUESTSTATUS.Pending;
     if (tabValue === 1) return request.status === REQUESTSTATUS.Accepted;
     if (tabValue === 2) return request.status === REQUESTSTATUS.Rejected;
@@ -122,17 +128,17 @@ const ReceivedRequests = ({requests , handleAcceptRequest , handleRejectRequest 
             variant="fullWidth"
           >
             <Tab
-              label={t('pendingRequests', { count: requests.filter(r => r.status === REQUESTSTATUS.Pending).length })}
+              label={`${t('pendingRequests')} ${requests.filter(r => r.status === REQUESTSTATUS.Pending).length}` }
               icon={<AccessTime />}
               iconPosition={isMobile ? "top" : "start"}
             />
             <Tab
-              label={t('acceptedRequests', { count: requests.filter(r => r.status === REQUESTSTATUS.Accepted).length })}
+              label={`${t('acceptedRequests')} ${requests.filter(r => r.status === REQUESTSTATUS.Accepted).length}` }
               icon={<CheckCircle />}
               iconPosition={isMobile ? "top" : "start"}
             />
             <Tab
-              label={t('rejectedRequests', { count: requests.filter(r => r.status === REQUESTSTATUS.Rejected).length })}
+              label={`${t('rejectedRequests')} ${requests.filter(r => r.status === REQUESTSTATUS.Rejected).length}` }
               icon={<Cancel />}
               iconPosition={isMobile ? "top" : "start"}
             />
@@ -182,7 +188,7 @@ const ReceivedRequests = ({requests , handleAcceptRequest , handleRejectRequest 
                             <Chip
                               size="small"
                               icon={<Group fontSize="small" />}
-                              label={`${request.trip.group_size} seat${request.trip.group_size > 1 ? 's' : ''}`}
+                              label={`${request.trip.group_size}${request.trip.group_size > 1 ? t('seats') : t('seat')}`}
                               variant="outlined"
                             />
                             <Chip
@@ -258,7 +264,7 @@ const ReceivedRequests = ({requests , handleAcceptRequest , handleRejectRequest 
                 <Grid item xs={12}>
                   <Box sx={{ p: 4, textAlign: 'center' }}>
                     <Typography variant="subtitle1" color="text.secondary">
-                      {t('noRequestsFound', { status: tabValue === 0 ? t('pending') : tabValue === 1 ? t('accepted') : t('rejected') })}
+                      {t('noRequestsFound')}
                     </Typography>
                   </Box>
                 </Grid>
