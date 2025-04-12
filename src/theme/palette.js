@@ -1,71 +1,71 @@
 import { alpha } from '@mui/material/styles';
 
 // ----------------------------------------------------------------------
-// SETUP COLORS
+// UPDATED COLORS
 export const grey = {
   0: '#FFFFFF',
-  100: '#F8FAFC',
-  200: '#EEF2F6',
-  300: '#DFE3E8',
-  400: '#C4CDD5',
-  500: '#919EAB',
-  600: '#637381',
-  700: '#454F5B',
-  800: '#1E2A38',
-  900: '#0D1721',
+  100: '#F9FAFB',
+  200: '#F3F4F6',
+  300: '#E5E7EB',
+  400: '#D1D5DB',
+  500: '#9CA3AF',
+  600: '#6B7280',
+  700: '#4B5563',
+  800: '#374151',
+  900: '#1F2937',
 };
 
 export const primary = {
-  lighter: '#D1F0EE',
-  light: '#64D2CE',
-  main: '#06B6AE', // Turquoise - ocean/tropical vibe
-  dark: '#038780',
-  darker: '#025E59',
+  lighter: '#D1E8E4',
+  light: '#76B7B2',
+  main: '#2A7F7E', // Darker green for a soothing effect
+  dark: '#1A5A5A',
+  darker: '#0D3A3A',
   contrastText: '#FFFFFF',
 };
 
 export const secondary = {
-  lighter: '#FFF8E0',
-  light: '#FFE08A',
-  main: '#FFB800', // Warm amber/golden - sunset vibe
-  dark: '#CC8A00',
-  darker: '#9C6000',
-  contrastText: '#1E2A38',
+  lighter: '#D1D8E8',
+  light: '#7687B7',
+  main: '#2A4F7E', // Deep blue for contrast
+  dark: '#1A365A',
+  darker: '#0D1F3A',
+  contrastText: '#FFFFFF',
 };
 
 export const info = {
-  lighter: '#D7E9FF',
-  light: '#74ADFF',
-  main: '#2979FF', // Bright blue - clear sky
-  dark: '#144EAD',
-  darker: '#0A2E71',
+  lighter: '#E3F2FD',
+  light: '#90CAF9',
+  main: '#2196F3', // Clear blue for clarity
+  dark: '#1565C0',
+  darker: '#0D47A1',
   contrastText: '#FFFFFF',
 };
 
 export const success = {
-  lighter: '#E0F5D7',
-  light: '#8AD168',
-  main: '#4CAF50', // Fresh green - nature/eco travel
-  dark: '#2D7A32',
-  darker: '#15501B',
+  lighter: '#E8F5E9',
+  light: '#A5D6A7',
+  main: '#66BB6A', // Softer green for eco-friendliness
+  dark: '#388E3C',
+  darker: '#1B5E20',
   contrastText: '#FFFFFF',
 };
 
 export const warning = {
-  lighter: '#FFF4D7',
-  light: '#FFD175',
-  main: '#FF9800', // Vibrant orange - adventure/energy
-  dark: '#C26C00',
-  darker: '#874A00',
+  lighter: '#FFF8E1',
+  light: '#FFECB3',
+  main: '#FFC107', // Vibrant yellow for attention
+  dark: '#FFA000',
+  darker: '#FF6F00',
   contrastText: grey[800],
 };
 
 export const error = {
-  lighter: '#FEE4D8',
-  light: '#FF8A7E',
-  main: '#F44336', // Coral red - alerts/important notices
-  dark: '#C92919',
-  darker: '#8E130A',
+  lighter: '#FFEBEE',
+  light: '#EF9A9A',
+  main: '#E57373', // Softer red for alerts
+  dark: '#D32F2F',
+  darker: '#B71C1C',
   contrastText: '#FFFFFF',
 };
 
@@ -110,8 +110,8 @@ export function palette() {
     },
     background: {
       paper: '#FFFFFF',
-      default: '#F8FAFC',
-      neutral: '#EEF2F6',
+      default: '#F9FAFB',
+      neutral: '#F3F4F6',
     },
     action: {
       ...base.action,
