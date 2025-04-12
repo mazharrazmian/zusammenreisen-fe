@@ -382,11 +382,13 @@ const Navbar = React.memo(({ transparentOnHome }) => {
                                 onClick={() => navigateWithAnimation("/login")}
                                 sx={{
                                     borderRadius: "8px",
-                                    px: 3
+                                    px: 3,
+                                    maxWidth: "100px",
+
                                 }}
                                 role="navigation"
                             >
-                                {t('logIn')}
+                                {t('login')}
                             </Button>
                             <Button
                                 component={motion.button}
@@ -396,11 +398,12 @@ const Navbar = React.memo(({ transparentOnHome }) => {
                                 onClick={() => navigateWithAnimation("/register")}
                                 sx={{
                                     borderRadius: "8px",
-                                    px: 3
+                                    px: 3,
+                                    maxWidth: "100px",
                                 }}
                                 role="navigation"
                             >
-                                {t('signUp')}
+                                {t('signup')}
                             </Button>
                             {/* Language Switcher */}
                             

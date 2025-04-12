@@ -11,5 +11,7 @@
     "settings": "Settings",
     "help": "Help",
     "dashboard": "Dashboard",
-    "travelMates": "Travel Mates"
+    "travelMates": "Travel Mates",
+    "login": "Login",
+    "signup": "Sign Up"
 }

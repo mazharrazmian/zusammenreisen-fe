@@ -11,5 +11,7 @@
     "settings": "Einstellungen",
     "help": "Hilfe",
     "dashboard": "Dashboard",
-    "travelMates": "Reisegefährten"
+    "travelMates": "Reisegefährten",
+    "login" : "Einloggen",
+    "signup" : "Registrieren"
 }
