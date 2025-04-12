@@ -1,21 +1,21 @@
 {
-    "welcome": "Aus Fremden werden Freunde, die zusammen reisen",
-    "join": "Triff abenteuerlustige Reisende, plane unvergessliche Trips und sammle Erinnerungen fürs Leben. Nie mehr allein reisen – finde hier deinen perfekten Reisepartner!",
-    "exploreTour" : "Touren Erkunden",
-    "createTour" : "Tour Erstellen",
-    "howItWorks" : "Wie Es Funktioniert" ,
-    "createOrFindTitle": "Tour erstellen oder finden",
-    "createOrFindDesc": "Erstelle deine eigene Tour oder durchstöbere bestehende Touren nach Aktivitäten, Zielen und Daten, die dich interessieren.",
+    "welcome": "Aus Fremden Werden Freunde, Die Zusammen Reisen",
+    "join": "Triff Abenteuerlustige Reisende, Plane Unvergessliche Trips Und Sammle Erinnerungen Fürs Leben. Nie Mehr Allein Reisen – Finde Hier Deinen Perfekten Reisepartner!",
+    "exploreTour": "Touren Erkunden",
+    "createTour": "Tour Erstellen",
+    "howItWorks": "Wie Es Funktioniert",
+    "createOrFindTitle": "Tour Erstellen Oder Finden",
+    "createOrFindDesc": "Erstelle Deine Eigene Tour Oder Durchstöbere Bestehende Touren Nach Aktivitäten, Zielen Und Daten, Die Dich Interessieren.",
     
     "applyTitle": "Bewerben & Mitreisen",
-    "applyDesc": "Eine Tour gefunden, die dir gefällt? Bewirb dich beim Tour-Organisator und erzähle, warum du gut ins Team passt.",
+    "applyDesc": "Eine Tour Gefunden, Die Dir Gefällt? Bewirb Dich Beim Tour-Organisator Und Erzähle, Warum Du Gut Ins Team Passt.",
     
     "connectPlanTitle": "Austauschen & Planen",
-    "connectPlanDesc": "Nach der Zusage kannst du mit der Gruppe chatten, Details besprechen und eure Reise gemeinsam organisieren.",
+    "connectPlanDesc": "Nach Der Zusage Kannst Du Mit Der Gruppe Chatten, Details Besprechen Und Eure Reise Gemeinsam Organisieren.",
     
     "embarkTitle": "Gemeinsam Aufbrechen",
-    "embarkDesc": "Erlebe unvergessliche Abenteuer mit Gleichgesinnten, teile Kosten und sammle Erinnerungen fürs Leben.",
+    "embarkDesc": "Erlebe Unvergessliche Abenteuer Mit Gleichgesinnten, Teile Kosten Und Sammle Erinnerungen Fürs Leben.",
  
-    "exploreGroupTours" : "Gruppenreisen Erkunden",
-    "exploreGroupToursPara" : "Entdecken Sie spannende Touren, die von anderen Reisenden organisiert wurden, schließen Sie sich einer Gruppe an, die Ihren Interessen entspricht, oder erstellen Sie Ihre eigene Tour."
+    "exploreGroupTours": "Gruppenreisen Erkunden",
+    "exploreGroupToursPara": "Entdecken Sie Spannende Touren, Die Von Anderen Reisenden Organisiert Wurden, Schließen Sie Sich Einer Gruppe An, Die Ihren Interessen Entspricht, Oder Erstellen Sie Ihre Eigene Tour."
 }

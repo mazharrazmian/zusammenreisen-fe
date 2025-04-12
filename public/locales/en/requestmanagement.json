@@ -1,0 +1,13 @@
+{
+    "tripRequestsManagement": "Trip Requests Management",
+    "receivedRequests": "Received Requests",
+    "sentRequests": "Sent Requests",
+    "requestAccepted": "Request Accepted Successfully. Notification Sent To User",
+    "errorAcceptingRequest": "There was an error accepting request, please try later. Or contact Support",
+    "requestRejected": "Request Rejected. Notification Sent to User",
+    "errorRejectingRequest": "There was an error rejecting the request. Try again or contact support",
+    "requestDeleted": "Request Deleted Successfully",
+    "errorDeletingRequest": "Could Not Delete Request",
+    "helpTooltip": "Need help with requests?",
+    "clickRequestCard": "Click on a request card to see details and available actions"
+}

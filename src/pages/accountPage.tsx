@@ -7,8 +7,10 @@ import LanguageSelector from "../components/language";
 import { handleApiError } from "../redux/api/http-common";
 import Navbar from "../components/navbar";
 import { CloudUpload } from "@mui/icons-material";
+import { useTranslation } from 'react-i18next';
 
 const ProfilePage = () => {
+    const { t } = useTranslation('accountpage');
     const [user, setUser] = useState({ email: "", name: "" });
     const [profile, setProfile] = useState({ id: "", picture: null, gender: "", age: "", languages: [] });
     const [languages, setLanguages] = useState([]);
@@ -27,12 +29,12 @@ const ProfilePage = () => {
             })
             .catch(error => {
                 console.log(error);
-                toast("Couldn't get your profile data");
+                toast(t('couldNotFetchProfile'));
             });
 
         authServices.getAllLanguages()
             .then(response => setLanguages(response.data))
-            .catch(() => toast("Couldn't fetch languages"));
+            .catch(() => toast(t('couldNotFetchLanguages')));
     }, []);
 
     const handleProfileChange = (e) => {
@@ -64,8 +66,8 @@ const ProfilePage = () => {
         });
 
         authServices.updateProfile(profile.id, formData)
-            .then(() => toast("Profile successfully updated"))
-            .catch(() => toast("Could not update profile. Please contact support."));
+            .then(() => toast(t('profileUpdated')))
+            .catch(() => toast(t('profileUpdateFailed')));
     };
 
     const handlePasswordChange = (e) => {
@@ -75,21 +77,21 @@ const ProfilePage = () => {
     const handlePasswordReset = () => {
         authServices.setPassword({ current_password: passwordData.current_password, new_password: passwordData.new_password })
             .then(() => {
-                toast("Password changed successfully");
+                toast(t('passwordChanged'));
                 setOpenPasswordModal(false);
             })
             .catch(error => {
                 handleApiError(error);
-                toast("Password could not be changed. Please contact an administrator.");
+                toast(t('passwordChangeFailed'));
             });
     };
 
-    if (!profile.id) return <p>Loading...</p>;
+    if (!profile.id) return <p>{t('loading')}</p>;
 
     return (
         <>
             <div style={{ maxWidth: "500px", margin: "auto", textAlign: "center" }}>
-                <h2>Profile</h2>
+                <h2>{t('profile')}</h2>
                 
                 {/* Updated Profile Picture Upload - entire area clickable */}
                 <div style={{ position: "relative", display: "inline-block" }}>
@@ -107,7 +109,7 @@ const ProfilePage = () => {
                         }}>
                             <img 
                                 src={previewImage} 
-                                alt="Profile" 
+                                alt={t('profile')} 
                                 style={{ 
                                     width: "100%", 
                                     height: "100%", 
@@ -127,7 +129,7 @@ const ProfilePage = () => {
                                 padding: "4px 0"
                             }}>
                                 <CloudUpload fontSize="small" style={{ marginRight: "4px" }} />
-                                <small>Change</small>
+                                <small>{t('change')}</small>
                             </div>
                         </div>
                     </label>
@@ -140,35 +142,35 @@ const ProfilePage = () => {
                     />
                 </div>
 
-                <TextField fullWidth label="Name" value={user.name} disabled margin="normal" />
-                <TextField fullWidth label="Email" value={user.email} disabled margin="normal" />
-                <TextField fullWidth label="Age" name="age" type="number" value={profile.age} onChange={handleProfileChange} margin="normal" />
+                <TextField fullWidth label={t('name')} value={user.name} disabled margin="normal" />
+                <TextField fullWidth label={t('email')} value={user.email} disabled margin="normal" />
+                <TextField fullWidth label={t('age')} name="age" type="number" value={profile.age} onChange={handleProfileChange} margin="normal" />
                 
                 <FormControl fullWidth margin="normal">
-                    <InputLabel>Gender</InputLabel>
+                    <InputLabel>{t('gender')}</InputLabel>
                     <Select name="gender" value={profile.gender} onChange={handleProfileChange}>
-                        <MenuItem value={1}>Male</MenuItem>
-                        <MenuItem value={2}>Female</MenuItem>
-                        <MenuItem value={3}>Other</MenuItem>
+                        <MenuItem value={1}>{t('male')}</MenuItem>
+                        <MenuItem value={2}>{t('female')}</MenuItem>
+                        <MenuItem value={3}>{t('other')}</MenuItem>
                     </Select>
                 </FormControl>
 
                 {/* Language Selector */}
                 <LanguageSelector allLanguages={languages} selectedLanguages={selectedLanguages} onLanguagesChange={setSelectedLanguages} />
 
-                <Button variant="contained" color="primary" onClick={handleProfileUpdate} style={{ margin: "10px 0" }}>Save Changes</Button>
-                <Button variant="outlined" color="secondary" onClick={() => setOpenPasswordModal(true)}>Reset Password</Button>
+                <Button variant="contained" color="primary" onClick={handleProfileUpdate} style={{ margin: "10px 0" }}>{t('saveChanges')}</Button>
+                <Button variant="outlined" color="secondary" onClick={() => setOpenPasswordModal(true)}>{t('resetPassword')}</Button>
 
                 {/* Password Reset Modal */}
                 <Dialog open={openPasswordModal} onClose={() => setOpenPasswordModal(false)}>
-                    <DialogTitle>Reset Password</DialogTitle>
+                    <DialogTitle>{t('resetPasswordTitle')}</DialogTitle>
                     <DialogContent>
-                        <TextField fullWidth label="Old Password" name="current_password" type="password" onChange={handlePasswordChange} margin="normal" />
-                        <TextField fullWidth label="New Password" name="new_password" type="password" onChange={handlePasswordChange} margin="normal" />
+                        <TextField fullWidth label={t('oldPassword')} name="current_password" type="password" onChange={handlePasswordChange} margin="normal" />
+                        <TextField fullWidth label={t('newPassword')} name="new_password" type="password" onChange={handlePasswordChange} margin="normal" />
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={() => setOpenPasswordModal(false)} color="secondary">Cancel</Button>
-                        <Button onClick={handlePasswordReset} color="primary">Confirm</Button>
+                        <Button onClick={() => setOpenPasswordModal(false)} color="secondary">{t('cancel')}</Button>
+                        <Button onClick={handlePasswordReset} color="primary">{t('confirm')}</Button>
                     </DialogActions>
                 </Dialog>
             </div>

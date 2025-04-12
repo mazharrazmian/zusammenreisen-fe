@@ -21,7 +21,7 @@ import { useNavigate } from "react-router-dom";
 import { authStyles, login } from "./styles";
 import LanguageSelector from "../components/language";
 import { ArrowBack } from "@mui/icons-material";
-
+import { useTranslation } from 'react-i18next';
 
 const initialValues = {
     name: "",
@@ -45,7 +45,7 @@ const RegisterPage = () => {
     const [menuItemImg, setMenuItemImg] = useState("");
     const [languages, setLanguages] = useState([])
     const [selectedLanguages, setSelectedLanguages] = useState([]);
-
+    const { t } = useTranslation('register');
 
     useEffect(() => {
 
@@ -152,7 +152,7 @@ const RegisterPage = () => {
                             <Box sx={authStyles.imageTextWrapper}>
                                 <Box>
                                     <Typography variant="h2" color="#fff">
-                                        Sign Up
+                                        {t('signUp')}
                                     </Typography>
                                 </Box>
                                 <Box sx={authStyles.IocnMainWrapper}>
@@ -174,13 +174,13 @@ const RegisterPage = () => {
                                             fontSize: { xs: ".5rem", md: ".7rem" },
                                         }}
                                     >
-                                        have account?{" "}
+                                        {t('haveAccount')} {" "}
                                         <span>
                                             <a
                                                 style={{ textDecoration: "none", color: "blue" }}
                                                 href="/login"
                                             >
-                                                Login Now
+                                                {t('loginNow')}
                                             </a>
                                         </span>
                                     </Typography>
@@ -202,7 +202,7 @@ const RegisterPage = () => {
                                 onClick={() =>  navigate("/")}
                                 sx={{ mb: 2 }}
                                 >
-                                Checkout Tours
+                                {t('checkoutTours')}
                             </Button>
                             <Grid container spacing={2} sx={{ padding: "0rem 2rem" }}>
                                 <Grid size={12} sx={{ justifyContent: "center", display: "flex" }}>
@@ -249,7 +249,7 @@ const RegisterPage = () => {
                                 <Grid size={{ xs: 12, md: 6 }}>
                                     <Box>
                                         <Typography sx={{ paddingLeft: "10px", fontSize: "14px" }}>
-                                            Name
+                                            {t('name')}
                                         </Typography>
                                         <TextField
                                             fullWidth
@@ -265,7 +265,7 @@ const RegisterPage = () => {
                                 <Grid size={{ xs: 6 }}>
                                     <Box>
                                         <Typography sx={{ paddingLeft: "10px", fontSize: "14px" }}>
-                                            Email
+                                            {t('email')}
                                         </Typography>
                                         <TextField
                                             fullWidth
@@ -282,7 +282,7 @@ const RegisterPage = () => {
                                 <Grid size={{ xs: 6 }}>
                                     <Box>
                                         <Typography sx={{ paddingLeft: "10px", fontSize: "14px" }}>
-                                            Age
+                                            {t('age')}
                                         </Typography>
                                         <TextField
                                             fullWidth
@@ -298,7 +298,7 @@ const RegisterPage = () => {
                                 <Grid size={{ xs: 6 }}>
                                     <Box>
                                         <Typography sx={{ paddingLeft: "10px", fontSize: "14px" }}>
-                                            Languages
+                                            {t('languages')}
                                         </Typography>
                                         <LanguageSelector selectedLanguages={selectedLanguages} allLanguages={languages} onLanguagesChange={setSelectedLanguages} />
                                     </Box>
@@ -308,7 +308,7 @@ const RegisterPage = () => {
                                 <Grid size={{ xs: 12, md: 6 }}>
                                     <Box>
                                         <Typography sx={{ paddingLeft: "10px", fontSize: "14px" }}>
-                                            Gender
+                                            {t('gender')}
                                         </Typography>
                                         <TextField
                                             select
@@ -330,7 +330,7 @@ const RegisterPage = () => {
                                 <Grid size={{ xs: 12, md: 6 }}>
                                     <Box>
                                         <Typography sx={{ paddingLeft: "10px", fontSize: "14px" }}>
-                                            Password
+                                            {t('password')}
                                         </Typography>
                                         <TextField
                                             fullWidth
@@ -365,7 +365,7 @@ const RegisterPage = () => {
                                 <Grid size={{ xs: 12, md: 6 }}>
                                     <Box>
                                         <Typography sx={{ paddingLeft: "10px", fontSize: "14px" }}>
-                                            Confirm Password
+                                            {t('confirmPassword')}
                                         </Typography>
                                         <TextField
                                             fullWidth
@@ -408,7 +408,7 @@ const RegisterPage = () => {
                                     sx={authStyles.submitBtn}
                                     type="submit"
                                 >
-                                    {isLoading ? "loading..." : "Sign Up"}
+                                    {isLoading ? t('loading') : t('signUp')}
                                 </Button>
                             </Box>
                             <Box
@@ -436,13 +436,13 @@ const RegisterPage = () => {
                                             fontSize: { xs: ".5rem", md: ".7rem" },
                                         }}
                                     >
-                                        have account?{" "}
+                                        {t('haveAccount')} {" "}
                                         <span>
                                             <a
                                                 style={{ textDecoration: "none", color: "blue" }}
                                                 href="/login"
                                             >
-                                                Login Now
+                                                {t('loginNow')}
                                             </a>
                                         </span>
                                     </Typography>

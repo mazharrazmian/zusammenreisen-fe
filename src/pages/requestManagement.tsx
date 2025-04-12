@@ -29,6 +29,7 @@ import { handleApiError } from '../redux/api/http-common';
 import { toast } from 'react-toastify';
 import { useAppSelector } from '../redux/store';
 import { REQUESTSTATUS } from '../Constants';
+import { useTranslation } from 'react-i18next';
 
 const RequestManagementPage = () => {
     const profile = useAppSelector(s=>s.profile.profile)
@@ -36,21 +37,19 @@ const RequestManagementPage = () => {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     const [animation, setAnimation] = useState(true);
-    // These would come from your API in production
     const [receivedRequests, setReceivedRequests] = useState([])
     const [sentRequests, setSentRequests] = useState([])
     const [refresh, setRefresh] = useState(false)
     const [loading, setLoading] = useState(true)
+    const { t } = useTranslation('requestmanagement');
 
     useEffect(() => {
         if (profile === null) return
         
-        // Reset states before fetching new data
         setLoading(true);
         
         postRequestService.getAllRequests()
           .then(response => {
-            // Replace arrays instead of appending to previous state
             setSentRequests(
                 response.data.filter(req => req.from_profile.user.email === profile?.email)
             );
@@ -71,11 +70,11 @@ const RequestManagementPage = () => {
     const handleAcceptRequest = async (id) => {
         postRequestService.acceptRequest(id)
           .then(res => {
-            toast('Request Accepted Successfully. Notification Sent To User');
+            toast(t('requestAccepted'));
           })
           .catch(error => {
             console.log(error);
-            toast("There was an error accepting request, please try later. Or contact Support");
+            toast(t('errorAcceptingRequest'));
           })
           .finally(() => {
             setRefresh(!refresh);
@@ -85,11 +84,11 @@ const RequestManagementPage = () => {
     const handleRejectRequest = async (id) => {
         postRequestService.rejectRequest(id)
           .then(res => {
-            toast("Request Rejected. Notification Sent to User");
+            toast(t('requestRejected'));
           })
           .catch(error => {
             console.log(error);
-            toast("There was an error rejecting the request. Try again or contact support");
+            toast(t('errorRejectingRequest'));
           })
           .finally(() => {
             setRefresh(!refresh);
@@ -99,10 +98,10 @@ const RequestManagementPage = () => {
     const handleRequestDelete = (id)=>{
         postRequestService.deleteRequest(id)
         .then(res=>{
-            toast("Request Deleted Successfully")
+            toast(t('requestDeleted'))
         })
         .catch(err=>{
-            toast("Could Not Delete Request")
+            toast(t('errorDeletingRequest'))
         })
         .finally(()=>setRefresh(!refresh))
     }
@@ -158,7 +157,7 @@ const RequestManagementPage = () => {
                     }}
                   >
                     <Typography variant="h5" sx={{ mb: 2, fontWeight: 500 }}>
-                      Trip Requests Management
+                      {t('tripRequestsManagement')}
                     </Typography>
                     
                     <Tabs
@@ -199,7 +198,7 @@ const RequestManagementPage = () => {
                                 alignItems: 'center'
                               }}
                             >
-                              Received Requests
+                              {t('receivedRequests')}
                             </Typography>
                             <Badge 
                               badgeContent={receivedRequests.filter((f)=>{
@@ -245,7 +244,7 @@ const RequestManagementPage = () => {
                                 alignItems: 'center'
                               }}
                             >
-                              Sent Requests
+                              {t('sentRequests')}
                             </Typography>
                             <Badge 
                               badgeContent={sentRequests.filter((f)=>{
@@ -294,12 +293,12 @@ const RequestManagementPage = () => {
                 </Paper>
 
                 <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
-                  <Tooltip title="Need help with requests?">
+                  <Tooltip title={t('helpTooltip')}>
                     <Typography variant="body2" color="text.secondary" sx={{ display: 'flex', alignItems: 'center' }}>
                       <IconButton size="small" color="primary">
                         <MarkEmailUnreadOutlined fontSize="small" />
                       </IconButton>
-                      Click on a request card to see details and available actions
+                      {t('clickRequestCard')}
                     </Typography>
                   </Tooltip>
                 </Box>

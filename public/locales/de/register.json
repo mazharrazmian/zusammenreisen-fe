@@ -1,0 +1,14 @@
+{
+    "signUp": "Registrieren",
+    "name": "Name",
+    "email": "E-Mail",
+    "age": "Alter",
+    "languages": "Sprachen",
+    "gender": "Geschlecht",
+    "password": "Passwort",
+    "confirmPassword": "Passwort bestätigen",
+    "checkoutTours": "Touren ansehen",
+    "loading": "Laden...",
+    "loginNow": "Jetzt anmelden",
+    "haveAccount": "Haben Sie ein Konto?"
+}

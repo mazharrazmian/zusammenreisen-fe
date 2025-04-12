@@ -3,10 +3,12 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Container, TextField, Button, Typography, CircularProgress } from "@mui/material";
 import authServices from "../redux/api/authService";
+import { useTranslation } from 'react-i18next';
 
 const ResetPassword = () => {
   const { uid, token } = useParams();
   const navigate = useNavigate();
+  const { t } = useTranslation('passwordreset');
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -15,16 +17,16 @@ const ResetPassword = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
-      setMessage("Passwords do not match.");
+      setMessage(t('passwordsDoNotMatch'));
       return;
     }
     if (uid === undefined || token === undefined) return
     setLoading(true);
     try {
       await authServices.resetPasswordConfirm({uid,token,password})
-      setMessage("Your password has been reset! You can now log in.");
+      setMessage(t('passwordResetSuccess'));
     } catch {
-      setMessage("Invalid or expired reset link.");
+      setMessage(t('invalidOrExpiredLink'));
     }
     setLoading(false);
   };
@@ -32,14 +34,14 @@ const ResetPassword = () => {
   return (
     <Container maxWidth="sm" style={{ textAlign: "center", marginTop: "50px" }}>
       <Typography variant="h5" color="primary">
-        Reset Your Password
+        {t('resetYourPassword')}
       </Typography>
 
       <form onSubmit={handleSubmit} style={{ marginTop: "20px" }}>
         <TextField
           fullWidth
           type="password"
-          label="New Password"
+          label={t('newPassword')}
           variant="outlined"
           margin="normal"
           value={password}
@@ -49,7 +51,7 @@ const ResetPassword = () => {
         <TextField
           fullWidth
           type="password"
-          label="Confirm Password"
+          label={t('confirmPassword')}
           variant="outlined"
           margin="normal"
           value={confirmPassword}
@@ -59,22 +61,22 @@ const ResetPassword = () => {
 
         {loading ? <CircularProgress color="primary" /> : null}
 
-        <Typography color={message.includes("reset") ? "primary" : "error"} style={{ marginTop: "10px" }}>
+        <Typography color={message.includes(t('passwordResetSuccess')) ? "primary" : "error"} style={{ marginTop: "10px" }}>
           {message}
         </Typography>
 
         <Button type="submit" variant="contained" color="primary" fullWidth style={{ marginTop: "20px" }}>
-          Reset Password
+          {t('resetPassword')}
         </Button>
 
-        {message.includes("reset") && (
+        {message.includes(t('passwordResetSuccess')) && (
           <Button
             variant="contained"
             color="secondary"
             onClick={() => navigate("/login")}
             style={{ marginTop: "10px" }}
           >
-            Go to Login
+            {t('goToLogin')}
           </Button>
         )}
       </form>

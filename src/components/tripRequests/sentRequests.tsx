@@ -37,11 +37,11 @@ import { handleApiError } from '../../redux/api/http-common';
 import chatServices from '../../redux/api/chatServices';
 import { getKeyByValue, REQUESTSTATUS } from '../../Constants';
 import postRequestService from '../../redux/api/tripRequestService';
-
-
+import { useTranslation } from 'react-i18next';
 
 const SentRequests = ({requests}) => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [tabValue, setTabValue] = useState(0);
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedRequest, setSelectedRequest] = useState(null);
@@ -65,16 +65,13 @@ const SentRequests = ({requests}) => {
   };
 
   const handleCancelRequest = async (id) => {
-    // This API endpoint needs to be created
     postRequestService.deleteRequest(id)
       .then(res => {
-        //TODO : Delete the notification sent to user 
-        // when the sent request is deleted
-        toast('Request Canceled Successfully');
+        toast(t('requestCanceledSuccessfully'));
       })
       .catch(error => {
         console.log(error);
-        toast("There was an error canceling the request, please try later. Or contact Support");
+        toast(t('errorCancelingRequest'));
       })
       .finally(() => {
         setRefresh(!refresh);
@@ -82,7 +79,6 @@ const SentRequests = ({requests}) => {
   };
 
   const handleChat = (email) => {
-    console.log(email)
     chatServices.getChatRooms(email)
       .then(response => {
         if (response.data.length > 0) {
@@ -95,7 +91,7 @@ const SentRequests = ({requests}) => {
           chatServices.createRoom(chatData)
             .then(response => {
               if (response?.status == 201) {
-                navigate(`chat/${response.data.id}`);
+                navigate(`/chat/${response.data.id}`);
               }
             })
             .catch(error => {
@@ -115,7 +111,7 @@ const SentRequests = ({requests}) => {
     status = getKeyByValue(REQUESTSTATUS, status);
     return (
       <Chip
-        label={status.charAt(0).toUpperCase() + status.slice(1)}
+        label={t(status.toLowerCase())}
         size="small"
         color={statusConfig[status].color}
         icon={statusConfig[status].icon}
@@ -123,7 +119,6 @@ const SentRequests = ({requests}) => {
     );
   };
 
-  // Filter requests based on tab
   const filteredRequests = requests.filter(request => {
     if (tabValue === 0) return request.status === REQUESTSTATUS.Pending;
     if (tabValue === 1) return request.status === REQUESTSTATUS.Accepted;
@@ -133,7 +128,6 @@ const SentRequests = ({requests}) => {
 
   return (
     <Grid container spacing={3}>
-      {/* Main Content */}
       <Grid item xs={12} md={8}>
         <Card>
           <Tabs
@@ -142,17 +136,17 @@ const SentRequests = ({requests}) => {
             variant="fullWidth"
           >
             <Tab
-              label={`Pending (${requests.filter(r => r.status === REQUESTSTATUS.Pending).length})`}
+              label={t('pendingRequests', { count: requests.filter(r => r.status === REQUESTSTATUS.Pending).length })}
               icon={<AccessTime />}
               iconPosition={isMobile ? "top" : "start"}
             />
             <Tab
-              label={`Accepted (${requests.filter(r => r.status === REQUESTSTATUS.Accepted).length})`}
+              label={t('acceptedRequests', { count: requests.filter(r => r.status === REQUESTSTATUS.Accepted).length })}
               icon={<CheckCircle />}
               iconPosition={isMobile ? "top" : "start"}
             />
             <Tab
-              label={`Rejected (${requests.filter(r => r.status === REQUESTSTATUS.Rejected).length})`}
+              label={t('rejectedRequests', { count: requests.filter(r => r.status === REQUESTSTATUS.Rejected).length })}
               icon={<Cancel />}
               iconPosition={isMobile ? "top" : "start"}
             />
@@ -189,7 +183,7 @@ const SentRequests = ({requests}) => {
 
                         <Grid item xs={12} sm={8}>
                           <Typography variant="subtitle1">
-                            Sent to: {request.to_profile.name}
+                            {t('sentTo', { name: request.to_profile.name })}
                           </Typography>
 
                           <Stack direction="row" spacing={1} sx={{ my: 1 }}>
@@ -202,7 +196,7 @@ const SentRequests = ({requests}) => {
                             <Chip
                               size="small"
                               icon={<Group fontSize="small" />}
-                              label={`${request.trip.group_size} seat${request.trip.group_size > 1 ? 's' : ''}`}
+                              label={`${request.trip.group_size} ${t('seat', { count: request.trip.group_size })}`}
                               variant="outlined"
                             />
                             <Chip
@@ -237,7 +231,7 @@ const SentRequests = ({requests}) => {
                           <Divider sx={{ my: 2 }} />
                           <Box sx={{ p: 1.5, bgcolor: 'action.hover', borderRadius: 1 }}>
                             <Typography variant="body2" color="text.secondary">
-                              Your message: "{request.message}"
+                              {t('yourMessage', { message: request.message })}
                             </Typography>
                           </Box>
                         </>
@@ -250,7 +244,7 @@ const SentRequests = ({requests}) => {
                             startIcon={<Edit />}
                             fullWidth
                           >
-                            Edit Request
+                            {t('editRequest')}
                           </Button>
                           <Button
                             variant="outlined"
@@ -259,7 +253,7 @@ const SentRequests = ({requests}) => {
                             fullWidth
                             onClick={() => handleCancelRequest(String(request.id))}
                           >
-                            Cancel Request
+                            {t('cancelRequest')}
                           </Button>
                           <Button
                             variant="outlined"
@@ -267,7 +261,7 @@ const SentRequests = ({requests}) => {
                             fullWidth
                             onClick={() => handleChat(request.to_profile.user.email)}
                           >
-                            Chat
+                            {t('chat')}
                           </Button>
                         </Stack>
                       )}
@@ -280,7 +274,7 @@ const SentRequests = ({requests}) => {
                             fullWidth
                             onClick={() => handleChat(request.to_profile.user.email)}
                           >
-                            Chat With Host
+                            {t('chatWithHost')}
                           </Button>
                         </Stack>
                       )}
@@ -291,7 +285,7 @@ const SentRequests = ({requests}) => {
                 <Grid item xs={12}>
                   <Box sx={{ p: 4, textAlign: 'center' }}>
                     <Typography variant="subtitle1" color="text.secondary">
-                      No {tabValue === 0 ? 'pending' : tabValue === 1 ? 'accepted' : 'rejected'} sent requests found
+                      {t('noRequestsFound', { status: tabValue === 0 ? t('pending') : tabValue === 1 ? t('accepted') : t('rejected') })}
                     </Typography>
                   </Box>
                 </Grid>
@@ -301,19 +295,18 @@ const SentRequests = ({requests}) => {
         </Card>
       </Grid>
 
-      {/* Summary Sidebar */}
       <Grid item xs={12} md={4}>
         <Stack spacing={3}>
           <Card sx={{ p: 3 }}>
             <Typography variant="h6" gutterBottom>
-              Sent Requests Summary
+              {t('sentRequestsSummary')}
             </Typography>
             <Divider sx={{ mb: 2 }} />
 
             <Stack spacing={2}>
               <Box>
                 <Stack direction="row" justifyContent="space-between">
-                  <Typography variant="body2">Pending</Typography>
+                  <Typography variant="body2">{t('pending')}</Typography>
                   <Typography variant="body1">
                     {requests.filter(r => r.status === REQUESTSTATUS.Pending).length}
                   </Typography>
@@ -343,7 +336,7 @@ const SentRequests = ({requests}) => {
 
               <Box>
                 <Stack direction="row" justifyContent="space-between">
-                  <Typography variant="body2">Accepted</Typography>
+                  <Typography variant="body2">{t('accepted')}</Typography>
                   <Typography variant="body1">
                     {requests.filter(r => r.status === REQUESTSTATUS.Accepted).length}
                   </Typography>
@@ -373,7 +366,7 @@ const SentRequests = ({requests}) => {
               
               <Box>
                 <Stack direction="row" justifyContent="space-between">
-                  <Typography variant="body2">Rejected</Typography>
+                  <Typography variant="body2">{t('rejected')}</Typography>
                   <Typography variant="body1">
                     {requests.filter(r => r.status === REQUESTSTATUS.Rejected).length}
                   </Typography>
@@ -387,9 +380,7 @@ const SentRequests = ({requests}) => {
                     position: 'relative',
                   }} 
                 >
-
-
-<Box 
+                  <Box 
                     sx={{ 
                       position: 'absolute',
                       top: 0,
@@ -407,7 +398,7 @@ const SentRequests = ({requests}) => {
 
           <Card sx={{ p: 3 }}>
             <Typography variant="h6" gutterBottom>
-              Quick Actions
+              {t('quickActions')}
             </Typography>
             <Divider sx={{ mb: 2 }} />
             
@@ -417,14 +408,14 @@ const SentRequests = ({requests}) => {
                 fullWidth
                 onClick={() => navigate('/create-request')}
               >
-                Create New Request
+                {t('createNewRequest')}
               </Button>
               <Button 
                 variant="outlined" 
                 fullWidth
                 onClick={() => navigate('/browse-trips')}
               >
-                Browse Available Trips
+                {t('browseAvailableTrips')}
               </Button>
             </Stack>
           </Card>
@@ -436,13 +427,13 @@ const SentRequests = ({requests}) => {
         open={Boolean(anchorEl)}
         onClose={handleMenuClose}
       >
-        <MenuItem onClick={handleMenuClose}>View Host Profile</MenuItem>
-        <MenuItem onClick={handleMenuClose}>Message Host</MenuItem>
-        <MenuItem onClick={handleMenuClose}>View Trip Details</MenuItem>
+        <MenuItem onClick={handleMenuClose}>{t('viewHostProfile')}</MenuItem>
+        <MenuItem onClick={handleMenuClose}>{t('messageHost')}</MenuItem>
+        <MenuItem onClick={handleMenuClose}>{t('viewTripDetails')}</MenuItem>
         <Divider />
         {filteredRequests.find(r => r.id === selectedRequest)?.status === REQUESTSTATUS.Pending && (
           <MenuItem onClick={handleMenuClose} sx={{ color: 'error.main' }}>
-            Cancel Request
+            {t('cancelRequest')}
           </MenuItem>
         )}
       </Menu>

@@ -1,0 +1,20 @@
+{
+  "title": "Trip Details",
+  "postedBy": "Posted by",
+  "postedOn": "Posted on",
+  "fromTo": "From {fromCity}, {fromCountry} to {toCity}, {toCountry}",
+  "dates": "{startDate} - {endDate}",
+  "travelers": "{currentTravelers}/{groupSize} travelers",
+  "ageGroup": "{ageGroup} age group",
+  "tourType": "{tourType} tour",
+  "accommodationType": "{accommodationType} accommodation",
+  "estimatedCost": "Est. cost: ${cost} per person",
+  "activities": "Activities",
+  "itinerary": "Itinerary",
+  "description": "Description",
+  "participants": "Participants ({count})",
+  "noParticipants": "No participants yet",
+  "comments": "Comments",
+  "addComment": "Add a comment",
+  "loading": "Loading..."
+}

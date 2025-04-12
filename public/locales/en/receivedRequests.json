@@ -1,0 +1,15 @@
+{
+    "pending": "Pending",
+    "accepted": "Accepted",
+    "rejected": "Rejected",
+    "receivedRequestsSummary": "Received Requests Summary",
+    "noRequestsFound": "No {status} requests found",
+    "accept": "Accept",
+    "reject": "Reject",
+    "chatWithUser": "Chat With User",
+    "deleteRequest": "Delete Request",
+    "messageUser": "Message User",
+    "pendingRequests": "Pending ({count})",
+    "acceptedRequests": "Accepted ({count})",
+    "rejectedRequests": "Rejected ({count})"
+}

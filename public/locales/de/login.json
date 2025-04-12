@@ -1,0 +1,12 @@
+{
+    "welcome": "Willkommen",
+    "loginWithEmail": "Mit E-Mail anmelden",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "forgotPassword": "Passwort vergessen?",
+    "backToHomepage": "Zurück zur Startseite",
+    "login": "Anmelden",
+    "loading": "Laden...",
+    "dontHaveAccount": "Haben Sie kein Konto?",
+    "signUp": "Registrieren"
+}

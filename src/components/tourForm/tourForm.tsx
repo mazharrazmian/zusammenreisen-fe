@@ -34,8 +34,7 @@ import Navbar from "../navbar";
 import { useAppSelector } from "../../redux/store";
 import postServices from "../../redux/api/postService";
 import { TourDataInterface } from "../../types";
-
-
+import { useTranslation } from "react-i18next";
 
 const initialValues: TourDataInterface = {
     title: "",
@@ -60,8 +59,8 @@ const initialValues: TourDataInterface = {
     dates_flexible: false,
 };
 
-
 const TourForm = () => {
+    const { t } = useTranslation('tourForm'); // Initialize translation hook
     const { tourId } = useParams(); // Get ID from URL (for edit mode)
     const isEditMode = Boolean(tourId); // Check if it's edit mode
 
@@ -74,8 +73,6 @@ const TourForm = () => {
     const [previewImages, setPreviewImages] = useState<string[]>([]);
     const [imageFiles, setImageFiles] = useState<File[]>([]);
     const [newActivity, setNewActivity] = useState("");
-
-
 
     // Fetch tour details if editing
     useEffect(() => {
@@ -99,7 +96,6 @@ const TourForm = () => {
     };
 
     const fetchTour = async () => {
-
         try {
             const res = await postServices.getPost(tourId);
 
@@ -125,8 +121,6 @@ const TourForm = () => {
                     costIncludes: res?.data?.cost_includes,
                     requirements: res?.data?.requirements,
                     images: res?.data?.images
-
-
                 });
                 setPreviewImages(res?.data?.images || []);
                 const images = res?.data?.images; // Assuming this is an array of URLs
@@ -139,11 +133,9 @@ const TourForm = () => {
             }
         } catch (error) {
             console.log(error);
-            toast.error("something went wrong cannot fetch data");
+            toast.error(t('fetchError'));
         }
     };
-
-
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const files = e.target.files;
@@ -203,30 +195,28 @@ const TourForm = () => {
         }));
     };
 
-
-
     const validations = (fieldValue = formData) => {
         const temp: { [key: string]: string } = { ...errors };
         if ("title" in fieldValue)
-            temp.title = fieldValue.title ? "" : "Title is required";
+            temp.title = fieldValue.title ? "" : t('titleRequired');
         if ("description" in fieldValue)
-            temp.description = fieldValue.description ? "" : "Description is required";
+            temp.description = fieldValue.description ? "" : t('descriptionRequired');
         if ("toCountry" in fieldValue)
-            temp.toCountry = fieldValue.toCountry?.id ? "" : "Destination country is required";
+            temp.toCountry = fieldValue.toCountry?.id ? "" : t('destinationCountryRequired');
         if ("toCity" in fieldValue)
-            temp.toCity = fieldValue.toCity?.id ? "" : "Destination city is required";
+            temp.toCity = fieldValue.toCity?.id ? "" : t('destinationCityRequired');
         if ("fromCountry" in fieldValue)
-            temp.fromCountry = fieldValue.fromCountry?.id ? "" : "Departure country is required";
+            temp.fromCountry = fieldValue.fromCountry?.id ? "" : t('departureCountryRequired');
         if ("fromCity" in fieldValue)
-            temp.fromCity = fieldValue.fromCity?.id ? "" : "Departure city is required";
+            temp.fromCity = fieldValue.fromCity?.id ? "" : t('departureCityRequired');
         if ("departureDate" in fieldValue)
-            temp.departureDate = fieldValue.departureDate ? "" : "Departure date is required";
+            temp.departureDate = fieldValue.departureDate ? "" : t('departureDateRequired');
         if ("returnDate" in fieldValue)
-            temp.returnDate = fieldValue.returnDate ? "" : "Return date is required";
+            temp.returnDate = fieldValue.returnDate ? "" : t('returnDateRequired');
         if ("groupSize" in fieldValue)
-            temp.groupSize = fieldValue.groupSize > 0 ? "" : "Number of travelers must be positive";
+            temp.groupSize = fieldValue.groupSize > 0 ? "" : t('positiveTravelersRequired');
         if ("estimatedCost" in fieldValue)
-            temp.estimatedCost = fieldValue.estimatedCost >= 0 ? "" : "Cost cannot be negative";
+            temp.estimatedCost = fieldValue.estimatedCost >= 0 ? "" : t('nonNegativeCostRequired');
 
         setErrors(temp);
         return Object.values(temp).every((x) => x === "");
@@ -276,18 +266,16 @@ const TourForm = () => {
                     const res = await postServices.editPost(parseInt(tourId), tourData); // Assuming postServices.createPost handles FormData
                     if (res.status === 200) {
                         setIsLoading(false);
-                        toast.success("Post Edited Successfully");
+                        toast.success(t('postEditedSuccessfully'));
                         navigate(-1);
                     } else {
                         setIsLoading(false);
                     }
-                }
-
-                else {
+                } else {
                     const res = await postServices.createPost(tourData);
                     if (res.status === 201) {
                         setIsLoading(false);
-                        toast.success("Tour created successfully");
+                        toast.success(t('tourCreatedSuccessfully'));
                         setFormData(initialValues);
                         setPreviewImages([]);
                         setImageFiles([]);
@@ -296,12 +284,9 @@ const TourForm = () => {
                         setIsLoading(false);
                     }
                 }
-
-
             } catch (error: any) {
                 toast.error(
-                    `${error?.response?.data?.errors[0]?.detail} (${error?.response?.data?.errors[0]?.attr})
-                    `
+                    `${error?.response?.data?.errors[0]?.detail} (${error?.response?.data?.errors[0]?.attr})`
                 );
                 setIsLoading(false);
             }
@@ -311,35 +296,27 @@ const TourForm = () => {
     return (
         <>
             <Container maxWidth="md">
-
                 <Card sx={{ mt: 4, p: 2, mb: 4 }}>
                     <Typography variant="h4" gutterBottom>
-                        {isEditMode ? 
-                    'Edit Your Trip'
-                    
-                    :
-
-                    'Create A New Tour'
-                    
-                    }
+                        {isEditMode ? t('editYourTrip') : t('createNewTour')}
                     </Typography>
                     {
                         !isEditMode && 
                         <Typography variant="body2" color="text.secondary">
-                        Create an exciting tour and find travelers to join your adventure.
-                    </Typography>
+                            {t('createTourDescription')}
+                        </Typography>
                     }
                     
                     <Divider sx={{ my: 2 }} />
                     <CardContent>
                         {/* Basic Tour Information */}
                         <Typography variant="h6" sx={{ mt: 3, mb: 2, fontWeight: 500 }}>
-                            Tour Details
+                            {t('tourDetails')}
                         </Typography>
                         <Grid container spacing={2}>
                             <Grid size={12}>
                                 <TextField
-                                    label="Tour Title"
+                                    label={t('tourTitle')}
                                     fullWidth
                                     variant="outlined"
                                     name="title"
@@ -348,13 +325,13 @@ const TourForm = () => {
                                     required
                                     helperText={errors.title}
                                     error={Boolean(errors.title)}
-                                    placeholder="e.g., '7-Day Hiking Adventure in Swiss Alps'"
+                                    placeholder={t('tourTitlePlaceholder')}
                                 />
                             </Grid>
 
                             <Grid size={12}>
                                 <TextField
-                                    label="Tour Description"
+                                    label={t('tourDescription')}
                                     fullWidth
                                     multiline
                                     rows={3}
@@ -366,13 +343,13 @@ const TourForm = () => {
                                     required
                                     helperText={errors.description}
                                     error={Boolean(errors.description)}
-                                    placeholder="Provide an overview of your tour - what makes it special? Max 300 characters"
+                                    placeholder={t('tourDescriptionPlaceholder')}
                                 />
                             </Grid>
 
                             <Grid size={12}>
                                 <TextField
-                                    label="Detailed Itinerary"
+                                    label={t('detailedItinerary')}
                                     fullWidth
                                     multiline
                                     rows={5}
@@ -380,20 +357,18 @@ const TourForm = () => {
                                     name="itinerary"
                                     value={formData.itinerary}
                                     onChange={handleChange}
-                                    placeholder="Day 1: Arrival and welcome dinner
-Day 2: Morning hike, afternoon free time
-Day 3: Full day excursion to..."
+                                    placeholder={t('detailedItineraryPlaceholder')}
                                 />
                             </Grid>
 
                             <Grid size={{ xs: 12, sm: 6 }}>
                                 <FormControl fullWidth variant="outlined">
-                                    <InputLabel>Tour Type</InputLabel>
+                                    <InputLabel>{t('tourType')}</InputLabel>
                                     <Select
                                         name="tourType"
                                         value={formData.tourType}
                                         onChange={handleChange}
-                                        label="Tour Type"
+                                        label={t('tourType')}
                                     >
                                         {tourTypes.map((type) => (
                                             <MenuItem key={type} value={type}>
@@ -406,12 +381,12 @@ Day 3: Full day excursion to..."
 
                             <Grid size={{ xs: 12, sm: 6 }}>
                                 <FormControl fullWidth variant="outlined">
-                                    <InputLabel>Accommodation Type</InputLabel>
+                                    <InputLabel>{t('accommodationType')}</InputLabel>
                                     <Select
                                         name="accommodationType"
                                         value={formData.accommodationType}
                                         onChange={handleChange}
-                                        label="Accommodation Type"
+                                        label={t('accommodationType')}
                                     >
                                         {accommodationTypes.map((type) => (
                                             <MenuItem key={type} value={type}>
@@ -425,11 +400,11 @@ Day 3: Full day excursion to..."
 
                         {/* Travel Details */}
                         <Typography variant="h6" sx={{ mt: 4, mb: 2, fontWeight: 500 }}>
-                            Travel Information
+                            {t('travelInformation')}
                         </Typography>
                         <Grid container spacing={2}>
                             <Grid size={12}>
-                                <Divider sx={{ my: 1 }}><Typography variant="subtitle2">Departure From</Typography></Divider>
+                                <Divider sx={{ my: 1 }}><Typography variant="subtitle2">{t('departureFrom')}</Typography></Divider>
                             </Grid>
                             <Grid size={{ xs: 12, sm: 6 }}>
                                 <CountrySelect
@@ -453,7 +428,7 @@ Day 3: Full day excursion to..."
                             </Grid>
 
                             <Grid size={12}>
-                                <Divider sx={{ my: 1 }}><Typography variant="subtitle2">Destination</Typography></Divider>
+                                <Divider sx={{ my: 1 }}><Typography variant="subtitle2">{t('destination')}</Typography></Divider>
                             </Grid>
                             <Grid size={{ xs: 12, sm: 6 }}>
                                 <CountrySelect
@@ -479,12 +454,12 @@ Day 3: Full day excursion to..."
 
                         {/* Dates & Group Size */}
                         <Typography variant="h6" sx={{ mt: 4, mb: 2, fontWeight: 500 }}>
-                            Dates & Group Size
+                            {t('datesGroupSize')}
                         </Typography>
                         <Grid container spacing={2}>
                             <Grid size={{ xs: 12, sm: 6 }}>
                                 <TextField
-                                    label="Departure Date"
+                                    label={t('departureDate')}
                                     type="date"
                                     fullWidth
                                     variant="outlined"
@@ -498,7 +473,7 @@ Day 3: Full day excursion to..."
                             </Grid>
                             <Grid size={{ xs: 12, sm: 6 }}>
                                 <TextField
-                                    label="Return Date"
+                                    label={t('returnDate')}
                                     type="date"
                                     fullWidth
                                     variant="outlined"
@@ -513,17 +488,17 @@ Day 3: Full day excursion to..."
                             <Grid size={{ xs: 12, sm: 6 }}>
                                 <FormControlLabel
                                     control={<Checkbox checked={formData.dates_flexible} onChange={handleChange} name="dates_flexible" />}
-                                    label="Are your dates flexible?"
+                                    label={t('datesFlexible')}
                                 />
                             </Grid>
                             <Grid size={{ xs: 12, sm: 6 }}>
                                 <FormControl fullWidth variant="outlined">
-                                    <InputLabel>Age Group</InputLabel>
+                                    <InputLabel>{t('ageGroup')}</InputLabel>
                                     <Select
                                         name="ageGroup"
                                         value={formData.ageGroup}
                                         onChange={handleChange}
-                                        label="Age Group"
+                                        label={t('ageGroup')}
                                     >
                                         {ageGroups.map((group) => (
                                             <MenuItem key={group} value={group}>
@@ -533,23 +508,21 @@ Day 3: Full day excursion to..."
                                     </Select>
                                 </FormControl>
                             </Grid>
-
-
                         </Grid>
 
                         {/* Activities */}
                         <Typography variant="h6" sx={{ mt: 4, mb: 2, fontWeight: 500 }}>
-                            Tour Activities
+                            {t('tourActivities')}
                         </Typography>
                         <Grid container spacing={2}>
                             <Grid size={12}>
                                 <TextField
-                                    label="Add Activity"
+                                    label={t('addActivity')}
                                     variant="outlined"
                                     value={newActivity}
                                     onChange={(e) => setNewActivity(e.target.value)}
                                     fullWidth
-                                    placeholder="e.g., Hiking, Snorkeling, Museum Visit"
+                                    placeholder={t('addActivityPlaceholder')}
                                     InputProps={{
                                         endAdornment: (
                                             <InputAdornment position="end">
@@ -581,7 +554,7 @@ Day 3: Full day excursion to..."
                                     ))}
                                     {formData.activities.length === 0 && (
                                         <Typography variant="body2" color="text.secondary">
-                                            No activities added yet
+                                            {t('noActivitiesAdded')}
                                         </Typography>
                                     )}
                                 </Box>
@@ -590,13 +563,12 @@ Day 3: Full day excursion to..."
 
                         {/* Cost Details */}
                         <Typography variant="h6" sx={{ mt: 4, mb: 2, fontWeight: 500 }}>
-                            Cost Details
+                            {t('costDetails')}
                         </Typography>
                         <Grid container spacing={2}>
-
                             <Grid size={{ xs: 12 }}>
                                 <Typography variant="body2" gutterBottom>
-                                    Group Size (including you): {formData.groupSize}
+                                    {t('groupSize')} {formData.groupSize}
                                 </Typography>
                                 <Slider
                                     value={formData.groupSize}
@@ -618,7 +590,7 @@ Day 3: Full day excursion to..."
 
                             <Grid size={{ xs: 12, sm: 6 }} sx={{ marginTop: 2 }}>
                                 <TextField
-                                    label="Estimated Cost per Person"
+                                    label={t('estimatedCost')}
                                     type="number"
                                     fullWidth
                                     variant="outlined"
@@ -634,10 +606,9 @@ Day 3: Full day excursion to..."
                                 />
                             </Grid>
 
-
                             <Grid size={{ xs: 12, sm: 6 }} sx={{ marginTop: { xs: 0, sm: 2 } }} >
                                 <TextField
-                                    label="No of People Already On Board"
+                                    label={t('peopleOnBoard')}
                                     type="number"
                                     fullWidth
                                     variant="outlined"
@@ -647,13 +618,12 @@ Day 3: Full day excursion to..."
                                     helperText={errors.currentTravellers}
                                     error={Boolean(errors.currentTravellers)}
                                     onWheel={(e) => e.target.blur()}
-
                                 />
                             </Grid>
 
                             <Grid size={12}>
                                 <TextField
-                                    label="What's Included in the Cost"
+                                    label={t('costIncludes')}
                                     fullWidth
                                     multiline
                                     rows={2}
@@ -661,13 +631,13 @@ Day 3: Full day excursion to..."
                                     name="costIncludes"
                                     value={formData.costIncludes}
                                     onChange={handleChange}
-                                    placeholder="e.g., Accommodation, Local transportation, Breakfast daily, Entry fees"
+                                    placeholder={t('costIncludesPlaceholder')}
                                 />
                             </Grid>
 
                             <Grid size={12}>
                                 <TextField
-                                    label="Special Requirements or Restrictions"
+                                    label={t('specialRequirements')}
                                     fullWidth
                                     multiline
                                     rows={2}
@@ -675,14 +645,14 @@ Day 3: Full day excursion to..."
                                     name="requirements"
                                     value={formData.requirements}
                                     onChange={handleChange}
-                                    placeholder="e.g., Moderate fitness level required, Not suitable for children under 12"
+                                    placeholder={t('specialRequirementsPlaceholder')}
                                 />
                             </Grid>
                         </Grid>
 
                         {/* Images */}
                         <Typography variant="h6" sx={{ mt: 4, mb: 2, fontWeight: 500 }}>
-                            Tour Images
+                            {t('tourImages')}
                         </Typography>
                         <Grid container spacing={2}>
                             <Grid size={12}>
@@ -692,7 +662,7 @@ Day 3: Full day excursion to..."
                                     startIcon={<Add />}
                                     color="primary"
                                 >
-                                    Upload Tour Images
+                                    {t('uploadTourImages')}
                                     <input
                                         type="file"
                                         multiple
@@ -702,8 +672,7 @@ Day 3: Full day excursion to..."
                                     />
                                 </Button>
                                 <Typography variant="caption" display="block" sx={{ mt: 1, color: 'text.secondary' }}>
-                                    Add attractive images of the destinations and activities to entice travelers to join <br></br>
-                                    The first image will be used as a thumbnail of your Tour.
+                                    {t('uploadTourImagesDescription')}
                                 </Typography>
                             </Grid>
 
@@ -754,7 +723,7 @@ Day 3: Full day excursion to..."
                                         ))
                                     ) : (
                                         <Typography variant="body2" color="text.secondary">
-                                            No images uploaded yet
+                                            {t('noImagesUploaded')}
                                         </Typography>
                                     )}
                                 </Box>
@@ -767,7 +736,7 @@ Day 3: Full day excursion to..."
                             onClick={() => navigate(-1)}
                             sx={{ borderRadius: 2 }}
                         >
-                            Cancel
+                            {t('cancel')}
                         </Button>
                         <Button
                             variant="contained"
@@ -780,15 +749,13 @@ Day 3: Full day excursion to..."
                             }}
                         >
                             {isLoading ? <CircularProgress size={24} /> :
-                            
                             <>
                             {
-                                isEditMode ? 'Submit Changes' 
+                                isEditMode ? t('submitChanges') 
                                 :
-                                'Create Tour'
+                                t('createTour')
                             }
                             </>
-                            
                             }
                         </Button>
                     </CardActions>

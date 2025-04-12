@@ -1,0 +1,12 @@
+{
+    "welcome": "Welcome",
+    "loginWithEmail": "Login with email",
+    "email": "Email",
+    "password": "Password",
+    "forgotPassword": "Forgot Password?",
+    "backToHomepage": "Back to Homepage",
+    "login": "Login",
+    "loading": "loading...",
+    "dontHaveAccount": "Don’t have account?",
+    "signUp": "Sign Up"
+}

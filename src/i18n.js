@@ -9,7 +9,10 @@ i18n
   .use(initReactI18next)
   .init({
     fallbackLng: "en",
-    ns: ['homepage', 'filters', 'triplist','tripdetails'], // declare all namespaces here
+    ns: [
+      'homepage', 'filters', 'triplist', 'tripdetails', 'accountpage', 'activateaccount', 'bloglist', 'chatpage', 'login', 'page404', 'passwordreset', 'receivedRequests',
+       'register', 'requestmanagement', 'sentRequests', 'tourForm', 'translation', 'tripPlannerDetail' , 'tourForm'
+    ], // declare all namespaces here
     interpolation: {
       escapeValue: false,
     },

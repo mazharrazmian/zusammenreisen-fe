@@ -1,0 +1,17 @@
+{
+    "profile": "Profile",
+    "saveChanges": "Save Changes",
+    "resetPassword": "Reset Password",
+    "resetPasswordTitle": "Reset Password",
+    "oldPassword": "Old Password",
+    "newPassword": "New Password",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "change": "Change",
+    "couldNotFetchProfile": "Could Not Get Your Profile Data",
+    "couldNotFetchLanguages": "Could Not Fetch Languages",
+    "profileUpdated": "Profile Successfully Updated",
+    "profileUpdateFailed": "Could Not Update Profile. Please Contact Support.",
+    "passwordChanged": "Password Changed Successfully",
+    "passwordChangeFailed": "Password Could Not Be Changed. Please Contact An Administrator."
+}

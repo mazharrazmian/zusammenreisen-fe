@@ -16,6 +16,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import TripCard from '../components/tripPlanningComponents/tripCardComponent';
 import { tripService } from '../redux/api/tripPlanningService';
+import { useTranslation } from 'react-i18next';
 
 const MyTripsPage = () => {
   const [trips, setTrips] = useState([]);
@@ -29,6 +30,7 @@ const MyTripsPage = () => {
     participants: []
   });
 
+  const { t } = useTranslation('triplist');
 
   useEffect(() => {
     tripService.getUserTrips('')
@@ -78,14 +80,14 @@ const MyTripsPage = () => {
     <Container maxWidth="lg">
       <Box sx={{ py: 4 }}>
         <Typography variant="h4" component="h1" gutterBottom>
-          My Trips
+          {t('myTrips')}
         </Typography>
         
         <Paper sx={{ p: 2, mb: 3 }}>
           <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
             <InputBase
               sx={{ ml: 1, flex: 1 }}
-              placeholder="Search trips..."
+              placeholder={t('searchTrips')}
               value={searchQuery}
               onChange={handleSearchChange}
             />
@@ -101,19 +103,15 @@ const MyTripsPage = () => {
             </IconButton>
           </Box>
           
-          {/* {showFilters && (
-            <TripFilters filters={filters} onFilterChange={handleFilterChange} />
-          )} */}
-          
           <Tabs 
             value={tabValue} 
             onChange={handleTabChange} 
             aria-label="trip filter tabs"
             sx={{ mt: 2 }}
           >
-            <Tab label="All Trips" />
-            <Tab label="Upcoming" />
-            <Tab label="Past" />
+            <Tab label={t('allTrips')} />
+            <Tab label={t('upcoming')} />
+            <Tab label={t('past')} />
           </Tabs>
         </Paper>
 
@@ -125,7 +123,7 @@ const MyTripsPage = () => {
           <>
             {filteredTrips.length === 0 ? (
               <Typography variant="body1" sx={{ mt: 4, textAlign: 'center' }}>
-                No trips found. Try adjusting your filters.
+                {t('noTripsFound')}
               </Typography>
             ) : (
               <Grid container spacing={3}>

@@ -34,8 +34,10 @@ import { ChatRoom, Message, Profile, UserChats } from "../types";
 import { useAppSelector } from "../redux/store";
 import { CHAT_URL } from "../redux/api/http-common";
 import MobileChat from "../components/chat/chatMobilePage";
+import { useTranslation } from 'react-i18next';
 
 const ChatPage: React.FC = () => {
+    const { t } = useTranslation('chatpage');
     const profile = useAppSelector((s) => s.profile);
     const ws = useRef<WebSocket | null>(null);
     const { chatId } = useParams<{ chatId: string }>();
@@ -81,12 +83,12 @@ const ChatPage: React.FC = () => {
                         }));
                     } catch (error) {
                         console.log(error);
-                        toast('Could not load chat room');
+                        toast(t('couldNotLoadChatRoom'));
                     }
                 }
                 setIsInitialLoad(false);
             } catch (error) {
-                toast('Couldn\'t get chats for you');
+                toast(t('couldNotGetChats'));
                 setIsInitialLoad(false);
             }
         };
@@ -143,7 +145,7 @@ const ChatPage: React.FC = () => {
                 }));
             } catch (error) {
                 console.log(error);
-                toast('Could not load chat room');
+                toast(t('couldNotLoadChatRoom'));
             }
         };
 
@@ -230,7 +232,7 @@ const ChatPage: React.FC = () => {
             }
         } catch (error) {
             console.log(error);
-            toast('Failed to create chat room');
+            toast(t('failedToCreateChatRoom'));
         } finally {
             setSendingChat(false);
         }
@@ -301,7 +303,7 @@ const ChatPage: React.FC = () => {
                                     }}
                                 >
                                     <Typography variant="h6" textAlign="center" padding={2}>
-                                        Chats
+                                        {t('chats')}
                                     </Typography>
                                     <IconButton onClick={() => setOpen(true)}>
                                         <Add />
@@ -339,7 +341,7 @@ const ChatPage: React.FC = () => {
                                                         </Badge>
                                                     </ListItemAvatar>
                                                     <ListItemText
-                                                        primary={receiver?.profile?.name || "Unknown User"}
+                                                        primary={receiver?.profile?.name || t('unknownUser')}
                                                     />
                                                 </ListItem>
                                             );
@@ -349,7 +351,7 @@ const ChatPage: React.FC = () => {
                                     <Box sx={{ p: 2, textAlign: 'center' }}>
                                         <CircularProgress size={24} />
                                         <Typography variant="body2" sx={{ mt: 1 }}>
-                                            Loading chats...
+                                            {t('loadingChats')}
                                         </Typography>
                                     </Box>
                                 )}
@@ -381,7 +383,7 @@ const ChatPage: React.FC = () => {
                                             {
                                                 activeChat?.participants?.find(
                                                     (p) => p.profile?.id !== profile?.profile?.profile?.id
-                                                )?.profile?.name || "Unknown User"
+                                                )?.profile?.name || t('unknownUser')
                                             }
                                         </Typography>
                                     </Box>
@@ -460,7 +462,7 @@ const ChatPage: React.FC = () => {
                                                                                 fontWeight: "medium",
                                                                             }}
                                                                         >
-                                                                            {msg.sender?.name || "Unknown User"}
+                                                                            {msg.sender?.name || t('unknownUser')}
                                                                         </Typography>
                                                                     )}
 
@@ -510,7 +512,7 @@ const ChatPage: React.FC = () => {
                                                     opacity: 0.7
                                                 }}>
                                                     <Typography textAlign="center" color="text.secondary">
-                                                        No messages yet. Start the conversation!
+                                                        {t('noMessages')}
                                                     </Typography>
                                                 </Box>
                                             )}
@@ -532,7 +534,7 @@ const ChatPage: React.FC = () => {
                                     >
                                         <TextField
                                             variant="outlined"
-                                            placeholder="Type your message..."
+                                            placeholder={t('typeMessage')}
                                             fullWidth
                                             value={newMessage}
                                             onChange={(e) => setNewMessage(e.target.value)}
@@ -576,9 +578,9 @@ const ChatPage: React.FC = () => {
                                     >
                                         <img src={noChat} alt="" />
                                         <Typography sx={{ fontWeight: "bold", fontSize: "1.2rem" }}>
-                                            Pick up where you left off
+                                            {t('pickUp')}
                                         </Typography>
-                                        <Typography>Select a conversation and chat away</Typography>
+                                        <Typography>{t('selectConversation')}</Typography>
                                     </Box>
                                 </Box>
                             )}
@@ -592,11 +594,11 @@ const ChatPage: React.FC = () => {
                 fullWidth
                 maxWidth="xs"
             >
-                <DialogTitle>Start New Chat</DialogTitle>
+                <DialogTitle>{t('startNewChat')}</DialogTitle>
                 <DialogContent sx={{ pb: 1 }}>
                     <TextField
                         fullWidth
-                        label="Enter Email Address"
+                        label={t('enterEmail')}
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         margin="normal"
@@ -608,7 +610,7 @@ const ChatPage: React.FC = () => {
                 </DialogContent>
                 <DialogActions sx={{ p: 2, pt: 0 }}>
                     <Button variant="outlined" onClick={() => setOpen(false)}>
-                        Cancel
+                        {t('cancel')}
                     </Button>
                     <Button
                         variant="contained"
@@ -616,7 +618,7 @@ const ChatPage: React.FC = () => {
                         disabled={!email.trim() || sendingChat}
                         startIcon={sendingChat ? <CircularProgress size={18} color="inherit" /> : null}
                     >
-                        {sendingChat ? "Creating..." : "Start Chat"}
+                        {sendingChat ? t('creating') : t('startChat')}
                     </Button>
                 </DialogActions>
             </Dialog>

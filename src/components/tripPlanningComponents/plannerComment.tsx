@@ -12,6 +12,7 @@ import { tripService } from '../../redux/api/tripPlanningService';
 import { handleApiError } from '../../redux/api/http-common';
 import { toast } from 'react-toastify';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 
 // Framer Motion animation variants
 const commentVariants = {
@@ -27,6 +28,7 @@ const loadMoreVariants = {
 };
 
 const CommentsSection = ({ loading, postID }) => {
+    const { t } = useTranslation('tripPlannerDetail');
     const [loadingMore, setLoadingMore] = useState(false);
     const [newComment, setNewComment] = useState('');
     const [nextPage, setNextPage] = useState(null);
@@ -227,7 +229,7 @@ const CommentsSection = ({ loading, postID }) => {
         // Then make API call
         tripService.deleteComment(selectedCommentId,postID)
             .then(res => {
-                toast.success('Comment deleted successfully', {
+                toast.success(t('commentDeleted'), {
                     position: "bottom-right",
                     autoClose: 1000,
                     hideProgressBar: false,
@@ -278,10 +280,10 @@ const CommentsSection = ({ loading, postID }) => {
                 color: 'primary.main'
             }}>
                 <CommentIcon sx={{ mr: 1 }} />
-                Discussion
+                {t('discussion')}
                 <Chip 
                     size="small" 
-                    label={`${comments.length} comments`} 
+                    label={`${comments.length} ${t('comments')}`} 
                     sx={{ ml: 2, backgroundColor: 'rgba(0,0,0,0.06)' }}
                 />
             </Typography>
@@ -315,7 +317,7 @@ const CommentsSection = ({ loading, postID }) => {
                                     fullWidth
                                     multiline
                                     rows={2}
-                                    placeholder="Share your thoughts or ideas about the trip..."
+                                    placeholder={t('addCommentPlaceholder')}
                                     variant="outlined"
                                     value={newComment}
                                     onChange={(e) => setNewComment(e.target.value)}
@@ -350,7 +352,7 @@ const CommentsSection = ({ loading, postID }) => {
                                                 }
                                             }}
                                         >
-                                            Attach
+                                            {t('attach')}
                                         </Button>
                                     </Box>
                                     <Zoom in={!!newComment.trim()} timeout={300}>
@@ -369,7 +371,7 @@ const CommentsSection = ({ loading, postID }) => {
                                                 }
                                             }}
                                         >
-                                            Post
+                                            {t('post')}
                                         </Button>
                                     </Zoom>
                                 </Box>
@@ -412,7 +414,7 @@ const CommentsSection = ({ loading, postID }) => {
                                 }
                             }}
                         >
-                            New comments available ↑
+                            {t('newCommentsAvailable')}
                         </Button>
                     </Box>
                 </Fade>
@@ -517,7 +519,7 @@ const CommentsSection = ({ loading, postID }) => {
                                                                 onClick={() => toggleExpandComment(comment.id)}
                                                                 sx={{ textTransform: 'none' }}
                                                             >
-                                                                {expandedCommentId === comment.id ? 'Show less' : 'Read more'}
+                                                                {expandedCommentId === comment.id ? t('showLess') : t('readMore')}
                                                             </Button>
                                                         </Box>
                                                     )}
@@ -566,7 +568,7 @@ const CommentsSection = ({ loading, postID }) => {
                             sx: { borderRadius: 2 }
                         }}
                     >
-                        <MenuItem onClick={handleDelete} sx={{ color: 'error.main' }}>Delete</MenuItem>
+                        <MenuItem onClick={handleDelete} sx={{ color: 'error.main' }}>{t('delete')}</MenuItem>
                     </Menu>
                 </List>
             )}
@@ -596,7 +598,7 @@ const CommentsSection = ({ loading, postID }) => {
                                 }
                             }}
                         >
-                            {loadingMore ? 'Loading...' : 'Load Older Comments'}
+                            {loadingMore ? t('loading') : t('loadOlderComments')}
                         </Button>
                     </motion.div>
                 </Box>

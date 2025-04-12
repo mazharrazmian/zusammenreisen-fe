@@ -35,9 +35,11 @@ import { handleApiError } from '../../redux/api/http-common';
 import chatServices from '../../redux/api/chatServices';
 import { getKeyByValue, REQUESTSTATUS } from '../../Constants';
 import postRequestService from '../../redux/api/tripRequestService';
+import { useTranslation } from 'react-i18next';
 
 const ReceivedRequests = ({requests , handleAcceptRequest , handleRejectRequest , handleRequestDelete}) => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [tabValue, setTabValue] = useState(0);
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedRequest, setSelectedRequest] = useState(null);
@@ -73,7 +75,7 @@ const ReceivedRequests = ({requests , handleAcceptRequest , handleRejectRequest 
           chatServices.createRoom(chatData)
             .then(response => {
               if (response?.status == 201) {
-                navigate(`chat/${response.data.id}`);
+                navigate(`/chat/${response.data.id}`);
               }
             })
             .catch(error => {
@@ -93,7 +95,7 @@ const ReceivedRequests = ({requests , handleAcceptRequest , handleRejectRequest 
     status = getKeyByValue(REQUESTSTATUS, status);
     return (
       <Chip
-        label={status.charAt(0).toUpperCase() + status.slice(1)}
+        label={t(status.toLowerCase())}
         size="small"
         color={statusConfig[status].color}
         icon={statusConfig[status].icon}
@@ -120,17 +122,17 @@ const ReceivedRequests = ({requests , handleAcceptRequest , handleRejectRequest 
             variant="fullWidth"
           >
             <Tab
-              label={`Pending (${requests.filter(r => r.status === REQUESTSTATUS.Pending).length})`}
+              label={t('pendingRequests', { count: requests.filter(r => r.status === REQUESTSTATUS.Pending).length })}
               icon={<AccessTime />}
               iconPosition={isMobile ? "top" : "start"}
             />
             <Tab
-              label={`Accepted (${requests.filter(r => r.status === REQUESTSTATUS.Accepted).length})`}
+              label={t('acceptedRequests', { count: requests.filter(r => r.status === REQUESTSTATUS.Accepted).length })}
               icon={<CheckCircle />}
               iconPosition={isMobile ? "top" : "start"}
             />
             <Tab
-              label={`Rejected (${requests.filter(r => r.status === REQUESTSTATUS.Rejected).length})`}
+              label={t('rejectedRequests', { count: requests.filter(r => r.status === REQUESTSTATUS.Rejected).length })}
               icon={<Cancel />}
               iconPosition={isMobile ? "top" : "start"}
             />
@@ -229,7 +231,7 @@ const ReceivedRequests = ({requests , handleAcceptRequest , handleRejectRequest 
                             fullWidth
                             onClick={() => handleAcceptRequest(String(request.id))}
                           >
-                            Accept
+                            {t('accept')}
                           </Button>
                           <Button
                             variant="outlined"
@@ -237,7 +239,7 @@ const ReceivedRequests = ({requests , handleAcceptRequest , handleRejectRequest 
                             fullWidth
                             onClick={() => handleRejectRequest(String(request.id))}
                           >
-                            Reject
+                            {t('reject')}
                           </Button>
                           <Button
                             variant="outlined"
@@ -245,7 +247,7 @@ const ReceivedRequests = ({requests , handleAcceptRequest , handleRejectRequest 
                             fullWidth
                             onClick={() => handleChat(request.from_profile.user.email)}
                           >
-                            Chat With User
+                            {t('chatWithUser')}
                           </Button>
                         </Stack>
                       )}
@@ -256,7 +258,7 @@ const ReceivedRequests = ({requests , handleAcceptRequest , handleRejectRequest 
                 <Grid item xs={12}>
                   <Box sx={{ p: 4, textAlign: 'center' }}>
                     <Typography variant="subtitle1" color="text.secondary">
-                      No {tabValue === 0 ? 'pending' : tabValue === 1 ? 'accepted' : 'rejected'} requests found
+                      {t('noRequestsFound', { status: tabValue === 0 ? t('pending') : tabValue === 1 ? t('accepted') : t('rejected') })}
                     </Typography>
                   </Box>
                 </Grid>
@@ -271,14 +273,14 @@ const ReceivedRequests = ({requests , handleAcceptRequest , handleRejectRequest 
         <Stack spacing={3}>
           <Card sx={{ p: 3 }}>
             <Typography variant="h6" gutterBottom>
-              Received Requests Summary
+              {t('receivedRequestsSummary')}
             </Typography>
             <Divider sx={{ mb: 2 }} />
 
             <Stack spacing={2}>
               <Box>
                 <Stack direction="row" justifyContent="space-between">
-                  <Typography variant="body2">Pending</Typography>
+                  <Typography variant="body2">{t('pending')}</Typography>
                   <Typography variant="body1">
                     {requests.filter(r => r.status === REQUESTSTATUS.Pending).length}
                   </Typography>
@@ -308,7 +310,7 @@ const ReceivedRequests = ({requests , handleAcceptRequest , handleRejectRequest 
 
               <Box>
                 <Stack direction="row" justifyContent="space-between">
-                  <Typography variant="body2">Accepted</Typography>
+                  <Typography variant="body2">{t('accepted')}</Typography>
                   <Typography variant="body1">
                     {requests.filter(r => r.status === REQUESTSTATUS.Accepted).length}
                   </Typography>
@@ -339,7 +341,7 @@ const ReceivedRequests = ({requests , handleAcceptRequest , handleRejectRequest 
               
               <Box>
                 <Stack direction="row" justifyContent="space-between">
-                  <Typography variant="body2">Rejected</Typography>
+                  <Typography variant="body2">{t('rejected')}</Typography>
                   <Typography variant="body1">
                     {requests.filter(r => r.status === REQUESTSTATUS.Rejected).length}
                   </Typography>
@@ -376,12 +378,9 @@ const ReceivedRequests = ({requests , handleAcceptRequest , handleRejectRequest 
         open={Boolean(anchorEl)}
         onClose={handleMenuClose}
       >
-        {/* <MenuItem onClick={handleMenuClose}>View Full Profile</MenuItem> */}
-        <MenuItem onClick={() => handleChat(selectedRequest?.from_profile.user.email)}>Message User</MenuItem>
-        {/* <MenuItem onClick={handleMenuClose}>Check User History</MenuItem>
-        <Divider /> */}
-        <MenuItem onClick={()=>handleRequestDelete(selectedRequest.id)}>
-          Delete Request
+        <MenuItem onClick={() => handleChat(selectedRequest?.from_profile.user.email)}>{t('messageUser')}</MenuItem>
+        <MenuItem onClick={() => handleRequestDelete(selectedRequest.id)}>
+          {t('deleteRequest')}
         </MenuItem>
       </Menu>
     </Grid>

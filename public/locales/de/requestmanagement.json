@@ -1,0 +1,13 @@
+{
+    "tripRequestsManagement": "Verwaltung von Reiseanfragen",
+    "receivedRequests": "Erhaltene Anfragen",
+    "sentRequests": "Gesendete Anfragen",
+    "requestAccepted": "Anfrage erfolgreich angenommen. Benachrichtigung an Benutzer gesendet",
+    "errorAcceptingRequest": "Fehler beim Akzeptieren der Anfrage. Bitte versuchen Sie es später erneut oder kontaktieren Sie den Support",
+    "requestRejected": "Anfrage abgelehnt. Benachrichtigung an Benutzer gesendet",
+    "errorRejectingRequest": "Fehler beim Ablehnen der Anfrage. Versuchen Sie es erneut oder kontaktieren Sie den Support",
+    "requestDeleted": "Anfrage erfolgreich gelöscht",
+    "errorDeletingRequest": "Anfrage konnte nicht gelöscht werden",
+    "helpTooltip": "Benötigen Sie Hilfe bei Anfragen?",
+    "clickRequestCard": "Klicken Sie auf eine Anfragekarte, um Details und verfügbare Aktionen anzuzeigen"
+}

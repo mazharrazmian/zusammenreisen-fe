@@ -17,7 +17,7 @@ import JoinTripRequestModal from '../components/tripRequestModal';
 import { useTheme } from "@mui/material/styles";
 import TripDetailDesktopView from '../components/tripDetailComponents.tsx/tripDetailDesktopView';
 import TripDetailMobileView from '../components/tripDetailComponents.tsx/tripDetailMobileView';
-
+import { useTranslation } from 'react-i18next';
 
 // Main component
 const TripDetails = () => {
@@ -30,6 +30,7 @@ const TripDetails = () => {
     const [openModal, setOpenModal] = useState(false);
     const [activeTab, setActiveTab] = useState(0);
     const [loading, setLoading] = useState(true);
+    const { t } = useTranslation('tripdetails');
     
     const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -41,7 +42,7 @@ const TripDetails = () => {
                 setLoading(false);
             })
             .catch(error => {
-                toast.error('Could not find your post');
+                toast.error(t('error'));
                 setLoading(false);
             });
     }, [id]);
@@ -60,7 +61,7 @@ const TripDetails = () => {
                 <Container>
                     <LinearProgress />
                     <Typography variant="h6" sx={{ mt: 2, textAlign: 'center' }}>
-                        Loading travel details...
+                        {t('loading')}
                     </Typography>
                 </Container>
             </Box>

@@ -1,5 +1,11 @@
 {
     "from" : "Von",
     "to" : "Nach",
-    "viewDetails" : "Details Anzeigen"
+    "viewDetails" : "Details Anzeigen",
+    "myTrips": "Meine Reisen",
+    "searchTrips": "Reisen suchen...",
+    "allTrips": "Alle Reisen",
+    "upcoming": "Bevorstehend",
+    "past": "Vergangen",
+    "noTripsFound": "Keine Reisen gefunden. Versuchen Sie, Ihre Filter anzupassen."
 }

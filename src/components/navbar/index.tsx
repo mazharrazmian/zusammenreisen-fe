@@ -383,7 +383,7 @@ const Navbar = React.memo(({ transparentOnHome }) => {
                             >
                                 Sign Up
                             </Button>
-                                <LanguageSwitcher/>
+                                <LanguageSwitcher isTransparent={isTransparent}/>
                         </Stack>
                     )}
                 </Toolbar>

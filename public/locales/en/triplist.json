@@ -1,5 +1,11 @@
 {
     "from" : "From",
     "to" : "To",
-    "viewDetails" : "View Details"
+    "viewDetails" : "View Details",
+    "myTrips": "My Trips",
+    "searchTrips": "Search trips...",
+    "allTrips": "All Trips",
+    "upcoming": "Upcoming",
+    "past": "Past",
+    "noTripsFound": "No trips found. Try adjusting your filters."
 }

@@ -18,8 +18,10 @@ import {
   CheckCircleOutline
 } from '@mui/icons-material';
 import moment from 'moment';
+import { useTranslation } from 'react-i18next';
 
 const TripDetailsHeader = ({ tripDetails }: {tripDetails : any}) => {
+  const { t } = useTranslation('tripPlannerDetail');
 
   return (
     <Paper elevation={3} sx={{ p: 3, mb: 4 }}>
@@ -30,9 +32,9 @@ const TripDetailsHeader = ({ tripDetails }: {tripDetails : any}) => {
         <Box display="flex" alignItems="center">
           <Avatar alt={tripDetails?.posted_by?.user.name} src={tripDetails?.posted_by?.picture} sx={{ mr: 1 }} />
           <Box>
-            <Typography variant="subtitle2">Posted by {tripDetails?.posted_by?.user.name}</Typography>
+            <Typography variant="subtitle2">{t('postedBy')} {tripDetails?.posted_by?.user.name}</Typography>
             <Typography variant="caption" color="text.secondary">
-              {moment(tripDetails?.posted_on).format('MMMM D, YYYY')}
+              {t('postedOn')} {moment(tripDetails?.posted_on).format('MMMM D, YYYY')}
             </Typography>
           </Box>
         </Box>
@@ -45,7 +47,12 @@ const TripDetailsHeader = ({ tripDetails }: {tripDetails : any}) => {
           <Box display="flex" alignItems="center" mb={1}>
             <TravelExplore color="primary" sx={{ mr: 1 }} />
             <Typography variant="body1" fontWeight="medium">
-              {tripDetails?.travel_from_city}, {tripDetails?.travel_from_country} to {tripDetails?.travel_to_city}, {tripDetails?.travel_to_country}
+              {t('fromTo', {
+                fromCity: tripDetails?.travel_from_city,
+                fromCountry: tripDetails?.travel_from_country,
+                toCity: tripDetails?.travel_to_city,
+                toCountry: tripDetails?.travel_to_country
+              })}
             </Typography>
           </Box>
         </Grid>
@@ -54,8 +61,11 @@ const TripDetailsHeader = ({ tripDetails }: {tripDetails : any}) => {
           <Box display="flex" alignItems="center" mb={1}>
             <CalendarMonth color="primary" sx={{ mr: 1 }} />
             <Typography variant="body1">
-              {moment(tripDetails?.date_from).format('MMM D')} - {moment(tripDetails?.date_to).format('MMM D, YYYY')}
-              {tripDetails?.dates_flexible && <Chip size="small" label="Flexible" sx={{ ml: 1 }} />}
+              {t('dates', {
+                startDate: moment(tripDetails?.date_from).format('MMM D'),
+                endDate: moment(tripDetails?.date_to).format('MMM D, YYYY')
+              })}
+              {tripDetails?.dates_flexible && <Chip size="small" label={t('flexible')} sx={{ ml: 1 }} />}
             </Typography>
           </Box>
         </Grid>
@@ -64,7 +74,10 @@ const TripDetailsHeader = ({ tripDetails }: {tripDetails : any}) => {
           <Box display="flex" alignItems="center" mb={1}>
             <People color="primary" sx={{ mr: 1 }} />
             <Typography variant="body1">
-              {tripDetails?.current_travellers}/{tripDetails?.group_size} travelers • {tripDetails?.age_group} age group
+              {t('travelers', {
+                currentTravelers: tripDetails?.current_travellers,
+                groupSize: tripDetails?.group_size
+              })} • {t('ageGroup', { ageGroup: tripDetails?.age_group })}
             </Typography>
           </Box>
         </Grid>
@@ -73,7 +86,7 @@ const TripDetailsHeader = ({ tripDetails }: {tripDetails : any}) => {
           <Box display="flex" alignItems="center" mb={1}>
             <Category color="primary" sx={{ mr: 1 }} />
             <Typography variant="body1" sx={{ textTransform: 'capitalize' }}>
-              {tripDetails?.tour_type} tour
+              {t('tourType', { tourType: tripDetails?.tour_type })}
             </Typography>
           </Box>
         </Grid>
@@ -82,7 +95,7 @@ const TripDetailsHeader = ({ tripDetails }: {tripDetails : any}) => {
           <Box display="flex" alignItems="center" mb={1}>
             <Backpack color="primary" sx={{ mr: 1 }} />
             <Typography variant="body1" sx={{ textTransform: 'capitalize' }}>
-              {tripDetails?.accommodation_type} accommodation
+              {t('accommodationType', { accommodationType: tripDetails?.accommodation_type })}
             </Typography>
           </Box>
         </Grid>
@@ -91,7 +104,7 @@ const TripDetailsHeader = ({ tripDetails }: {tripDetails : any}) => {
           <Box display="flex" alignItems="center" mb={1}>
             <AttachMoney color="primary" sx={{ mr: 1 }} />
             <Typography variant="body1">
-              Est. cost: ${tripDetails?.estimated_cost} per person
+              {t('estimatedCost', { cost: tripDetails?.estimated_cost })}
             </Typography>
           </Box>
         </Grid>
@@ -99,7 +112,7 @@ const TripDetailsHeader = ({ tripDetails }: {tripDetails : any}) => {
 
       <Divider sx={{ my: 2 }} />
 
-      <Typography variant="h6" mb={1}>Activities</Typography>
+      <Typography variant="h6" mb={1}>{t('activities')}</Typography>
       <Box mb={2}>
         {tripDetails?.activities?.map((activity, index) => (
           <Chip 
@@ -110,17 +123,17 @@ const TripDetailsHeader = ({ tripDetails }: {tripDetails : any}) => {
         ))}
       </Box>
 
-      <Typography variant="h6" mb={1}>Itinerary</Typography>
+      <Typography variant="h6" mb={1}>{t('itinerary')}</Typography>
       <Typography
-                            sx={{
-                                whiteSpace: 'pre-line',
-                                lineHeight: 1.8
-                            }}
-                        >
-                            {tripDetails?.itinerary}
-                        </Typography>
+        sx={{
+          whiteSpace: 'pre-line',
+          lineHeight: 1.8
+        }}
+      >
+        {tripDetails?.itinerary}
+      </Typography>
 
-      <Typography variant="h6" mb={1}>Description</Typography>
+      <Typography variant="h6" mb={1}>{t('description')}</Typography>
       <Typography variant="body2" paragraph>
         {tripDetails?.description}
       </Typography>
