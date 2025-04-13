@@ -86,7 +86,11 @@ export const signUp = async (data: signup) => {
       });
   }
   
-
+  export const deleteAccount = async (data : any) => {
+    console.log(data)
+    return await callAPiMultiPart.delete(`/auth/users/me/`, {data});
+  
+}
 const authServices = {
   signUp,
   login,
@@ -97,6 +101,7 @@ const authServices = {
   updateProfile,
   setPassword,
   forgotPassword,
-  resetPasswordConfirm
+  resetPasswordConfirm,
+  deleteAccount
 };
 export default authServices;
