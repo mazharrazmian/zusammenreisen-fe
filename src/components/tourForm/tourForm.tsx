@@ -309,7 +309,7 @@ const TourForm = () => {
                     const res = await postServices.editPost(parseInt(tourId), tourData); // Assuming postServices.createPost handles FormData
                     if (res.status === 200) {
                         setIsLoading(false);
-                        toast.success(t('postEditedSuccessfully'));
+                        toast.success(t('tourEditedSuccessfully'));
                         navigate(-1);
                     } else {
                         setIsLoading(false);

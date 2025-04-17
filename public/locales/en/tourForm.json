@@ -39,5 +39,7 @@
     "noImagesUploaded": "No images uploaded yet",
     "cancel": "Cancel",
     "submitChanges": "Submit Changes",
-    "createTour": "Create Tour"
+    "createTour": "Create Tour",
+    "tourCreatedSuccessfully": "Tour Created Successfully",
+    "tourEditedSuccessfully": "Tour Edited Successfully"
 }

@@ -28,7 +28,7 @@ const loadMoreVariants = {
 };
 
 const CommentsSection = ({ loading, postID }) => {
-    const { t } = useTranslation('tripPlannerDetail');
+    const { t } = useTranslation('tripdetails');
     const [loadingMore, setLoadingMore] = useState(false);
     const [newComment, setNewComment] = useState('');
     const [nextPage, setNextPage] = useState(null);
@@ -280,10 +280,10 @@ const CommentsSection = ({ loading, postID }) => {
                 color: 'primary.main'
             }}>
                 <CommentIcon sx={{ mr: 1 }} />
-                {t('discussion')}
+                {t('comments.discussion')}
                 <Chip 
                     size="small" 
-                    label={`${comments.length} ${t('comments')}`} 
+                    label={`${comments.length} ${t('comments.comments')}`} 
                     sx={{ ml: 2, backgroundColor: 'rgba(0,0,0,0.06)' }}
                 />
             </Typography>
@@ -317,7 +317,7 @@ const CommentsSection = ({ loading, postID }) => {
                                     fullWidth
                                     multiline
                                     rows={2}
-                                    placeholder={t('addCommentPlaceholder')}
+                                    placeholder={t('comments.addCommentPlaceholder')}
                                     variant="outlined"
                                     value={newComment}
                                     onChange={(e) => setNewComment(e.target.value)}
@@ -352,7 +352,7 @@ const CommentsSection = ({ loading, postID }) => {
                                                 }
                                             }}
                                         >
-                                            {t('attach')}
+                                            {t('comments.attach')}
                                         </Button>
                                     </Box>
                                     <Zoom in={!!newComment.trim()} timeout={300}>
@@ -371,7 +371,7 @@ const CommentsSection = ({ loading, postID }) => {
                                                 }
                                             }}
                                         >
-                                            {t('post')}
+                                            {t('comments.post')}
                                         </Button>
                                     </Zoom>
                                 </Box>
@@ -414,7 +414,7 @@ const CommentsSection = ({ loading, postID }) => {
                                 }
                             }}
                         >
-                            {t('newCommentsAvailable')}
+                            {t('comments.newCommentsAvailable')}
                         </Button>
                     </Box>
                 </Fade>
@@ -598,7 +598,7 @@ const CommentsSection = ({ loading, postID }) => {
                                 }
                             }}
                         >
-                            {loadingMore ? t('loading') : t('loadOlderComments')}
+                            {loadingMore ? t('comments.loading') : t('comments.loadOlderComments')}
                         </Button>
                     </motion.div>
                 </Box>

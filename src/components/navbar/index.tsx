@@ -206,6 +206,7 @@ const Navbar = React.memo(({ transparentOnHome }) => {
                                     pages={pages}
                                     navigate={navigateWithAnimation}
                                     onClose={handleCloseNavMenu}
+                                    handleLogout={handleLogout}
                                 />
                                
                             </Box>

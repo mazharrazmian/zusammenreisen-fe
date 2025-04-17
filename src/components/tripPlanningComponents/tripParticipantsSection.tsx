@@ -15,12 +15,12 @@ import {
 import { useTranslation } from 'react-i18next';
 
 const ParticipantsSection = React.memo(({ participants, loading }) => {
-    const { t } = useTranslation('tripPlannerDetail');
+    const { t } = useTranslation('tripdetails');
 
     return (
         <Paper elevation={3} sx={{ p: 3 }}>
             <Typography variant="h6" fontWeight="bold" mb={2}>
-                {t('participants', { count: participants?.length || 0 })}
+                {t('participants')}: {participants?.length || 0}
             </Typography>
 
             {loading ? (

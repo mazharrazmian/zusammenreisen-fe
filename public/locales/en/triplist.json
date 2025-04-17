@@ -7,5 +7,10 @@
     "allTrips": "All Trips",
     "upcoming": "Upcoming",
     "past": "Past",
-    "noTripsFound": "No trips found. Try adjusting your filters."
+    "noTripsFound": "No trips found. Try adjusting your filters.",
+
+    "participant": "participant",
+    "participants": "participants",   
+    "active": "Active",
+    "pending": "Pending"
 }

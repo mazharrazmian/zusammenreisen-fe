@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { IconButton, Menu, MenuItem, useMediaQuery } from "@mui/material";
+import { IconButton, Menu, MenuItem, Typography, useMediaQuery } from "@mui/material";
 import LanguageIcon from "@mui/icons-material/Language";
 import deFlag from "../../../assets/de-flag.png";
 import enFlag from '../../../assets/en-flag.png'
@@ -28,9 +28,13 @@ const LanguageSwitcher = () => {
 
   return isMobile ? (
     <div>
-      <IconButton onClick={handleOpen}>
-        <LanguageIcon sx={{ color: "#000" }} />
+      <IconButton onClick={handleOpen} sx={{display:'block',margin:'0px',padding:'0px'}}>
+        <LanguageIcon sx={{ color: "#000",margin:0,padding:0 }} />
+        <Typography variant="body2" color="black">
+        {currentLang === "en" ? "English" : "Deutsch"}
+      </Typography>
       </IconButton>
+      
       <Menu
         anchorEl={anchorEl}
         open={Boolean(anchorEl)}
@@ -53,6 +57,7 @@ const LanguageSwitcher = () => {
           Deutsch
         </MenuItem>
       </Menu>
+      
     </div>
   ) : (
     <div style={{ display: "flex", gap: "8px" }}>

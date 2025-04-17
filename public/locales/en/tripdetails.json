@@ -5,7 +5,7 @@
     "interested": "Interested in joining?",
     "loginToSend": "Login to send request",
     "sendRequest": "Send Request",
-    "sendRequestDesc": "Send a request to {name} to be accepted to this Tour.",
+    "sendRequestDesc": "Send a request to to be accepted to this Tour.",
     "alreadyMember": "Already A Member",
     "checkoutPlanning": "Checkout What Your Travel Mates Are Planning",
     "planYourTrip": "Plan Your Trip",
@@ -17,6 +17,17 @@
     "languages" : "Languages",
     "loading": "Loading travel details...",
     "error": "Could not find your post",
+    "postedBy": "Posted by",
+    "flexible": "Flexibel",
+    "ageGroup": "Age Group",
+    "accommodationType": "Accomodation",
+    "estimatedCost": "Estimated Cost",
+    "activities": "Activities",
+    "itinerary": "Itinerary",
+    "description": "Description",
+     "travelers": "Travelers",
+     "participants": "Participants",
+
     "tabs": {
         "overview": "Overview",
         "itinerary": "Itinerary",
@@ -41,5 +52,18 @@
         "costNotSpecified": "Cost not specified",
         "estimatedTotalPerPerson": "Estimated total per person",
         "whatsIncluded": "What's included:"
-      }
+      },
+    "comments": {
+    "discussion": "Discussion",
+    "comments": "comments",
+    "addCommentPlaceholder": "Add a comment...",
+    "attach": "Attach",
+    "post": "Post",
+    "newCommentsAvailable": "New comments available",
+    "showLess": "Show less",
+    "readMore": "Read more",
+    "delete": "Delete",
+    "loading": "Loading",
+    "loadOlderComments": "Load older comments"
+  }
 }

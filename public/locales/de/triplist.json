@@ -7,5 +7,9 @@
     "allTrips": "Alle Reisen",
     "upcoming": "Bevorstehend",
     "past": "Vergangen",
-    "noTripsFound": "Keine Reisen gefunden. Versuchen Sie, Ihre Filter anzupassen."
+    "noTripsFound": "Keine Reisen gefunden. Versuchen Sie, Ihre Filter anzupassen.",
+    "participant": "Teilnehmer",
+    "participants": "Teilnehmer",
+    "active": "Aktiv",
+    "pending": "Ausstehend"
 }

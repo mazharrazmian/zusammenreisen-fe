@@ -5,7 +5,7 @@
     "interested": "Interesse teilzunehmen?",
     "loginToSend": "Anmelden um eine Anfrage zu senden",
     "sendRequest": "Anfrage senden",
-    "sendRequestDesc": "Sende eine Anfrage an {name}, um an dieser Tour teilnehmen zu können.",
+    "sendRequestDesc": "Sende eine Anfrage, um an dieser Tour teilnehmen zu können.",
     "alreadyMember": "Bereits Mitglied",
     "checkoutPlanning": "Schau nach, was deine Reisepartner planen",
     "planYourTrip": "Plane deine Reise",
@@ -17,6 +17,18 @@
     "languages" : "Sprache",
     "loading": "Reisedetails werden geladen...",
     "error": "Ihr Beitrag konnte nicht gefunden werden",
+    "postedBy": "Gepostet von",
+    "to" : "nach",
+    "flexible": "Flexible",
+    "ageGroup": "Alter Gruppe",
+    "accomodation": "Unterkunft",
+    "estimatedCost": "Est. cost:",
+    "activities": "Activities",
+    "itinerary": "Itinerary",
+    "description": "Description",
+    "travelers": "Reisende",
+    "participants": "Teilnehmer",
+
     "tabs": {
         "overview": "Übersicht",
         "itinerary": "Reiseplan",
@@ -41,6 +53,19 @@
         "costNotSpecified": "Kosten nicht angegeben",
         "estimatedTotalPerPerson": "Geschätzte Gesamtkosten pro Person",
         "whatsIncluded": "Inklusivleistungen:"
-      }
+      },
+    "comments": {
+    "discussion": "Diskussion",
+    "comments": "Kommentare",
+    "addCommentPlaceholder": "Kommentar hinzufügen...",
+    "attach": "Anhängen",
+    "post": "Posten",
+    "newCommentsAvailable": "Neue Kommentare verfügbar",
+    "showLess": "Weniger anzeigen",
+    "readMore": "Mehr lesen",
+    "delete": "Löschen",
+    "loading": "Laden",
+    "loadOlderComments": "Ältere Kommentare laden"
+  }
 
 }

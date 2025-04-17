@@ -13,5 +13,6 @@
     "dashboard": "Dashboard",
     "travelMates": "Travel Mates",
     "login": "Login",
-    "signup": "Sign Up"
+    "signup": "Sign Up",
+    "logoutSuccess": "Logout successful"
 }

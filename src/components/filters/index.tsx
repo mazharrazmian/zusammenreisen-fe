@@ -51,6 +51,7 @@ const Filters: React.FC<FiltersProps> = ({ filters, setFilters }) => {
     const handleChange = (
         e: React.ChangeEvent<{ name?: string; value: unknown }>
     ) => {
+
         const { name, value } = e.target;
         if (!name) return;
         const newFilters = { ...filters, [name]: value as string, page: 1 };
@@ -190,11 +191,10 @@ const Filters: React.FC<FiltersProps> = ({ filters, setFilters }) => {
                 value={filters.age_group}
                 onChange={handleChange}
                 label={t('ageGroup')}
-                native
             >
                 {ageGroups.map((age) => (
                     <MenuItem key={age} value={age}>
-                        {age.toUpperCase()}
+                        {age}
                     </MenuItem>
                 ))}
             </Select>

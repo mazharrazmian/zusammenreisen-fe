@@ -8,5 +8,7 @@
     "login": "Anmelden",
     "loading": "Laden...",
     "dontHaveAccount": "Haben Sie kein Konto?",
-    "signUp": "Registrieren"
+    "signUp": "Registrieren",
+    "loginSuccessful" :"Login erfolgreich",
+    "logoutSuccessful": "Abmeldung erfolgreich"
 }

@@ -15,9 +15,12 @@ import { useNavigate } from 'react-router-dom';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import PersonIcon from '@mui/icons-material/Person';
+import { useTranslation } from 'react-i18next';
 
 const TripCard = ({ trip }) => {
   const navigate = useNavigate();
+  const { t } = useTranslation('triplist');
+  
   const getStatusColor = (status) => {
     switch(status) {
       case 'upcoming':
@@ -95,7 +98,7 @@ const TripCard = ({ trip }) => {
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <PersonIcon fontSize="small" sx={{ mr: 1, color: 'text.secondary' }} />
             <Typography variant="body2" color="text.secondary">
-              {trip.participants.length} participant{trip.participants.length !== 1 ? 's' : ''}
+              {trip.participants.length} {trip.participants.length !== 1 ? t('participants') : t('participant')}
             </Typography>
           </Box>
           
@@ -115,7 +118,7 @@ const TripCard = ({ trip }) => {
         <Button size="small" color="primary" onClick={(e) => {
             handleTripClick(e)
         }}>
-          View Details
+          {t('viewDetails')}
         </Button>
       </CardActions>
     </Card>

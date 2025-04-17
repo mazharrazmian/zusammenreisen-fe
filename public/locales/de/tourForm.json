@@ -39,5 +39,7 @@
     "noImagesUploaded": "Noch Keine Bilder Hochgeladen",
     "cancel": "Abbrechen",
     "submitChanges": "Änderungen Übermitteln",
-    "createTour": "Tour Erstellen"
+    "createTour": "Tour Erstellen",
+    "tourCreatedSuccessfully": "Tour Erfolgreich Erstellt",
+    "tourEditedSuccessfully": "Tour Erfolgreich Bearbeitet"
 }

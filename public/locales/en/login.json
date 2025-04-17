@@ -8,5 +8,7 @@
     "login": "Login",
     "loading": "loading...",
     "dontHaveAccount": "Don’t have account?",
-    "signUp": "Sign Up"
+    "signUp": "Sign Up",
+    "loginSuccessful": "Login successful",
+    "logoutSuccess": "Logout successful"
 }

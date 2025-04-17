@@ -16,7 +16,7 @@ import PeopleIcon from '@mui/icons-material/People';
 import SettingsIcon from '@mui/icons-material/Settings';
 import HelpIcon from '@mui/icons-material/Help';
 import { useLocation } from 'react-router-dom';
-import { Chat, Chat as ChatIcon } from '@mui/icons-material';
+import { Chat, Chat as ChatIcon, Logout } from '@mui/icons-material';
 import FlightIcon from '@mui/icons-material/Flight';
 import { useTheme } from "@mui/material/styles";
 
@@ -54,7 +54,7 @@ const StyledListItemButton = styled(ListItemButton)(({ theme, active }) => ({
   })
 }));
 
-const Sidebar = ({ pages, navigate, onClose }) => {
+const Sidebar = ({ pages, navigate, onClose , handleLogout }) => {
     const { t } = useTranslation('navbar');
     const [collapsed, setCollapsed] = useState(false);
     const location = useLocation();
@@ -62,12 +62,16 @@ const Sidebar = ({ pages, navigate, onClose }) => {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
-    // Add 'profile' to pages if isMobile is true
+    // Add 'profile' and 'Logout'  to pages if isMobile is true
     const modifiedPages = isMobile
-        ? [...pages, { pageName: 'Profile', path: '/account' }]
+        ? [...pages, { pageName: t('profile'), path: '/account' } , {pageName: t('logout'), path: '/'}]
         : pages;
 
     const handleNavigate = (page) => {
+        // If the page is 'Logout', call handleLogout
+        if (page.pageName === t('logout')) {
+            handleLogout();
+        }
         sessionStorage.setItem("toursFilters", JSON.stringify({}));
         navigate(page.path);
         // If onClose is provided (for mobile drawer), call it
@@ -92,6 +96,8 @@ const Sidebar = ({ pages, navigate, onClose }) => {
                 return <SettingsIcon />;
             case t('profile').toLowerCase():
                 return <PeopleIcon />;
+            case t('logout').toLowerCase():
+                return <Logout/>
             default:
                 return <HelpIcon />;
         }

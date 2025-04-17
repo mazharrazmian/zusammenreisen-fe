@@ -13,5 +13,6 @@
     "dashboard": "Dashboard",
     "travelMates": "Reisegefährten",
     "login" : "Einloggen",
-    "signup" : "Registrieren"
+    "signup" : "Registrieren",
+    "logoutSuccess": "Abmeldung erfolgreich"
 }
