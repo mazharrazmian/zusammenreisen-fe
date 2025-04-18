@@ -5,17 +5,22 @@ import { toast } from "react-toastify";
 export const API_URL = import.meta.env.VITE_API_URL;
 export const CHAT_URL = import.meta.env.VITE_CHAT_URL;
 
+console.log('i18nextLng', localStorage.getItem("i18nextLng"))
+
 export const callAPi = axios.create({
   baseURL: API_URL,
   headers: {
     "Content-type": "application/json",
+    'Accept-Language': localStorage.getItem("i18nextLng") || "en"
   },
+  
 });
 
 export const callAPiMultiPart = axios.create({
   baseURL: API_URL,
   headers: {
     "Content-type": "multipart/form-data",
+    'Accept-Language':  localStorage.getItem('i18nextLng') || "en"
   },
 });
 

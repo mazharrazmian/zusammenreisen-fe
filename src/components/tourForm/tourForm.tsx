@@ -37,6 +37,7 @@ import { TourDataInterface } from "../../types";
 import { useTranslation } from "react-i18next";
 
 import { tourTypesTranslations, accommodationTypesTranslations } from "../../Constants";
+import { error } from "../../theme/palette";
 
 const initialValues: TourDataInterface = {
     title: "",
@@ -85,6 +86,18 @@ const TourForm = () => {
         }
     }, [isEditMode]);
 
+    //Add use effect for error state, if errors change scroll to the first error
+    useEffect(() => {
+        //firstError should be the key whose value is not ""
+        //If there are any errors, scroll to the first error
+        const firstError = Object.keys(errors).find(key => errors[key] !== "");
+        if (firstError) {
+            const element = document.querySelector(`[name="${firstError}"]`);
+            if (element) {
+                element.scrollIntoView({ behavior: "smooth", block: "center" });
+            }
+        }
+    }   , [errors]);
 
     // Helper function to get translated display value while maintaining English value
     const getTranslatedTourType = (englishValue: string) => {
@@ -261,6 +274,25 @@ const TourForm = () => {
         if ("estimatedCost" in fieldValue)
             temp.estimatedCost = fieldValue.estimatedCost >= 0 ? "" : t('nonNegativeCostRequired');
 
+        if ("currentTravellers" in fieldValue)
+            temp.currentTravellers = fieldValue.currentTravellers > 0 ? "" : t('positiveTravelersRequired');        
+
+        if ("tourType" in fieldValue)
+            temp.tourType = fieldValue.tourType ? "" : t('tourTypeRequired');
+        if ("accommodationType" in fieldValue)
+            temp.accommodationType = fieldValue.accommodationType ? "" : t('accommodationTypeRequired');
+        if ("activities" in fieldValue)
+            temp.activities = fieldValue.activities.length > 0 ? "" : t('activitiesRequired');
+        if ("costIncludes" in fieldValue)
+            temp.costIncludes = fieldValue.costIncludes ? "" : t('costIncludesRequired');
+        if ("requirements" in fieldValue)
+            temp.requirements = fieldValue.requirements ? "" : t('requirementsRequired');
+        if ("ageGroup" in fieldValue)
+            temp.ageGroup = fieldValue.ageGroup ? "" : t('ageGroupRequired');
+        if ("itinerary" in fieldValue)
+            temp.itinerary = fieldValue.itinerary ? "" : t('itineraryRequired');
+        if ("images" in fieldValue)
+            temp.images = imageFiles.length > 0 ? "" : t('imagesRequired');
         setErrors(temp);
         return Object.values(temp).every((x) => x === "");
     };
@@ -333,7 +365,7 @@ const TourForm = () => {
                 );
                 setIsLoading(false);
             }
-        }
+        } 
     };
 
     return (
@@ -401,6 +433,8 @@ const TourForm = () => {
                                     value={formData.itinerary}
                                     onChange={handleChange}
                                     placeholder={t('detailedItineraryPlaceholder')}
+                                    error={Boolean(errors.itinerary)}
+                                    helperText={errors.itinerary}
                                 />
                             </Grid>
 
@@ -564,6 +598,7 @@ const TourForm = () => {
                                     value={newActivity}
                                     onChange={(e) => setNewActivity(e.target.value)}
                                     fullWidth
+                                    name="activities"
                                     placeholder={t('addActivityPlaceholder')}
                                     InputProps={{
                                         endAdornment: (
@@ -584,6 +619,9 @@ const TourForm = () => {
                             </Grid>
 
                             <Grid size={12}>
+                                <Typography variant="body2" color="error.main" sx={{ mb: 1 }}>
+                                    {errors.activities}
+                                </Typography>
                                 <Box sx={{ mt: 2, display: 'flex', flexWrap: 'wrap', gap: 1 }}>
                                     {formData.activities.map((activity, index) => (
                                         <Chip
@@ -674,6 +712,9 @@ const TourForm = () => {
                                     value={formData.costIncludes}
                                     onChange={handleChange}
                                     placeholder={t('costIncludesPlaceholder')}
+                                    error={Boolean(errors.costIncludes)}
+                                    helperText={errors.costIncludes}
+                                    
                                 />
                             </Grid>
 
@@ -688,6 +729,8 @@ const TourForm = () => {
                                     value={formData.requirements}
                                     onChange={handleChange}
                                     placeholder={t('specialRequirementsPlaceholder')}
+                                    error={Boolean(errors.requirements)}
+                                    helperText={errors.requirements}
                                 />
                             </Grid>
                         </Grid>
@@ -697,12 +740,17 @@ const TourForm = () => {
                             {t('tourImages')}
                         </Typography>
                         <Grid container spacing={2}>
+                            <Typography variant="body2" color="error.main" sx={{ mb: 1 }}>
+                                {errors.images}
+                            </Typography>
                             <Grid size={12}>
                                 <Button
                                     variant="contained"
                                     component="label"
                                     startIcon={<Add />}
                                     color="primary"
+                                    
+                                    
                                 >
                                     {t('uploadTourImages')}
                                     <input
@@ -711,6 +759,8 @@ const TourForm = () => {
                                         hidden
                                         accept="image/*"
                                         onChange={handleImageChange}
+                                        name="images"
+                                    
                                     />
                                 </Button>
                                 <Typography variant="caption" display="block" sx={{ mt: 1, color: 'text.secondary' }}>

@@ -1,4 +1,4 @@
-import { Box, Button, Card, CardContent, CardMedia, Container, Grid2 as Grid, Typography, CircularProgress, Drawer, IconButton, Pagination, Chip, Stack, useMediaQuery, Paper, Avatar, Divider } from "@mui/material";
+import { Box, Button, Card, CardContent, CardMedia, Container, Grid2 as Grid, Typography, CircularProgress, Drawer, IconButton, Pagination, Chip, Stack, useMediaQuery, Paper, Avatar, Divider, Badge } from "@mui/material";
 import React, { useEffect, useMemo, useState } from "react";
 import { homePageStyles } from "./styles";
 //import tourServices from "../redux/api/tourService";
@@ -29,6 +29,8 @@ const HomePage: React.FC = () => {
     const [count, setCount] = useState(0);
     const [loading, setLoading] = useState(false);
     const [filtersOpen, setFiltersOpen] = useState(false);
+    const [activeFiltersCount, setActiveFiltersCount] = useState(0);
+
     const [searchParams, setSearchParams] = useSearchParams();
     const navigate = useNavigate();
     const [isInitialLoad, setIsInitialLoad] = useState(true);
@@ -337,11 +339,35 @@ const HomePage: React.FC = () => {
 
                             <Box sx={{ flex: 1 }}>
                                 {isMobile && (
-                                    <Box sx={{ display: "flex", justifyContent: "center", mb: 3 }}>
-                                        <motion.div
-                                            whileHover={{ scale: 1.03 }}
-                                            whileTap={{ scale: 0.97 }}
-                                            style={{ width: "100%" }}
+                                    <Box 
+                                    sx={{ 
+                                        display: "flex", 
+                                        justifyContent: "center", 
+                                        mb: 3,
+                                        position: "sticky",
+                                        top: '0',
+                                        zIndex: 1,
+                                        backgroundColor: "white",
+                                        borderBottom: "1px solid #e0e0e0",
+                                    }}
+                                >
+                                    <motion.div
+                                        whileHover={{ scale: 1.03 }}
+                                        whileTap={{ scale: 0.97 }}
+                                        style={{ width: "100%" }}
+                                    >
+                                        <Badge 
+                                            badgeContent={activeFiltersCount} 
+                                            color="error"
+                                            sx={{
+                                                width: "100%",
+                                                "& .MuiBadge-badge": {
+                                                    right: -3,
+                                                    top: 13,
+                                                    border: `2px solid white`,
+                                                    padding: '0 4px',
+                                                }
+                                            }}
                                         >
                                             <Button
                                                 variant="contained"
@@ -361,10 +387,11 @@ const HomePage: React.FC = () => {
                                                 }}
                                             >
                                                 <FilterAltIcon sx={{ mr: 1 }} />
-                                                Filter Tours
+                                                {t('filterTours')}
                                             </Button>
-                                        </motion.div>
-                                    </Box>
+                                        </Badge>
+                                    </motion.div>
+                                </Box>
                                 )}
 
                                 <Drawer
@@ -386,7 +413,8 @@ const HomePage: React.FC = () => {
                                                 <CloseIcon />
                                             </IconButton>
                                         </Box>
-                                        <Filters filters={filters} setFilters={setFilters} />
+                                        <Filters filters={filters} setFilters={setFilters}  
+                                         onActiveFiltersChange={setActiveFiltersCount}  />
                                     </Box>
                                 </Drawer>
 
@@ -442,7 +470,8 @@ const HomePage: React.FC = () => {
                                                     <Button
                                                         variant="contained"
                                                         color="primary"
-                                                        onClick={() => setFilters({
+                                                        onClick={() => {
+                                                            setFilters({
                                                             country_to: '',
                                                             city_to: '',
                                                             country_from: '',
@@ -450,10 +479,12 @@ const HomePage: React.FC = () => {
                                                             gender: "",
                                                             date_from: '',
                                                             date_to: '',
-                                                            age_group: 'any',
+                                                            age_group: '',
                                                             group_size: '',
                                                             page: 1,
-                                                        })}
+                                                        })
+                                                        setActiveFiltersCount(0)
+                                                        }}
                                                         sx={{
                                                             borderRadius: "8px",
                                                             textTransform: "none",

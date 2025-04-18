@@ -41,5 +41,21 @@
     "submitChanges": "Submit Changes",
     "createTour": "Create Tour",
     "tourCreatedSuccessfully": "Tour Created Successfully",
-    "tourEditedSuccessfully": "Tour Edited Successfully"
+    "tourEditedSuccessfully": "Tour Edited Successfully",
+    "departureCityRequired": "Departure city is required",
+    "departureCountryRequired": "Departure country is required",
+    "destinationCityRequired": "Destination city is required",
+    "destinationCountryRequired": "Destination country is required",
+    "departureDateRequired": "Departure date is required",
+    "returnDateRequired": "Return date is required",
+    "groupSizeRequired": "Group size is required",
+    "departureDateInvalid": "Departure date must be before return date",
+    "titleRequired": "Title is required",
+    "descriptionRequired": "Description is required",
+    "requirementsRequired": "Requirements are required",
+    "costDetailsRequired": "Cost details are required",
+    "imagesRequired": "Images are required",
+    "costIncludesRequired": "Cost includes are required",
+    "itineraryRequired": "Itinerary is required",
+    "activitiesRequired": "Activities are required"
 }

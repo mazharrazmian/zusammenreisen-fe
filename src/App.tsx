@@ -25,11 +25,16 @@ function App() {
 
   useEffect(() => {
     const domain = window.location.hostname;
-    if (domain.includes("zusammenreisen")) {
+    // Check if language is set in localstorage, if not set it based on the domain
+    const storedLanguage = localStorage.getItem("i18nextLng");
+    if (storedLanguage) {
+      i18n.changeLanguage(storedLanguage);
+    } else if (domain.includes("zusammenreisen")) {
       i18n.changeLanguage("de");
     } else {
       i18n.changeLanguage("en");
     }
+
   }, []);
   
 

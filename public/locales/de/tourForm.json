@@ -41,5 +41,19 @@
     "submitChanges": "Änderungen Übermitteln",
     "createTour": "Tour Erstellen",
     "tourCreatedSuccessfully": "Tour Erfolgreich Erstellt",
-    "tourEditedSuccessfully": "Tour Erfolgreich Bearbeitet"
+    "tourEditedSuccessfully": "Tour Erfolgreich Bearbeitet",
+    "departureCityRequired": "Abfahrtsstadt Ist Erforderlich",
+    "departureCountryRequired": "Abfahrtsland Ist Erforderlich",
+    "destinationCityRequired": "Zielstadt Ist Erforderlich",
+    "destinationCountryRequired": "Zielort Ist Erforderlich",
+    "departureDateRequired": "Abfahrtsdatum Ist Erforderlich",
+    "returnDateRequired": "Rückreisedatum Ist Erforderlich",
+    "titleRequired": "Titel Ist Erforderlich",
+    "descriptionRequired": "Beschreibung Ist Erforderlich",
+    "requirementsRequired": "Anforderungen Sind Erforderlich",
+    "costDetailsRequired": "Kostendetails Sind Erforderlich",
+    "imagesRequired": "Bilder Sind Erforderlich",
+    "costIncludesRequired": "Kosten Inklusive Sind Erforderlich",
+    "itineraryRequired": "Reiseplan Ist Erforderlich",
+    "activitiesRequired": "Aktivitäten Sind Erforderlich"
 }
