@@ -30,6 +30,7 @@ const HomePage: React.FC = () => {
     const [loading, setLoading] = useState(false);
     const [filtersOpen, setFiltersOpen] = useState(false);
     const [activeFiltersCount, setActiveFiltersCount] = useState(0);
+    const [isFilterSticky, setIsFilterSticky] = useState(false);
 
     const [searchParams, setSearchParams] = useSearchParams();
     const navigate = useNavigate();
@@ -52,6 +53,28 @@ const HomePage: React.FC = () => {
         age_group: searchParams.get('age_group') || getSavedFilters().age_group || "",
         page: searchParams.get('page') || getSavedFilters().page || 1,
     });
+
+    useEffect(() => {
+        // Function to check if we should make the filter sticky
+        // Makes the filter sticky when the tours section is at the top of the viewport on mobile screens
+        const handleScroll = () => {
+          const toursSection = document.getElementById('explore-tours');
+          if (!toursSection) return;
+          
+          const toursSectionTop = toursSection.getBoundingClientRect().top;
+          const toursSectionHeight = toursSection.getBoundingClientRect().height;
+          
+          // Make filter sticky when tours section is at the top of viewport
+          // and not when it's scrolled out of view
+          setIsFilterSticky(
+            toursSectionTop <= 0 && 
+            Math.abs(toursSectionTop) < toursSectionHeight - 100
+          );
+        };
+        
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+      }, []);
 
     // Save filters whenever they change
     useEffect(() => {
@@ -161,8 +184,8 @@ const HomePage: React.FC = () => {
                                 },
                                 transition: "all 0.3s ease"
                             }}
-                            onClick={() => document.getElementById('explore-tours').scrollIntoView({behavior: 'smooth'})} 
-                            >
+                            onClick={() => document.getElementById('explore-tours').scrollIntoView({ behavior: 'smooth' })}
+                        >
                             {t('exploreTour')}
                         </Button>
                     </AnimateWrapper>
@@ -189,12 +212,12 @@ const HomePage: React.FC = () => {
                                 },
                                 transition: "all 0.3s ease"
                             }}
-                            onClick={() => { 
-                                profile?.profile ?  
-                                navigate('/add/post') 
-                                : 
-                                navigate('/register') 
-                              }} 
+                            onClick={() => {
+                                profile?.profile ?
+                                    navigate('/add/post')
+                                    :
+                                    navigate('/register')
+                            }}
                         >
                             {t('createTour')}
                         </Button>
@@ -337,63 +360,75 @@ const HomePage: React.FC = () => {
                                 </AnimateWrapper>
                             )}
 
-                            <Box sx={{ flex: 1 }}>
+                            <Box sx={{
+                                flex: 1,
+                                position: "relative", /* Important for sticky context */
+
+                            }}>
                                 {isMobile && (
-                                    <Box 
-                                    sx={{ 
-                                        display: "flex", 
-                                        justifyContent: "center", 
-                                        mb: 3,
-                                        position: "sticky",
-                                        top: '0',
-                                        zIndex: 1,
-                                        backgroundColor: "white",
-                                        borderBottom: "1px solid #e0e0e0",
-                                    }}
-                                >
-                                    <motion.div
-                                        whileHover={{ scale: 1.03 }}
-                                        whileTap={{ scale: 0.97 }}
-                                        style={{ width: "100%" }}
+                                    <Box
+                                        sx={{
+                                            display: "flex", 
+                                            justifyContent: "center", 
+                                            mb: 3,
+                                            position: isFilterSticky ? "fixed" : "relative",
+                                            top: isFilterSticky ? '7%' : "auto",
+                                           
+                                            zIndex: 999,
+                                            padding: "10px",
+                                            backgroundColor: "white",
+                                            borderBottom: "1px solid #e0e0e0",
+                                            boxShadow: isFilterSticky ? "0 2px 4px rgba(0,0,0,0.1)" : "none",
+                                            width: isFilterSticky ? "85%" : "auto",
+                                            transition: "all 0.3s ease"
+                                        }}
                                     >
-                                        <Badge 
-                                            badgeContent={activeFiltersCount} 
-                                            color="error"
-                                            sx={{
-                                                width: "100%",
-                                                "& .MuiBadge-badge": {
-                                                    right: -3,
-                                                    top: 13,
-                                                    border: `2px solid white`,
-                                                    padding: '0 4px',
-                                                }
-                                            }}
+                                        <motion.div
+                                            whileHover={{ scale: 1.03 }}
+                                            whileTap={{ scale: 0.97 }}
+                                            style={{ width: "100%" }}
                                         >
-                                            <Button
-                                                variant="contained"
-                                                color="primary"
-                                                onClick={() => setFiltersOpen(true)}
+                                            <Badge
+                                                badgeContent={activeFiltersCount > 0 ? activeFiltersCount : null}
+                                                color="error"
                                                 sx={{
                                                     width: "100%",
-                                                    maxHeight: "48px",
-                                                    borderRadius: "8px",
-                                                    textTransform: "none",
-                                                    fontWeight: "600",
-                                                    boxShadow: 2,
-                                                    display: "inline-flex",
-                                                    alignItems: "center",
-                                                    justifyContent: "center",
-                                                    padding: "10px 16px",
+                                                    "& .MuiBadge-badge": {
+                                                        right: -3,
+                                                        top: 13,
+                                                        border: `2px solid white`,
+                                                        padding: '0 4px',
+                                                    }
                                                 }}
                                             >
-                                                <FilterAltIcon sx={{ mr: 1 }} />
-                                                {t('filterTours')}
-                                            </Button>
-                                        </Badge>
-                                    </motion.div>
-                                </Box>
+                                                <Button
+                                                    variant="contained"
+                                                    color="primary"
+                                                    onClick={() => setFiltersOpen(true)}
+                                                    sx={{
+                                                        width: "100%",
+                                                        maxHeight: "48px",
+                                                        borderRadius: "8px",
+                                                        textTransform: "none",
+                                                        fontWeight: "600",
+                                                        boxShadow: 2,
+                                                        display: "inline-flex",
+                                                        alignItems: "center",
+                                                        justifyContent: "center",
+                                                        padding: "10px 16px",
+                                                    }}
+                                                >
+                                                    <FilterAltIcon sx={{ mr: 1 }} />
+                                                    {t('filterTours')}
+                                                </Button>
+                                            </Badge>
+                                        </motion.div>
+                                    </Box>
                                 )}
-
+                                    {/* Add a spacer div when the filter is sticky to prevent content jump */}
+                                        {isMobile && isFilterSticky && (
+                                        <Box sx={{ height: "68px" }} /> 
+                                        )}
                                 <Drawer
                                     anchor="left"
                                     open={filtersOpen}
@@ -413,8 +448,8 @@ const HomePage: React.FC = () => {
                                                 <CloseIcon />
                                             </IconButton>
                                         </Box>
-                                        <Filters filters={filters} setFilters={setFilters}  
-                                         onActiveFiltersChange={setActiveFiltersCount}  />
+                                        <Filters filters={filters} setFilters={setFilters}
+                                            onActiveFiltersChange={setActiveFiltersCount} />
                                     </Box>
                                 </Drawer>
 
@@ -472,18 +507,18 @@ const HomePage: React.FC = () => {
                                                         color="primary"
                                                         onClick={() => {
                                                             setFilters({
-                                                            country_to: '',
-                                                            city_to: '',
-                                                            country_from: '',
-                                                            city_from: '',
-                                                            gender: "",
-                                                            date_from: '',
-                                                            date_to: '',
-                                                            age_group: '',
-                                                            group_size: '',
-                                                            page: 1,
-                                                        })
-                                                        setActiveFiltersCount(0)
+                                                                country_to: '',
+                                                                city_to: '',
+                                                                country_from: '',
+                                                                city_from: '',
+                                                                gender: "",
+                                                                date_from: '',
+                                                                date_to: '',
+                                                                age_group: '',
+                                                                group_size: '',
+                                                                page: 1,
+                                                            })
+                                                            setActiveFiltersCount(0)
                                                         }}
                                                         sx={{
                                                             borderRadius: "8px",

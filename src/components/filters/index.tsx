@@ -34,20 +34,18 @@ const Filters: React.FC<FiltersProps> = ({ filters, setFilters,onActiveFiltersCh
     const [toCities, setToCities] = useState<Array<City>>([]);
     const [fromCities, setFromCities] = useState<Array<City>>([]);
 
-    // Calculate active filters count
-    useEffect(() => {
-        // Count non-empty filter values
-        const activeFiltersCount = Object.entries(filters).reduce((count, [key, value]) => {
-            // Skip page property and empty values
-            if (key === 'page' || !value) return count;
-            return count + 1;
-        }, 0);
-        
-        // Call the callback if provided
-        if (onActiveFiltersChange) {
-            onActiveFiltersChange(activeFiltersCount);
-        }
-    }, [filters, onActiveFiltersChange]);
+   // Calculate active filters count
+   useEffect(() => {
+    // Count non-empty filter values, excluding the page property
+    const count = Object.entries(filters).reduce((total, [key, value]) => {
+        if (key === 'page' || value === '' || value === null) return total;
+        return total + 1;
+    }, 0);
+    
+    if (onActiveFiltersChange) {
+        onActiveFiltersChange(count);
+    }
+}, [filters, onActiveFiltersChange]);
 
     // Load cities when country_to changes
     useEffect(() => {
