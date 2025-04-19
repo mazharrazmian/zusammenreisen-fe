@@ -58,7 +58,7 @@ const MotionButton = motion(Button);
 const Navbar = React.memo(({ transparentOnHome }) => {
     const { t, i18n } = useTranslation('navbar');
     const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -213,7 +213,7 @@ const Navbar = React.memo(({ transparentOnHome }) => {
                         </Drawer>
                     </Box>
                     {/* // Mobile logo */}
-                    <Box
+                    {/* <Box
                             component='img'
                             sx={{
                                 height: '50px', // Fixed reasonable height
@@ -225,7 +225,7 @@ const Navbar = React.memo(({ transparentOnHome }) => {
                             alt={t('travelMates')}
                             src={Logo}
                             onClick={() => navigateWithAnimation('/')}
-                        />
+                        /> */}
                     <Box
                         sx={{
                             display: { xs: "none", md: "flex" },
@@ -374,7 +374,9 @@ const Navbar = React.memo(({ transparentOnHome }) => {
                            <LanguageSwitcher />
                         </Box>
                     ) : (
+
                         <Stack spacing={2} direction={"row"}>
+                        {/* If not logged in, show login and signup buttons */}
                             <Button
                                 component={motion.button}
                                 whileHover={{ scale: 1.05 }}
@@ -384,7 +386,7 @@ const Navbar = React.memo(({ transparentOnHome }) => {
                                 sx={{
                                     borderRadius: "8px",
                                     px: 3,
-                                    maxWidth: "100px",
+                                    maxWidth: "80px",
 
                                 }}
                                 role="navigation"
@@ -400,7 +402,6 @@ const Navbar = React.memo(({ transparentOnHome }) => {
                                 sx={{
                                     borderRadius: "8px",
                                     px: 3,
-                                    maxWidth: "100px",
                                 }}
                                 role="navigation"
                             >

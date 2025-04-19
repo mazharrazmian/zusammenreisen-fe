@@ -28,11 +28,34 @@ const LanguageSwitcher = () => {
 
   return isMobile ? (
     <div>
-      <IconButton onClick={handleOpen} sx={{display:'block',margin:'0px',padding:'0px'}}>
-        <LanguageIcon sx={{ color: "#000",margin:0,padding:0 }} />
-        <Typography variant="body2" color="black">
-        {currentLang === "en" ? "English" : "Deutsch"}
-      </Typography>
+      <IconButton 
+        onClick={handleOpen} 
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          margin: '0px',
+          padding: '2px',
+          height: 'auto',
+          minWidth: 'auto'
+        }}
+      >
+        <LanguageIcon 
+          sx={{ 
+            color: "#000", 
+            fontSize: '24px',
+            marginRight: '2px' 
+          }} 
+        />
+        <Typography 
+          variant="caption" 
+          color="black" 
+          sx={{ 
+            lineHeight: 1,
+            fontSize: '0.75rem',
+          }}
+        >
+          {currentLang === "en" ? "EN" : "DE"}
+        </Typography>
       </IconButton>
       
       <Menu

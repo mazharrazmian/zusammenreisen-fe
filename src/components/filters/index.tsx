@@ -18,6 +18,7 @@ import postServices from "../../redux/api/postService";
 import { ageGroups, GENDERS } from "../../Constants";
 import { useAppSelector } from "../../redux/store";
 import { useTranslation } from "react-i18next";
+import CircularProgress from '@mui/material/CircularProgress';
 
 interface FiltersProps {
     filters: FilterState;
@@ -33,6 +34,8 @@ const Filters: React.FC<FiltersProps> = ({ filters, setFilters,onActiveFiltersCh
     const countries = useAppSelector(s => s.filter.countries);
     const [toCities, setToCities] = useState<Array<City>>([]);
     const [fromCities, setFromCities] = useState<Array<City>>([]);
+    const [isLoadingCitiesTo, setIsLoadingCitiesTo] = useState(false);
+    const [isLoadingCitiesFrom, setIsLoadingCitiesFrom] = useState(false);
 
     // Calculate active filters count
     useEffect(() => {
@@ -52,17 +55,30 @@ const Filters: React.FC<FiltersProps> = ({ filters, setFilters,onActiveFiltersCh
     // Load cities when country_to changes
     useEffect(() => {
         if (!filters.country_to) return;
+        //Create a spinner while loading cities
+        setIsLoadingCitiesTo(true);
         postServices.filterCityByCountryId(filters.country_to)
             .then((res) => setToCities(res.data))
-            .catch(console.log);
+            .catch(console.log)
+            .finally(() => {
+                setIsLoadingCitiesTo(false);
+            });
     }, [filters.country_to]);
 
     // Load cities when country_from changes
     useEffect(() => {
         if (!filters.country_from) return;
+        //Create a spinner while loading cities
+        setIsLoadingCitiesFrom(true);
         postServices.filterCityByCountryId(filters.country_from)
-            .then((res) => setFromCities(res.data))
-            .catch(console.log);
+        .then((res) => {
+            console.log(res); // Add console.log after res to check response
+            setFromCities(res.data);
+        })
+        .catch(err=>{console.log(err)})
+        .finally(()=>{
+            setIsLoadingCitiesFrom(false);
+        })
     }, [filters.country_from]);
 
     const handleChange = (
@@ -110,9 +126,9 @@ const Filters: React.FC<FiltersProps> = ({ filters, setFilters,onActiveFiltersCh
         {/* country_from Filter */}
         <FormControl fullWidth variant="outlined" sx={{ mt: 1 }}>
             <Autocomplete
-                value={countries.find(c => c.id === filters.country_from) || null}
+                value={countries.find(c => c.id == filters.country_from) || null}
                 disablePortal
-                isOptionEqualToValue={(option, value) => option.id === value.id}
+                isOptionEqualToValue={(option, value) => option.id == value.id}
                 options={countries}
                 getOptionLabel={(option) => option.name}
                 renderInput={(params) => <TextField {...params} name="country_from" label={t('country')} />}
@@ -128,18 +144,42 @@ const Filters: React.FC<FiltersProps> = ({ filters, setFilters,onActiveFiltersCh
         {/* city_from Filter */}
         <FormControl fullWidth variant="outlined" sx={{ mt: 2 }}>
             <Autocomplete
-                value={fromCities.find(c => c.id === filters.city_from) || null}
+                value={fromCities.find(c => c.id == filters.city_from) || null}
                 disablePortal
-                isOptionEqualToValue={(option, value) => option.id === value.id}
+                isOptionEqualToValue={(option, value) => option.id == value.id}
                 options={fromCities}
                 getOptionLabel={(option) => option.name}
-                renderInput={(params) => <TextField {...params} name="city_from" label={t('city')} />}
-                onChange={(event: any, newValue: City) => {
+                renderOption={(props, option) => (
+                    <li {...props} key={option.id}>
+                        {option.name}
+                    </li>
+                )}
+                renderInput={(params) => (
+                    <TextField
+                        {...params}
+                        name="city_from"
+                        label={t('city')}
+                        InputProps={{
+                            ...params.InputProps,
+                            endAdornment: (
+                                <>
+                                    {isLoadingCitiesFrom ? <CircularProgress color="inherit" size={20} /> : null}
+                                    {params.InputProps.endAdornment}
+                                </>
+                            ),
+                        }}
+                    />
+                )}                onChange={(event: any, newValue: City) => {
                     setFilters((prev: FilterState) => ({
                         ...prev,
                         city_from: newValue ? newValue.id : "",
                     }));
                 }}
+                // Add key equal to city.id in fromCities array
+                key={filters.city_from}
+                loading={isLoadingCitiesFrom}
+                loadingText={t('loadingCities')}
+                noOptionsText={t('noCities')}
             />
         </FormControl>
     </Paper>
@@ -153,9 +193,9 @@ const Filters: React.FC<FiltersProps> = ({ filters, setFilters,onActiveFiltersCh
         {/* country_to Filter */}
         <FormControl fullWidth variant="outlined" sx={{ mt: 1 }}>
             <Autocomplete
-                value={countries.find(c => c.id === filters.country_to) || null}
+                value={countries.find(c => c.id == filters.country_to) || null}
                 disablePortal
-                isOptionEqualToValue={(option, value) => option.id === value.id}
+                isOptionEqualToValue={(option, value) => option.id == value.id}
                 options={countries}
                 getOptionLabel={(option) => option.name}
                 renderInput={(params) => <TextField {...params} name="country_to" label={t('country')} />}
@@ -171,18 +211,41 @@ const Filters: React.FC<FiltersProps> = ({ filters, setFilters,onActiveFiltersCh
         {/* city_to Filter */}
         <FormControl fullWidth variant="outlined" sx={{ mt: 2 }}>
             <Autocomplete
-                value={toCities.find(c => c.id === filters.city_to) || null}
+                value={toCities.find(c => c.id == filters.city_to) || null}
                 disablePortal
-                isOptionEqualToValue={(option, value) => option.id === value.id}
-                options={fromCities}
+                isOptionEqualToValue={(option, value) => option.id == value.id}
+                options={toCities}
                 getOptionLabel={(option) => option.name}
-                renderInput={(params) => <TextField {...params} name="city_to" label={t('city')} />}
+                renderOption={(props, option) => (
+                    <li {...props} key={option.id}>
+                        {option.name}
+                    </li>
+                )}
+                renderInput={(params) => (
+                    <TextField
+                        {...params}
+                        name="city_to"
+                        label={t('city')}
+                        InputProps={{
+                            ...params.InputProps,
+                            endAdornment: (
+                                <>
+                                    {isLoadingCitiesTo ? <CircularProgress color="inherit" size={20} /> : null}
+                                    {params.InputProps.endAdornment}
+                                </>
+                            ),
+                        }}
+                    />
+                )} 
                 onChange={(event: any, newValue: City) => {
                     setFilters((prev: FilterState) => ({
                         ...prev,
-                        city_from: newValue ? newValue.id : "",
+                        city_to: newValue ? newValue.id : "",
                     }));
                 }}
+                loading={isLoadingCitiesTo}
+                loadingText={t('loadingCities')}
+                noOptionsText={t('noCities')}
             />
         </FormControl>
     </Paper>

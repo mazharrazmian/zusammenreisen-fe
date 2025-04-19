@@ -344,7 +344,6 @@ const HomePage: React.FC = () => {
                                         display: "flex", 
                                         justifyContent: "center", 
                                         mb: 3,
-                                        position: "sticky",
                                         top: '0',
                                         zIndex: 1,
                                         backgroundColor: "white",

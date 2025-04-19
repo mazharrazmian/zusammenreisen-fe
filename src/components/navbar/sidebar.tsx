@@ -19,6 +19,7 @@ import { useLocation } from 'react-router-dom';
 import { Chat, Chat as ChatIcon, Logout } from '@mui/icons-material';
 import FlightIcon from '@mui/icons-material/Flight';
 import { useTheme } from "@mui/material/styles";
+import { useAppSelector } from '../../redux/store';
 
 const SidebarHeader = styled(Box)(({ theme }) => ({
   padding: theme.spacing(3),
@@ -57,13 +58,16 @@ const StyledListItemButton = styled(ListItemButton)(({ theme, active }) => ({
 const Sidebar = ({ pages, navigate, onClose , handleLogout }) => {
     const { t } = useTranslation('navbar');
     const [collapsed, setCollapsed] = useState(false);
+    const profile = useAppSelector((state) => state.profile.profile);
     const location = useLocation();
 
     const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
     // Add 'profile' and 'Logout'  to pages if isMobile is true
-    const modifiedPages = isMobile
+    // Add 'Profile' and 'Logout'  to pages only if user is logged in
+
+    const modifiedPages = isMobile && profile
         ? [...pages, { pageName: t('profile'), path: '/account' } , {pageName: t('logout'), path: '/'}]
         : pages;
 

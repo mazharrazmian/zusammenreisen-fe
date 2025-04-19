@@ -12,5 +12,6 @@
     "dateTo": "Datum Bis",
     "dateGreaterThanOrEqual": "Datum Größer Oder Gleich",
     "dateLessThanOrEqual": "Datum Kleiner Oder Gleich",
-    "resetFilters": "Filter Zurücksetzen"
+    "resetFilters": "Filter Zurücksetzen",
+    "loadingCities": "Lade Städte..."
 }
