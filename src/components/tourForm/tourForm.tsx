@@ -371,7 +371,7 @@ const TourForm = () => {
     return (
         <>
             <Container maxWidth="md">
-                <Card sx={{ mt: 4, p: 2, mb: 4 }}>
+                <Card sx={{p: 2, mb: 4 }}>
                     <Typography variant="h4" gutterBottom>
                         {isEditMode ? t('editYourTrip') : t('createNewTour')}
                     </Typography>

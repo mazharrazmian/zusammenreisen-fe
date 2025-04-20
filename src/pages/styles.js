@@ -27,7 +27,7 @@ export const authStyles = {
   mainWrapper: {
     boxShadow: "0px 10px 20px rgba(0,0,0, .2)",
     borderRadius: "12px",
-    margin: "4rem auto",
+    margin: "1rem auto",
     width: { md: "70%", xs: "95%" },
     overflow: "hidden",
   },

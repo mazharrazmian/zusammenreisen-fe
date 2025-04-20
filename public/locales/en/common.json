@@ -1,4 +1,5 @@
 {
     "selectCountry" : "Select Country",
-    "selectCity" : "Select City"
+    "selectCity" : "Select City",
+    "goBack" : "Go Back"
 }

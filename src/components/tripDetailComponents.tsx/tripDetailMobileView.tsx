@@ -93,16 +93,7 @@ const TripDetailMobileView = ({
     };
 
     return (
-        <Container maxWidth="lg" sx={{ mt: 12, mb: 10, pb: 8 }}>
-            {/* Back button */}
-            <Button
-                startIcon={<ArrowBack />}
-                onClick={() => window.history.back()}
-                sx={{ mb: 2 }}
-            >
-                {t('backToSearch')}
-            </Button>
-
+        <Container maxWidth="lg" sx={{mb: 10, pb: 8 }}>
             {/* Title */}
             <Typography
                 variant="h4"

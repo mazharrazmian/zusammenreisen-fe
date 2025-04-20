@@ -140,7 +140,7 @@ const RequestManagementPage = () => {
                     </Box>
                 </Box>
             ) : (
-            <Container maxWidth="xl" sx={{ mt: 4, mb: 8 }}>
+            <Container maxWidth="xl" sx={{ mb: 8 }}>
                 <Paper 
                   elevation={3} 
                   sx={{ 

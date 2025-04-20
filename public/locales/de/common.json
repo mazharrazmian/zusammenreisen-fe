@@ -1,4 +1,5 @@
 {
     "selectCountry" : "Land Auswählen",
-    "selectCity" : "Stadt Auswählen"
+    "selectCity" : "Stadt Auswählen",
+    "goBack" : "Zurück"
 }

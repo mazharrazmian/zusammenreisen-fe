@@ -92,16 +92,7 @@ const TripDetailDesktopView = ({
     };
 
     return (
-        <Container maxWidth="lg" sx={{ mt: 12, mb: 6 }}>
-            {/* Back button */}
-            <Button
-                startIcon={<ArrowBack />}
-                onClick={() => window.history.back()}
-                sx={{ mb: 2 }}
-            >
-                {t('backToSearch')}
-            </Button>
-
+        <Container maxWidth="lg" sx={{ mb: 6 }}>
             {/* Title */}
             <Typography
                 variant="h4"

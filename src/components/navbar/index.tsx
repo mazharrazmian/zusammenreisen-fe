@@ -147,19 +147,21 @@ const Navbar = React.memo(({ transparentOnHome }) => {
 
     return (
         <AppBar
-            component={motion.div}
-            initial={{ y: -20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.5 }}
-            sx={{
-                background: !isTransparent ? "#fff" : "transparent",
-                transition: "background 0.3s ease",
-                boxShadow: !isTransparent ? "0px 4px 6px rgba(0, 0, 0, 0.1)" : "none",
-                height: "70px", // Fixed height for AppBar
-                display: "flex",
-                alignItems: "center",
-            }}
-        >
+                component={motion.div}
+                initial={{ y: -20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.5 }}
+                position="fixed" // Add this to ensure it stays fixed
+                sx={{
+                    background: !isTransparent ? "#fff" : "transparent",
+                    transition: "background 0.3s ease",
+                    boxShadow: !isTransparent ? "0px 4px 6px rgba(0, 0, 0, 0.1)" : "none",
+                    height: "70px", // Fixed height for AppBar
+                    display: "flex",
+                    alignItems: "center",
+                    zIndex: 1100, // Add this to ensure it stays on top
+                }}
+            >
             <Container maxWidth="xl">
                 <Toolbar
                     disableGutters
@@ -434,10 +436,7 @@ export const PageTransition = ({ children }) => {
                 style={{
                     width: '100%',
                     height: '100%',
-                    position: 'absolute', // Add this
-                    left: 0,              // Add this
-                    right: 0,             // Add this
-                    top: 0                // Add this
+                    position: 'relative' // Changed from 'absolute' to avoid layout issues
                 }}
             >
                 {children}

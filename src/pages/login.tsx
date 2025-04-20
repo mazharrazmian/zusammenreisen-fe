@@ -20,8 +20,6 @@ import { useNavigate } from "react-router-dom";
 import { authStyles, login } from "./styles";
 import { useDispatch } from "react-redux";
 import { get_profile } from "../redux/slice/profileSlice";
-import Navbar from "../components/navbar";
-import { ArrowBack } from "@mui/icons-material";
 import { useTranslation } from 'react-i18next';
 
 const initialValues = {
@@ -163,13 +161,6 @@ const LoginPage = () => {
             >
               <Box>
                 <Box sx={authStyles.formWrapper}>
-                  <Button
-                    startIcon={<ArrowBack />}
-                    onClick={() => navigate('/')}
-                    sx={{ mb: 2 }}
-                  >
-                    {t('backToHomepage')}
-                  </Button>
                   <Box>
                     <Typography variant="h2" textAlign={"center"}>
                       {t('welcome')}
