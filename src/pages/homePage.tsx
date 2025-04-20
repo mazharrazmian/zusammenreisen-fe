@@ -22,7 +22,8 @@ import { useTranslation } from "react-i18next";
 const HomePage: React.FC = () => {
     const isMobile = useMediaQuery("(max-width: 960px)");
     const profile = useAppSelector((s) => s.profile);
-    const { t } = useTranslation('homepage');
+    const { t } = useTranslation(['homepage']);
+    
 
     // Tours list state
     const [posts, setPosts] = useState([]);
@@ -459,7 +460,7 @@ const HomePage: React.FC = () => {
                                                         mb: 2
                                                     }}
                                                 >
-                                                    No tours found matching your filters.
+                                                    {t("noToursFound")}
                                                 </Typography>
                                                 <motion.div
                                                     whileHover={{ scale: 1.05 }}
@@ -491,7 +492,7 @@ const HomePage: React.FC = () => {
                                                             mr: 2
                                                         }}
                                                     >
-                                                        Clear Filters
+                                                        {t('resetFilters')}
                                                     </Button>
                                                 </motion.div>
                                                 <motion.div

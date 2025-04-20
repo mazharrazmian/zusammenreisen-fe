@@ -18,5 +18,7 @@
  
     "exploreGroupTours": "Gruppenreisen Erkunden",
     "exploreGroupToursPara": "Entdecken Sie Spannende Touren, Die Von Anderen Reisenden Organisiert Wurden, Schließen Sie Sich Einer Gruppe An, Die Ihren Interessen Entspricht, Oder Erstellen Sie Ihre Eigene Tour.",
-    "filterTours": "Touren Filtern"
+    "filterTours": "Touren Filtern",
+    "resetFilters": "Filter Zurücksetzen",
+    "noToursFound": "Keine Touren Gefunden"
 }
