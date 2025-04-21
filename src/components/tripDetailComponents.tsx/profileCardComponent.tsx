@@ -3,11 +3,12 @@ import { AccessTime ,    Language as LanguageIcon,
 import { Avatar, Box, Button, Card, CardContent, Chip, Divider, Typography } from "@mui/material";
 import EditIcon from '@mui/icons-material/Edit';
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 
 const ProfileCardComponent = ({ postData, profile, handleEdit }) => 
     
 {
-
+    const navigate = useNavigate();
     const {t} = useTranslation('tripdetails')
     
     return (
@@ -17,7 +18,8 @@ const ProfileCardComponent = ({ postData, profile, handleEdit }) =>
                 <Avatar
                     alt={postData?.posted_by?.user?.name}
                     src={postData?.posted_by?.picture}
-                    sx={{ width: 100, height: 100, mx: 'auto', mb: 2 }}
+                    sx={{ width: 100, height: 100, mx: 'auto', mb: 2 , cursor: 'pointer'}}
+                    onClick={() => { navigate(`/profile/${postData?.posted_by?.id}`) }}
                 />
                 <Typography variant="h5" gutterBottom>
                     {postData?.posted_by?.user?.name}
@@ -26,7 +28,7 @@ const ProfileCardComponent = ({ postData, profile, handleEdit }) =>
                 <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1, flexWrap: 'wrap', mb: 2 }}>
                     <Chip
                         icon={<AccessTime fontSize="small" />}
-                        label="Last active: 2 hours ago"
+                        label={`Last active: ${new Date(postData?.posted_by?.user?.last_login).toLocaleDateString()}`}
                         variant="outlined"
                         size="small"
                     />

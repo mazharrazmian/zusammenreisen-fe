@@ -46,8 +46,17 @@ export const signUp = async (data: signup) => {
     }
   };
 
+  export const getUserProfile = async (id : any) => {
+    try {  
+        const response = await callAPi.get(`users/profile/${id}`);
+        return response
+        } catch (error) {
+        handleApiError(error);
+        }
+    }
+
   export const updateProfile = async (id : any ,data : any) => {
-      const response = await callAPiMultiPart.patch(`users/profile/${id}`,data=data);
+      const response = await callAPiMultiPart.patch(`users/profile/${id}/`,data=data);
       return response
   };
 
@@ -102,6 +111,7 @@ const authServices = {
   setPassword,
   forgotPassword,
   resetPasswordConfirm,
-  deleteAccount
+  deleteAccount,
+  getUserProfile
 };
 export default authServices;

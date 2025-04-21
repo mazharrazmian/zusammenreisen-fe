@@ -16,10 +16,11 @@ import { toast } from 'react-toastify';
 import { handleApiError } from '../../redux/api/http-common';
 import { useAppSelector } from '../../redux/store';
 import { REQUESTSTATUS } from '../../Constants';
+import { useTranslation } from 'react-i18next';
 
 const JoinTripRequestModal = ({ open, handleClose, tripDetails }) => {
-    console.log(tripDetails)
-  const profile = useAppSelector(s=>s.profile)
+    const { t } = useTranslation('tripdetails');
+    const profile = useAppSelector(s=>s.profile)
   const [formData, setFormData] = useState({
     message : '',
     from_email : profile?.profile?.email,
@@ -42,10 +43,10 @@ const JoinTripRequestModal = ({ open, handleClose, tripDetails }) => {
     postRequestService.createRequest(formData)
     .then(response=>{
         if (response.status == 201){
-            toast.success('Request Sent Successfully')
+            toast.success(t('requestSentSuccess'));
         }
         else {
-            toast.error("Something went wrong. Request could not be submitted successfully.")
+            toast.error(t('requestFailed')); 
         }
         handleClose(true); // Close with success flag
     })
@@ -88,7 +89,7 @@ const JoinTripRequestModal = ({ open, handleClose, tripDetails }) => {
           borderColor: 'divider' 
         }}>
           <Typography id="join-trip-modal-title" variant="h6" component="h2">
-            Join "{tripDetails?.title}"
+            {t('join')} "{tripDetails?.title}"
           </Typography>
           <Button 
             onClick={() => handleClose(false)} 
@@ -103,7 +104,7 @@ const JoinTripRequestModal = ({ open, handleClose, tripDetails }) => {
           {/* Trip Details Summary */}
           <Box sx={{ mb: 3 }}>
             <Typography variant="subtitle1" sx={{ fontWeight: 'medium', mb: 1 }}>
-              Trip Details
+              {t("tripDetails")}
             </Typography>
             <Box sx={{ 
               bgcolor: 'background.default', 
@@ -112,25 +113,25 @@ const JoinTripRequestModal = ({ open, handleClose, tripDetails }) => {
             }}>
               <Grid container spacing={2}>
                 <Grid size={{xs:12,sm:6}}>
-                  <Typography variant="body2" color="text.secondary">Destination:</Typography>
+                  <Typography variant="body2" color="text.secondary">{t('destination')}:</Typography>
                   <Typography variant="body2" fontWeight="medium">
                     {tripDetails?.travel_to_city.name}, {tripDetails?.travel_to_country.name}
                   </Typography>
                 </Grid>
                 <Grid size={{xs:12,sm:6}}>
-                  <Typography variant="body2" color="text.secondary">Dates:</Typography>
+                  <Typography variant="body2" color="text.secondary">{t('dates')}:</Typography>
                   <Typography variant="body2" fontWeight="medium">
                     {tripDetails?.date_from} - {tripDetails?.date_to}
                   </Typography>
                 </Grid>
                 <Grid size={{xs:12,sm:6}}>
-                  <Typography variant="body2" color="text.secondary">Type:</Typography>
+                  <Typography variant="body2" color="text.secondary">{t('type')}:</Typography>
                   <Typography variant="body2" fontWeight="medium" sx={{ textTransform: 'capitalize' }}>
                     {tripDetails?.tour_type}
                   </Typography>
                 </Grid>
                 <Grid size={{xs:12,sm:6}}>
-                  <Typography variant="body2" color="text.secondary">Group Size:</Typography>
+                  <Typography variant="body2" color="text.secondary">{t('groupSize')}:</Typography>
                   <Typography variant="body2" fontWeight="medium">
                     {tripDetails?.current_travellers}/{tripDetails?.group_size}
                   </Typography>
@@ -140,10 +141,10 @@ const JoinTripRequestModal = ({ open, handleClose, tripDetails }) => {
           </Box>
 
           <Typography variant="subtitle1" sx={{ fontWeight: 'medium', mb: 1 }}>
-            Tell us about yourself
+            {t("aboutYourself")}
           </Typography>
           <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-            The trip organizer will review your request to determine if you're a good fit for the group.
+            {t("tripOrganizerReview")}
           </Typography>
 
           <form onSubmit={handleSubmit}>
@@ -151,11 +152,11 @@ const JoinTripRequestModal = ({ open, handleClose, tripDetails }) => {
               <Grid size={{xs:12}}>
                 <TextField
                   name="message"
-                  label="Write a message"
+                  label={t('writeMessage')}
                   multiline
                   rows={3}
                   fullWidth
-                  placeholder="Share your travel experiences, or why would you like to join, or just a few words about yourself."
+                  placeholder={t("messagePlaceholder")}
                   value={formData.description}
                   onChange={handleChange}
                   required
@@ -172,14 +173,14 @@ const JoinTripRequestModal = ({ open, handleClose, tripDetails }) => {
                 variant="outlined" 
                 onClick={() => handleClose(false)}
               >
-                Cancel
+                {t("cancel")}
               </Button>
               <Button 
                 type="submit" 
                 variant="contained" 
                 color="primary"
               >
-                Submit Request
+                {t("sendRequest")}
               </Button>
             </Box>
           </form>

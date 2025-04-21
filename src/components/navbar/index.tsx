@@ -358,7 +358,7 @@ const Navbar = React.memo(({ transparentOnHome }) => {
                                             </Typography>
                                         </MenuItem>
                                         <Divider />
-                                        <MenuItem onClick={() => navigateWithAnimation('/account')}>
+                                        <MenuItem onClick={() => navigateWithAnimation(`/profile/${profile?.profile?.profile?.id}`)}>
                                             <Typography sx={{ textAlign: "center", display: 'flex' }}>
                                                 <Iconify icon={'mdi:home'} width={25} />
                                                 {t('profile')}

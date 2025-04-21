@@ -14,7 +14,7 @@
     "profileUpdateFailed": "Profil konnte nicht aktualisiert werden. Bitte kontaktieren Sie den Support.",
     "passwordChanged": "Passwort erfolgreich geändert",
     "passwordChangeFailed": "Passwort konnte nicht geändert werden. Bitte kontaktieren Sie einen Administrator.",
-    
+    "languages": "Sprachen",
     "loading": "Wird geladen...",
     "aboutMe": "Über mich",
     "about": "Über",
@@ -29,6 +29,7 @@
     "actionFailed": "Aktion konnte nicht durchgeführt werden",
     "writeAboutYourself": "Schreiben Sie etwas über sich selbst...",
     "noAboutInfo": "Keine Informationen verfügbar. Klicken Sie auf das Stift-Symbol, um über sich zu schreiben.",
+    "noAboutInfoPublic": "Keine Informationen verfügbar.",
     "male": "Männlich",
     "female": "Weiblich",
     "other": "Andere",
@@ -37,5 +38,6 @@
     "email": "E-Mail",
     "age": "Alter",
     "save": "Speichern",
-    "currentPassword" : "Aktuelles Passwort"
+    "currentPassword" : "Aktuelles Passwort",
+    "noLanguagesSpecified": "Keine Sprachen angegeben"
 }

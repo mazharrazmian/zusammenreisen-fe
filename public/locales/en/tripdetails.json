@@ -27,7 +27,16 @@
     "description": "Description",
      "travelers": "Travelers",
      "participants": "Participants",
-
+    "tripOrganizerReview": "The trip organizer will review your request to see if you are a good fit for the group.",
+    "aboutYourself": "About Yourself",
+    "destination": "Destination",
+    "dates": "Dates",
+    "type" : "Type",
+    "groupSize": "Group Size",
+    "messagePlaceholder" : "Share your travel experiences, or why would you like to join, or just a few words about yourself.",
+    "cancel": "Cancel",
+    "requestSentSuccess": "Request sent successfully.",
+    "requestFailed": "Something went wrong. Request could not be sent successfully.",
     "tabs": {
         "overview": "Overview",
         "itinerary": "Itinerary",

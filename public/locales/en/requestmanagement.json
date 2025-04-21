@@ -32,5 +32,6 @@
     "acceptedRequests": "Accepted",
     "rejectedRequests": "Rejected",
     "seat" : "Seat",
-    "seats" :"Seats"
+    "seats" :"Seats",
+    "viewProfile": "View Profile"
 }

@@ -388,6 +388,9 @@ const ReceivedRequests: React.FC<ReceivedRequestsProps> = ({ requests, handleAcc
         <MenuItem onClick={() => handleRequestDelete(selectedRequest.id)}>
           {t('deleteRequest')}
         </MenuItem>
+        <MenuItem onClick={() => navigate(`/profile/${selectedRequest.from_profile.id}`)}>
+          {t('viewProfile')}
+        </MenuItem>
       </Menu>
     </Grid>
   );

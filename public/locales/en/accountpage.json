@@ -14,7 +14,7 @@
     "profileUpdateFailed": "Could Not Update Profile. Please Contact Support.",
     "passwordChanged": "Password Changed Successfully",
     "passwordChangeFailed": "Password Could Not Be Changed. Please Contact An Administrator.",
-    
+    "languages": "Languages",
     "loading": "Loading...",
     "aboutMe": "About Me",
     "about": "About",
@@ -29,6 +29,7 @@
     "actionFailed": "Action could not be completed",
     "writeAboutYourself": "Write something about yourself...",
     "noAboutInfo": "No information available. Click the pencil icon to write about yourself.",
+    "noAboutInfoPublic": "No information available.",
     "male": "Male",
     "female": "Female",
     "other": "Other",
@@ -37,5 +38,6 @@
     "email": "Email",
     "age": "Age",
     "save": "Save",
-    "currentPassword" : "Current Password"
+    "currentPassword" : "Current Password",
+    "noLanguagesSpecified": "No languages specified"
 }

@@ -27,7 +27,17 @@
     "description": "Description",
     "travelers": "Reisende",
     "participants": "Teilnehmer",
-
+    "tripOrganizerReview": "Der Reiseveranstalter wird Ihre Anfrage überprüfen, um festzustellen, ob Sie gut zur Gruppe passen.",
+    "aboutYourself": "Über dich",
+    "destination": "Ziel",
+    "dates": "Daten",
+    "type" : "Typ",
+    "groupSize": "Gruppengröße",
+    "writeMessage": "Nachricht schreiben",
+    "messagePlaceholder" : "Teilen Sie Ihre Reiseerfahrungen mit oder warum Sie teilnehmen möchten, oder nur ein paar Worte über sich selbst.",
+    "requestSentSuccess": "Anfrage erfolgreich gesendet.",
+    "requestFailed": "Etwas ist schief gelaufen. Anfrage konnte nicht erfolgreich gesendet werden.",
+    "cancel": "Abbrechen",
     "tabs": {
         "overview": "Übersicht",
         "itinerary": "Reiseplan",

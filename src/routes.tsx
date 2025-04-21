@@ -10,13 +10,13 @@ import EditPost from "./pages/editTour";
 import ProtectedRoute from "./hoc/protectedRoute";
 import ActivateAccount from "./pages/activateAccount";
 import ResetPassword from "./pages/passwordReset";
-import ProfilePage from "./pages/accountPage";
 import TravelBuddyBlog from "./pages/blogList";
 import CreateTour from "./pages/createTour";
 import RequestManagementPage from "./pages/requestManagement";
 import MyTripsPage from "./pages/tripPlannerList";
 import TripPlannerPage from "./pages/tripPlannerDetail";
 import { PageTransition } from "./components/navbar";
+import ProfileDetail from "./pages/profileDetail";
 
 export default function Router() {
     const routes = useRoutes([
@@ -95,10 +95,10 @@ export default function Router() {
             ) 
           },
           { 
-            path: "account", 
+            path: "profile/:userId", 
             element: (
               <ProtectedRoute>
-                <ProfilePage />
+                <ProfileDetail />
               </ProtectedRoute>
             ) 
           },

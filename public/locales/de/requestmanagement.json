@@ -32,5 +32,6 @@
     "acceptedRequests": "Akzeptiert",
     "rejectedRequests": "Abgelehnt",
     "seat" : "Plätze",
-    "seats" :"Plätze"
+    "seats" :"Plätze",
+    "viewProfile": "Profil Ansehen"
 }

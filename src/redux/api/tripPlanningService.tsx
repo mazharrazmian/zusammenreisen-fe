@@ -18,6 +18,14 @@ export const tripService = {
     
   },
 
+  // Remove trip participant
+    removeTripParticipant: async (tripId, participantId) => {
+        const response = await callAPi.post(`${API_URL}/planner/trips/${tripId}/remove_participant/`, {
+            profile_id: participantId
+        });
+        return response;
+    },
+
   getTripComments : async (tripId) => callAPi.get(`${API_URL}/planner/comments?post_id=${tripId}`),
 
   
