@@ -49,6 +49,27 @@ const TripDetailMobileView = ({
             return null;
         }
         
+        // Trip is fully booked
+        if (postData?.current_travellers >= postData?.group_size) {
+            return (
+                <Fab
+                    color="primary"
+                    variant="extended"
+                    disabled
+                    sx={{
+                        position: "fixed",
+                        bottom: 16,
+                        left: 16,
+                        right: 16,
+                        borderRadius: 2,
+                        zIndex: 1000
+                    }}
+                >
+                    {t('fullyBooked')}
+                </Fab>
+            );
+        }
+
         // Flow 2.1: User is participant of this trip
         if (postData?.participants?.includes(profile?.profile?.profile?.id)) {
             return (

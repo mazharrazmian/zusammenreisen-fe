@@ -38,6 +38,10 @@
     "requestSentSuccess": "Anfrage erfolgreich gesendet.",
     "requestFailed": "Etwas ist schief gelaufen. Anfrage konnte nicht erfolgreich gesendet werden.",
     "cancel": "Abbrechen",
+    "fullyBooked": "Reise ausgebucht",
+    "tripFullyBooked": "Diese Reise ist ausgebucht.",
+    "tripHasEnded": "Diese Reise ist beendet.",
+    "tripOver" : "Reise beendet",
     "tabs": {
         "overview": "Übersicht",
         "itinerary": "Reiseplan",

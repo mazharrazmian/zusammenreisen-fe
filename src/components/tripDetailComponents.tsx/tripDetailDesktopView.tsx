@@ -1,4 +1,4 @@
-import { ArrowBack, Chat as ChatIcon, DirectionsWalk } from "@mui/icons-material";
+import { AccessTime, ArrowBack, Chat as ChatIcon, DirectionsWalk } from "@mui/icons-material";
 import { Button, Card, CardContent, Chip, Container, Grid, Typography } from "@mui/material";
 import TourDetailImageGallery from "./tripDetailImageGallery";
 import TripDetailsTabsComponent from "./tripDetailTabs";
@@ -68,6 +68,50 @@ const TripDetailDesktopView = ({
                 </CardContent>
             );
         }
+
+        //Flow 3 : The trip is fully booked
+      
+        if (postData?.group_size === postData?.current_travellers) {
+            return (
+                <CardContent sx={{ textAlign: 'center' }}>
+                    <Typography variant="h6" gutterBottom>
+                        {t('fullyBooked')}
+                    </Typography>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        startIcon={<ChatIcon />}
+                        fullWidth
+                        disabled
+                    >
+                        {t('tripFullyBooked')}
+                    </Button>
+                </CardContent>
+            );
+        }
+
+        //Flow 4 : The trip is already over
+const today = new Date();
+const tripEndDate = postData?.date_to ? new Date(postData.date_to) : null;
+
+if (tripEndDate && tripEndDate < today) {
+    return (
+        <CardContent sx={{ textAlign: 'center' }}>
+            <Typography variant="h6" gutterBottom>
+                {t('tripOver')}
+            </Typography>
+            <Button
+                variant="contained"
+                color="primary"
+                startIcon={<AccessTime />}
+                fullWidth
+                disabled
+            >
+                {t('tripHasEnded')}
+            </Button>
+        </CardContent>
+    );
+}
         
         // Flow 2.2: User is logged in but not a participant
         return (
@@ -89,6 +133,8 @@ const TripDetailDesktopView = ({
                 </Button>
             </CardContent>
         );
+
+        
     };
 
     return (

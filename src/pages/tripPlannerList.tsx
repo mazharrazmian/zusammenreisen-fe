@@ -57,18 +57,28 @@ const MyTripsPage = () => {
   };
 
   const filteredTrips = trips.filter(trip => {
+    const today = new Date();
+    const tripStartDate = new Date(trip.date_from);
+    const tripEndDate = new Date(trip.date_to);
+    
+    // Determine if the trip is upcoming or past based on dates
+    const isUpcoming = tripStartDate > today; // Trip hasn't started yet
+    const isPast = tripEndDate < today; // Trip has ended
+    
     // Filter by tab selection
-    if (tabValue === 1 && trip.status !== 'upcoming') return false;
-    if (tabValue === 2 && trip.status !== 'past') return false;
+    if (tabValue === 1 && !isUpcoming) return false; // Upcoming trips tab
+    if (tabValue === 2 && !isPast) return false; // Past trips tab
     
     // Filter by search query
     if (searchQuery && !trip.title.toLowerCase().includes(searchQuery.toLowerCase())) {
       return false;
     }
     
-    // Filter by status
-    if (filters.status !== 'all' && trip.status !== filters.status) {
-      return false;
+    // Filter by status (if you still need status filtering)
+    if (filters.status !== 'all') {
+      if (filters.status === 'upcoming' && !isUpcoming) return false;
+      if (filters.status === 'past' && !isPast) return false;
+      if (filters.status === 'ongoing' && (isUpcoming || isPast)) return false; // Trip is currently running
     }
     
     // Add more filter logic as needed
@@ -76,6 +86,7 @@ const MyTripsPage = () => {
     return true;
   });
 
+  
   return (
     <Container maxWidth="lg">
       <Box sx={{ py: 4 }}>

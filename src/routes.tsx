@@ -6,17 +6,18 @@ import LoginPage from "./pages/login";
 import RegisterPage from "./pages/register";
 import Details from "./pages/tripDetails";
 import ChatPage from "./pages/chatPage";
-import EditPost from "./pages/editTour";
 import ProtectedRoute from "./hoc/protectedRoute";
 import ActivateAccount from "./pages/activateAccount";
 import ResetPassword from "./pages/passwordReset";
-import TravelBuddyBlog from "./pages/blogList";
 import CreateTour from "./pages/createTour";
 import RequestManagementPage from "./pages/requestManagement";
 import MyTripsPage from "./pages/tripPlannerList";
 import TripPlannerPage from "./pages/tripPlannerDetail";
 import { PageTransition } from "./components/navbar";
 import ProfileDetail from "./pages/profileDetail";
+import LegalPage from "./pages/blogPage";
+import BlogPage from "./pages/blogPage";
+import EditTour from "./pages/editTour";
 
 export default function Router() {
     const routes = useRoutes([
@@ -25,7 +26,7 @@ export default function Router() {
         children: [
           { path: "/", element: <PageTransition> <HomePage /> </PageTransition>, index: true },
           { path: "posts/:id", element: <Details /> },
-          { path: "blog", element: <TravelBuddyBlog /> },
+          { path: "blog/:slug", element: <BlogPage /> },
           { 
             path: "add/post", 
             element: (
@@ -41,7 +42,7 @@ export default function Router() {
             element: (
               <ProtectedRoute>
                 <PageTransition>
-                <EditPost />
+                <EditTour />
                 </PageTransition>
               </ProtectedRoute>
             ) 
@@ -102,6 +103,8 @@ export default function Router() {
               </ProtectedRoute>
             ) 
           },
+          // add this path <Route path="/legal/:slug" element={<LegalPage />} />
+         
           { path: "activate/:uid/:token", element: <ActivateAccount /> },
           { path: "password/reset/confirm/:uid/:token", element: <ResetPassword /> },
           { path: "404", element: <Page404 /> },

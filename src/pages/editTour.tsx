@@ -4,7 +4,7 @@ import Navbar from "../components/navbar";
 
 
 
-const CreateTour = () => {
+const EditTour = () => {
     return (
         <>
             <TourForm />
@@ -12,4 +12,4 @@ const CreateTour = () => {
     );
 };
 
-export default CreateTour;
+export default EditTour;

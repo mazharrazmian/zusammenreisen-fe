@@ -5,8 +5,8 @@ import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 import { toast } from "react-toastify";
-import AddPost from '../pages/addPost';
 import postServices from "../redux/api/postService";
+import CreateTour from "../pages/createTour";
 
 
 jest.mock("../redux/api/postService");
@@ -29,7 +29,7 @@ describe("AddPost Component", () => {
     render(
       <Provider store={store}>
         <BrowserRouter>
-          <AddPost />
+          <CreateTour />
         </BrowserRouter>
       </Provider>
     );

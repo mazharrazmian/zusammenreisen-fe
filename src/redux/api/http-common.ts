@@ -5,7 +5,6 @@ import { toast } from "react-toastify";
 export const API_URL = import.meta.env.VITE_API_URL;
 export const CHAT_URL = import.meta.env.VITE_CHAT_URL;
 
-console.log('i18nextLng', localStorage.getItem("i18nextLng"))
 
 export const callAPi = axios.create({
   baseURL: API_URL,

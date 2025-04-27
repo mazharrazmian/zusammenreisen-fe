@@ -23,6 +23,7 @@ import {
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useTranslation } from 'react-i18next';
 import {tripService} from '../../redux/api/tripPlanningService';
+import { useNavigate } from 'react-router-dom';
 
 const ParticipantsSection = React.memo(({ 
   participants, 
@@ -36,6 +37,7 @@ const ParticipantsSection = React.memo(({
     const [removingId, setRemovingId] = useState(null); // Track which participant is being removed
     const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
     const [participantToRemove, setParticipantToRemove] = useState(null);
+    const navigate = useNavigate()
 
     const handleRemoveClick = (participant) => {
         setParticipantToRemove(participant);
@@ -102,7 +104,10 @@ const ParticipantsSection = React.memo(({
                                     )
                                 }
                             >
-                                <ListItemButton>
+                                <ListItemButton
+                                onClick={() => {navigate('/profile/' + participant.id)}}
+
+                                >
                                     <ListItemAvatar>
                                         <Avatar alt={participant.user.name} src={participant.picture} />
                                     </ListItemAvatar>

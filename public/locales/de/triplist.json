@@ -11,5 +11,8 @@
     "participant": "Teilnehmer",
     "participants": "Teilnehmer",
     "active": "Aktiv",
-    "pending": "Ausstehend"
+    "pending": "Ausstehend",
+    "tourFull": "Ausgebucht",
+    "tourFinished": "Tour Beendet",
+    "ongoing": "Laufend"
 }

@@ -18,7 +18,7 @@ const Page404 = () => {
                 <Typography variant="h3">{t('pageNotFound')}</Typography>
                 <Typography variant="h4">
                     <Button
-                        onClick={() => navigate(-1)}
+                        onClick={() => navigate('/')}
                     >
                         {t('goBack')}
                     </Button>

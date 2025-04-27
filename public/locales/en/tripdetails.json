@@ -30,6 +30,7 @@
     "tripOrganizerReview": "The trip organizer will review your request to see if you are a good fit for the group.",
     "aboutYourself": "About Yourself",
     "destination": "Destination",
+    "writeMessage": "Write a message",
     "dates": "Dates",
     "type" : "Type",
     "groupSize": "Group Size",
@@ -37,6 +38,10 @@
     "cancel": "Cancel",
     "requestSentSuccess": "Request sent successfully.",
     "requestFailed": "Something went wrong. Request could not be sent successfully.",
+    "fullyBooked": "Fully Booked",
+    "tripFullyBooked": "This trip is fully booked.",
+    "tripHasEnded": "This trip has ended.",
+    "tripOver" : "Trip Over",
     "tabs": {
         "overview": "Overview",
         "itinerary": "Itinerary",

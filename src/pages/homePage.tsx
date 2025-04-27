@@ -93,10 +93,16 @@ const HomePage: React.FC = () => {
         fetchPosts();
     }, [urlParams]);
 
-    const handlePageChange = (_event: React.ChangeEvent<unknown>, value: number) => {
-        // Scroll to the top of the tours section when changing page
-        document.getElementById('explore-tours')?.scrollIntoView({ behavior: 'smooth' });
+    // Scroll to the top of the tours section when the page changes
+    useEffect(() => {
+        // Check if the page number has changed and if it's not the initial load
+        if (isInitialLoad) return; // Skip on initial load
+        if (filters.page) {
+            document.getElementById('explore-tours')?.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, [filters.page]);
 
+    const handlePageChange = (_event: React.ChangeEvent<unknown>, value: number) => {
         setFilters(prevFilters => ({
             ...prevFilters,
             page: value,

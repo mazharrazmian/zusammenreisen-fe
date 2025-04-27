@@ -1,7 +1,5 @@
 import { callAPi, callAPiMultiPart } from "./http-common";
 
-import { postDataInterface } from "../../pages/addPost";
-
 
 const getAllPosts = (queryParams:string) => {
     return callAPi.get(`/reisapp/posts?${queryParams}`);
