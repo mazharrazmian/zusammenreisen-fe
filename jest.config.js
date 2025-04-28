@@ -1,4 +1,6 @@
 module.exports = {
+     // Setup environment variables
+    setupFiles: ['<rootDir>/jest.setup.js'],
     preset: "ts-jest",
     transform: {
       "^.+\\.tsx?$": "ts-jest",

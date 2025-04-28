@@ -1,10 +1,11 @@
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
 
-// https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
-  server: {
-    port: 3000, // Specify the port
+  test: {
+    environment: 'happy-dom',  // or 'jsdom' if you prefer
+    globals: true,             // allows using `describe`, `it`, etc. without imports
+    setupFiles: ['./src/test/setup.tsx'], // we'll create this next
   },
-});
+})

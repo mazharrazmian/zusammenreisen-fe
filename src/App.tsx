@@ -1,4 +1,3 @@
-import { useDispatch } from "react-redux";
 import "./App.css";
 // import { scheduleTokenRefresh } from "./redux/api/http-common";
 import Router from "./routes";
