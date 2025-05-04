@@ -419,6 +419,8 @@ const TourForm = () => {
                                     helperText={errors.description}
                                     error={Boolean(errors.description)}
                                     placeholder={t('tourDescriptionPlaceholder')}
+                                    aria-label={t('tourDescription')}
+                                    sx={{pointerEvents:'auto'}}
                                 />
                             </Grid>
 
@@ -440,12 +442,13 @@ const TourForm = () => {
 
                             <Grid size={{ xs: 12, sm: 6 }}>
                                 <FormControl fullWidth variant="outlined">
-                                    <InputLabel>{t('tourType')}</InputLabel>
+                                    <InputLabel id="tourTypeLabel">{t('tourType')}</InputLabel>
                                     <Select
                                         name="tourType"
                                         value={getTranslatedTourType(formData.tourType)}
                                         onChange={handleChange}
                                         label={t('tourType')}
+                                        aria-labelledby="tourTypeLabel"
                                     >
                                         {tourTypesTranslations[currentLanguage in tourTypesTranslations ? currentLanguage : 'en'].map((type, index) => (
                                             <MenuItem key={type} value={type}>
@@ -630,6 +633,8 @@ const TourForm = () => {
                                             onDelete={() => handleRemoveActivity(index)}
                                             color="primary"
                                             variant="outlined"
+                                            aria-label={activity}
+                                            
                                         />
                                     ))}
                                     {formData.activities.length === 0 && (

@@ -25,7 +25,8 @@ import Iconify from "../iconify";
 import { useAppSelector } from "../../redux/store";
 import Sidebar from "./sidebar";
 
-import Logo from "../../assets/logo1.png";
+import LogoZusammenreisen from "../../assets/logo-zusammenreisen.svg";
+import LogoWanderbuddies from '../../assets/logo-wanderbuddies.svg'
 import LanguageSwitcher from "../shared/languageSwitcher/languageSwitcher";
 
 // Define page transition variants
@@ -57,6 +58,8 @@ const MotionButton = motion(Button);
 
 const Navbar = React.memo(({ transparentOnHome }) => {
     const { t, i18n } = useTranslation('navbar');
+    console.log(i18n.language)
+    const Logo = i18n.language == 'de' ? LogoZusammenreisen : LogoWanderbuddies
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
@@ -173,7 +176,7 @@ const Navbar = React.memo(({ transparentOnHome }) => {
                         <Box
                             component='img'
                             sx={{
-                                height: '70px', // Fixed reasonable height
+                                height: '80px', // Fixed reasonable height
                                 width: 'auto',  // Maintain aspect ratio
                                 display: { xs: 'none', md: 'flex' },
                                 cursor: 'pointer',
@@ -209,6 +212,7 @@ const Navbar = React.memo(({ transparentOnHome }) => {
                                     navigate={navigateWithAnimation}
                                     onClose={handleCloseNavMenu}
                                     handleLogout={handleLogout}
+                                    Logo={Logo}
                                 />
                                
                             </Box>

@@ -15,7 +15,7 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import PeopleIcon from '@mui/icons-material/People';
 import SettingsIcon from '@mui/icons-material/Settings';
 import HelpIcon from '@mui/icons-material/Help';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Chat, Chat as ChatIcon, Logout } from '@mui/icons-material';
 import FlightIcon from '@mui/icons-material/Flight';
 import { useTheme } from "@mui/material/styles";
@@ -55,12 +55,12 @@ const StyledListItemButton = styled(ListItemButton)(({ theme, active }) => ({
   })
 }));
 
-const Sidebar = ({ pages, navigate, onClose , handleLogout }) => {
+
+const Sidebar = ({ pages, navigate, onClose , handleLogout, Logo }) => {
     const { t } = useTranslation('navbar');
     const [collapsed, setCollapsed] = useState(false);
     const profile = useAppSelector((state) => state.profile.profile);
     const location = useLocation();
-
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
@@ -109,8 +109,29 @@ const Sidebar = ({ pages, navigate, onClose , handleLogout }) => {
 
     return (
         <>
-            <SidebarHeader>
-                {t('travelMates')}
+            <SidebarHeader
+            sx={{
+                display:'flex',
+                justifyContent : "center",
+                padding:0,
+                borderBottom:'1px dotted black',
+                marginBottom : '10px',
+            }}
+            >
+                <Box
+                component='img'
+                sx={{
+                    height:'120px',
+                    width: 'auto',
+                    cursor: 'pointer',
+                    padding: 0,
+                    margin:0,
+                }}
+                alt={t('wanderbuddies')}
+                src={Logo}
+                onClick={() => navigate('/')}
+            />
+                
             </SidebarHeader>      
             <ul sx={{ mt: 2 }}>
                 {modifiedPages.map((page) => {

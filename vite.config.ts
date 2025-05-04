@@ -6,6 +6,5 @@ export default defineConfig({
   test: {
     environment: 'happy-dom',  // or 'jsdom' if you prefer
     globals: true,             // allows using `describe`, `it`, etc. without imports
-    setupFiles: ['./src/test/setup.tsx'], // we'll create this next
   },
 })
