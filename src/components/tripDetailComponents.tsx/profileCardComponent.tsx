@@ -28,7 +28,7 @@ const ProfileCardComponent = ({ postData, profile, handleEdit }) =>
                 <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1, flexWrap: 'wrap', mb: 2 }}>
                     <Chip
                         icon={<AccessTime fontSize="small" />}
-                        label={`Last active: ${new Date(postData?.posted_by?.user?.last_login).toLocaleDateString()}`}
+                        label={`${t('lastActive')} : ${new Date(postData?.posted_by?.user?.last_login).toLocaleDateString()}`}
                         variant="outlined"
                         size="small"
                     />

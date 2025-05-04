@@ -42,6 +42,9 @@
     "tripFullyBooked": "This trip is fully booked.",
     "tripHasEnded": "This trip has ended.",
     "tripOver" : "Trip Over",
+    "you" : "You",
+    "lastActive" : "Last Active",
+    "days" : "Days",
     "tabs": {
         "overview": "Overview",
         "itinerary": "Itinerary",

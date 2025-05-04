@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 
 
 // Helper function to calculate trip duration
-const calculateDuration = (startDate, endDate) => {
+const calculateDuration = (startDate, endDate , t) => {
     if (!startDate || !endDate) return 'N/A';
 
     const start = new Date(startDate);
@@ -13,7 +13,7 @@ const calculateDuration = (startDate, endDate) => {
     const diffTime = Math.abs(end - start);
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-    return `${diffDays} days`;
+    return `${diffDays} ${t('days')}`;
 };
 
 
@@ -38,7 +38,7 @@ const TripSummaryCardComponent = ({ postData }) =>
                     </ListItemIcon>
                     <ListItemText
                         primary={t('duration')}
-                        secondary={calculateDuration(postData?.date_from, postData?.date_to)}
+                        secondary={calculateDuration(postData?.date_from, postData?.date_to , t)}
                     />
                 </ListItem>
 

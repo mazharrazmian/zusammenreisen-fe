@@ -42,6 +42,9 @@
     "tripFullyBooked": "Diese Reise ist ausgebucht.",
     "tripHasEnded": "Diese Reise ist beendet.",
     "tripOver" : "Reise beendet",
+    "you" : "Du",
+    "lastActive" : "Zuletzt aktiv",
+    "days" : "Tage",
     "tabs": {
         "overview": "Übersicht",
         "itinerary": "Reiseplan",
