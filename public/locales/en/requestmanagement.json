@@ -33,5 +33,8 @@
     "rejectedRequests": "Rejected",
     "seat" : "Seat",
     "seats" :"Seats",
-    "viewProfile": "View Profile"
+    "viewProfile": "View Profile",
+    "sentTo" :"Sent to",
+    "yourMessage" : "Your Message",
+    "viewTripDetails" : "View trip details"
 }

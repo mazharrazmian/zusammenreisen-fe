@@ -10,5 +10,11 @@
     "dontHaveAccount": "Haben Sie kein Konto?",
     "signUp": "Registrieren",
     "loginSuccessful" :"Login erfolgreich",
-    "logoutSuccessful": "Abmeldung erfolgreich"
+    "logoutSuccessful": "Abmeldung erfolgreich",
+    "validEmailRequired" : "Gültige E-Mail-Adresse erforderlich",
+    "enterEmailAndClickForgotPassword" : "Wenn Sie sicher sind, dass die E-Mail korrekt ist, klicken Sie auf „Passwort vergessen“.",
+    "passwordResetEmailSent" : "Passwort zurücksetzen E-Mail gesendet",
+    "errorSendingEmail" : "Fehler beim Senden einer E-Mail",
+    "passwordMinLength" : "Mindestlänge des Passworts: 6 Zeichen",
+    "passwordRequired" : "Passwort erforderlich"
 }

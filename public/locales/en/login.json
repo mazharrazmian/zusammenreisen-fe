@@ -10,5 +10,11 @@
     "dontHaveAccount": "Don’t have account?",
     "signUp": "Sign Up",
     "loginSuccessful": "Login successful",
-    "logoutSuccess": "Logout successful"
+    "logoutSuccess": "Logout successful",
+    "validEmailRequired" : "Valid Email Required",
+    "enterEmailAndClickForgotPassword" : "If you are sure the email is correct, click on forgot password",
+    "passwordResetEmailSent" : "Password Reset Email Sent",
+    "errorSendingEmail" : "Error sending Email",
+    "passwordMinLength" : "Minimum password length : 6 characters",
+    "passwordRequired" : "Password required"
 }

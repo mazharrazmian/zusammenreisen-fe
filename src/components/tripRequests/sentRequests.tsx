@@ -38,6 +38,7 @@ import chatServices from '../../redux/api/chatServices';
 import { getKeyByValue, REQUESTSTATUS } from '../../Constants';
 import postRequestService from '../../redux/api/tripRequestService';
 import { useTranslation } from 'react-i18next';
+import ClickableAvatar from '../shared/clickableAvatar/clicakableAvatar';
 
 const SentRequests = ({requests}) => {
   const navigate = useNavigate();
@@ -54,9 +55,9 @@ const SentRequests = ({requests}) => {
     setTabValue(newValue);
   };
 
-  const handleMenuOpen = (event, requestId) => {
+  const handleMenuOpen = (event, request) => {
     setAnchorEl(event.currentTarget);
-    setSelectedRequest(requestId);
+    setSelectedRequest(request);
   };
 
   const handleMenuClose = () => {
@@ -67,11 +68,11 @@ const SentRequests = ({requests}) => {
   const handleCancelRequest = async (id) => {
     postRequestService.deleteRequest(id)
       .then(res => {
-        toast(t('requestCanceledSuccessfully'));
+        toast(t('requestDeleted'));
       })
       .catch(error => {
         console.log(error);
-        toast(t('errorCancelingRequest'));
+        toast(t('errorDeletingRequest'));
       })
       .finally(() => {
         setRefresh(!refresh);
@@ -136,17 +137,17 @@ const SentRequests = ({requests}) => {
             variant="fullWidth"
           >
             <Tab
-              label={t('pendingRequests', { count: requests.filter(r => r.status === REQUESTSTATUS.Pending).length })}
+              label={`${t('pendingRequests')} ${requests.filter(r => r.status === REQUESTSTATUS.Pending).length}` }
               icon={<AccessTime />}
               iconPosition={isMobile ? "top" : "start"}
             />
             <Tab
-              label={t('acceptedRequests', { count: requests.filter(r => r.status === REQUESTSTATUS.Accepted).length })}
+              label={`${t('acceptedRequests')} ${requests.filter(r => r.status === REQUESTSTATUS.Accepted).length}` }
               icon={<CheckCircle />}
               iconPosition={isMobile ? "top" : "start"}
             />
             <Tab
-              label={t('rejectedRequests', { count: requests.filter(r => r.status === REQUESTSTATUS.Rejected).length })}
+              label={`${t('rejectedRequests')} ${requests.filter(r => r.status === REQUESTSTATUS.Rejected).length}` }
               icon={<Cancel />}
               iconPosition={isMobile ? "top" : "start"}
             />
@@ -173,17 +174,20 @@ const SentRequests = ({requests}) => {
                             overlap="circular"
                             anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
                             invisible={false}
+                    
                           >
-                            <Avatar
-                              src={request.to_profile.picture || `https://ui-avatars.com/api/?name=${encodeURIComponent(request.to_profile.name)}&background=random`}
-                              sx={{ width: 56, height: 56, mx: 'auto' }}
+                            <ClickableAvatar
+                                src={request.to_profile.picture}
+                                navigateTo={`/profile/${request?.to_profile?.id}`}
+                                fallbackName={request.to_profile.name}
                             />
+                            
                           </Badge>
                         </Grid>
 
                         <Grid item xs={12} sm={8}>
                           <Typography variant="subtitle1">
-                            {t('sentTo', { name: request.to_profile.name })}
+                            {t("sentTo")} {request.to_profile.user.name}
                           </Typography>
 
                           <Stack direction="row" spacing={1} sx={{ my: 1 }}>
@@ -202,7 +206,7 @@ const SentRequests = ({requests}) => {
                             <Chip
                               size="small"
                               icon={<CreditCard fontSize="small" />}
-                              label={`$${request.trip.estimated_cost}`}
+                              label={`$${parseFloat(request.trip.estimated_cost).toFixed(2)}`}
                               variant="outlined"
                             />
                           </Stack>
@@ -218,7 +222,7 @@ const SentRequests = ({requests}) => {
                             {getStatusChip(request.status)}
                             <IconButton
                               size="small"
-                              onClick={(e) => handleMenuOpen(e, request.id)}
+                              onClick={(e) => handleMenuOpen(e, request)}
                             >
                               <MoreVert />
                             </IconButton>
@@ -231,7 +235,7 @@ const SentRequests = ({requests}) => {
                           <Divider sx={{ my: 2 }} />
                           <Box sx={{ p: 1.5, bgcolor: 'action.hover', borderRadius: 1 }}>
                             <Typography variant="body2" color="text.secondary">
-                              {t('yourMessage', { message: request.message })}
+                                {request.message}
                             </Typography>
                           </Box>
                         </>
@@ -396,29 +400,6 @@ const SentRequests = ({requests}) => {
             </Stack>
           </Card>
 
-          <Card sx={{ p: 3 }}>
-            <Typography variant="h6" gutterBottom>
-              {t('quickActions')}
-            </Typography>
-            <Divider sx={{ mb: 2 }} />
-            
-            <Stack spacing={2}>
-              <Button 
-                variant="outlined" 
-                fullWidth
-                onClick={() => navigate('/create-request')}
-              >
-                {t('createNewRequest')}
-              </Button>
-              <Button 
-                variant="outlined" 
-                fullWidth
-                onClick={() => navigate('/browse-trips')}
-              >
-                {t('browseAvailableTrips')}
-              </Button>
-            </Stack>
-          </Card>
         </Stack>
       </Grid>
 
@@ -427,9 +408,10 @@ const SentRequests = ({requests}) => {
         open={Boolean(anchorEl)}
         onClose={handleMenuClose}
       >
-        <MenuItem onClick={handleMenuClose}>{t('viewHostProfile')}</MenuItem>
-        <MenuItem onClick={handleMenuClose}>{t('messageHost')}</MenuItem>
-        <MenuItem onClick={handleMenuClose}>{t('viewTripDetails')}</MenuItem>
+        <MenuItem onClick={()=>navigate(`/profile/${selectedRequest?.to_profile?.id}`)}>{t('viewProfile')}</MenuItem>
+        <MenuItem onClick={()=>console.log(selectedRequest)}>{t('viewTripDetails')}</MenuItem>
+
+        <MenuItem onClick={()=>navigate(`/tripplanner/${selectedRequest?.trip.id}`)}>{t('viewTripDetails')}</MenuItem>
         <Divider />
         {filteredRequests.find(r => r.id === selectedRequest)?.status === REQUESTSTATUS.Pending && (
           <MenuItem onClick={handleMenuClose} sx={{ color: 'error.main' }}>
