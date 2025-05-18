@@ -6,6 +6,11 @@ import TripSummaryCardComponent from "./tripSummaryCardComponent";
 import TripDetailsTabsComponent from "./tripDetailTabs";
 import { getTripTypeIcons } from "../../Constants";
 import { useTranslation } from "react-i18next";
+import { Share as ShareIcon } from "@mui/icons-material";
+import { IconButton, Tooltip } from "@mui/material";
+import ShareModal from './shareModal';
+import { useState } from "react";
+
 
 // Mobile component
 const TripDetailMobileView = ({ 
@@ -19,7 +24,8 @@ const TripDetailMobileView = ({
     setOpenModal 
 }) => {
     const { t } = useTranslation('tripdetails');
-
+     const [openShareModal, setOpenShareModal] = useState(false);
+    const shareUrl = window.location.href;
     // Determine which button to show based on user status
     const renderActionButton = () => {
         // Flow 1: User is not logged in
@@ -135,6 +141,19 @@ const TripDetailMobileView = ({
                     icon={getTripTypeIcons(postData?.tour_type)}
                     sx={{ ml: 2 }}
                 />
+                 <Tooltip title="Share this trip">
+                <IconButton onClick={() => setOpenShareModal(true)} sx={{display:'inline'}}>
+                    <ShareIcon />
+                </IconButton>
+            </Tooltip>
+
+                <ShareModal
+                open={openShareModal}
+                onClose={() => setOpenShareModal(false)}
+                url={shareUrl}
+                title={postData?.title}
+                />
+
             </Typography>
 
             {/* Profile Card */}

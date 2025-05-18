@@ -58,8 +58,12 @@ const MotionButton = motion(Button);
 
 const Navbar = React.memo(({ transparentOnHome }) => {
     const { t, i18n } = useTranslation('navbar');
-    console.log(i18n.language)
-    const Logo = i18n.language == 'de' ? LogoZusammenreisen : LogoWanderbuddies
+    const hostname = window.location.hostname;
+
+    const Logo = hostname.includes('zusammenreisen')
+    ? LogoZusammenreisen
+    : LogoWanderbuddies;    
+    
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
