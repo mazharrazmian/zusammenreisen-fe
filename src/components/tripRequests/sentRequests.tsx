@@ -206,7 +206,7 @@ const SentRequests = ({requests}) => {
                             <Chip
                               size="small"
                               icon={<CreditCard fontSize="small" />}
-                              label={`$${parseFloat(request.trip.estimated_cost).toFixed(2)}`}
+                              label={`$${parseInt(request.trip.estimated_cost)}`}
                               variant="outlined"
                             />
                           </Stack>

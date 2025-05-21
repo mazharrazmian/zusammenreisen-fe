@@ -8,11 +8,6 @@ import { useAppDispatch } from "./redux/store";
 import { get_AllCountries } from "./redux/slice/filterSlice";
 
 
-// in AppProvider or App.js
-import i18n from "./i18n";
-
-
-
 function App() {
   // scheduleTokenRefresh();
   const dispatch = useAppDispatch()
@@ -22,20 +17,6 @@ function App() {
     dispatch(get_AllCountries())
   }, [dispatch]);
 
-  useEffect(() => {
-    const domain = window.location.hostname;
-    // Check if language is set in localstorage, if not set it based on the domain
-    const storedLanguage = localStorage.getItem("i18nextLng");
-    if (storedLanguage) {
-      i18n.changeLanguage(storedLanguage);
-    } else if (domain.includes("zusammenreisen")) {
-      i18n.changeLanguage("de");
-    } else {
-      i18n.changeLanguage("en");
-    }
-
-  }, []);
-  
 
   return (
     <ThemeProvider>

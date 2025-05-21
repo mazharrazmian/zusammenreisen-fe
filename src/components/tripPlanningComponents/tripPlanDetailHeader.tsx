@@ -93,7 +93,7 @@ const TripDetailsHeader = ({ tripDetails }: {tripDetails : any}) => {
           <Box display="flex" alignItems="center" mb={1}>
             <AttachMoney color="primary" sx={{ mr: 1 }} />
             <Typography variant="body1">
-              {t('estimatedCost')} : {tripDetails?.estimated_cost }
+              {t('estimatedCost')} : {parseInt(tripDetails?.estimated_cost) }
             </Typography>
           </Box>
         </Grid>

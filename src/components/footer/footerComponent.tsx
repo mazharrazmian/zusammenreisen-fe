@@ -25,12 +25,20 @@ import EmailIcon from '@mui/icons-material/Email';
 import PhoneIcon from '@mui/icons-material/Phone';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 
-import Logo from '../../assets/logo1.png';
+import LogoWanderbuddies from '../../assets/logo-wanderbuddies.svg';
+import LogoZusammenreisen from '../../assets/logo-zusammenreisen.svg'
 
 
 
 const Footer = React.memo(() => {
-  const { t } = useTranslation('footer');
+
+    const { t } = useTranslation('footer');
+    const hostname = window.location.hostname;
+
+   const Logo = hostname.includes('zusammenreisen')
+      ? LogoZusammenreisen
+      : LogoWanderbuddies; 
+
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const isSmall = useMediaQuery(theme.breakpoints.down('sm'));
@@ -73,7 +81,7 @@ const Footer = React.memo(() => {
     {
         title : t('developers'),
         links:[
-            {name: t('Webarkitekt.com'), path: 'https://webarkitekten.com/'},
+            {name: t('Webarkitekt.com'), path: 'https://webarkitekt.com/'},
         ]
     }
    
@@ -107,16 +115,20 @@ const Footer = React.memo(() => {
         <Grid container spacing={4}>
           {/* Logo and Company Info */}
           <Grid item xs={12} md={4}>
-              <Box 
-                component="img"
-                src={Logo}
-                alt={t('travelMates')}
-                sx={{ 
-                  height: '60px',
-                  width: 'auto',
-                  mb: 2
+            <Box
+                component='img'
+                sx={{
+                    height: '80px', // Fixed reasonable height
+                    width: 'auto',  // Maintain aspect ratio
+                    display: { xs: 'none', md: 'flex' },
+                    cursor: 'pointer',
+                    marginRight: 2,
                 }}
-              />
+                alt={t('travelMates')}
+                src={Logo}
+                onClick={() => navigate('/')}
+            />
+            
               <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
                 {t('footerDescription')}
               </Typography>

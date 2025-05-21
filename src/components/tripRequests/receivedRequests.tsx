@@ -194,7 +194,7 @@ const ReceivedRequests: React.FC<ReceivedRequestsProps> = ({ requests, handleAcc
                             <Chip
                               size="small"
                               icon={<CreditCard fontSize="small" />}
-                              label={`$${request.trip.estimated_cost}`}
+                              label={`$${parseInt(request.trip.estimated_cost)}`}
                               variant="outlined"
                             />
                           </Stack>

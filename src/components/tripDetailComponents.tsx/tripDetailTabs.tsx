@@ -233,7 +233,7 @@ const TripDetailsTabsComponent = ({ postData, activeTab, handleTabChange }) => {
                         <Paper elevation={2} sx={{ p: 3, bgcolor: '#f5f5f5', borderRadius: 2, mb: 3 }}>
                             <Typography variant="h5" color="primary" fontWeight="bold" gutterBottom>
                                 {postData?.estimated_cost ? (
-                                    `$${postData.estimated_cost.toLocaleString()}`
+                                    `$${parseInt(postData.estimated_cost)}`
                                 ) : (
                                     t('tabs.costNotSpecified')
                                 )}
