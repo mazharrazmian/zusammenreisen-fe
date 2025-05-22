@@ -15,7 +15,6 @@ import MyTripsPage from "./pages/tripPlannerList";
 import TripPlannerPage from "./pages/tripPlannerDetail";
 import { PageTransition } from "./components/navbar";
 import ProfileDetail from "./pages/profileDetail";
-import LegalPage from "./pages/blogPage";
 import BlogPage from "./pages/blogPage";
 import EditTour from "./pages/editTour";
 

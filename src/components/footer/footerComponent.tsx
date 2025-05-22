@@ -27,20 +27,17 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import LogoWanderbuddies from '../../assets/logo-wanderbuddies.svg';
 import LogoZusammenreisen from '../../assets/logo-zusammenreisen.svg'
 
-
-
 const Footer = React.memo(() => {
+  const { t } = useTranslation('footer');
+  const hostname = window.location.hostname;
 
-    const { t } = useTranslation('footer');
-    const hostname = window.location.hostname;
-
-   const Logo = hostname.includes('zusammenreisen')
-      ? LogoZusammenreisen
-      : LogoWanderbuddies;
+  const Logo = hostname.includes('zusammenreisen')
+    ? LogoZusammenreisen
+    : LogoWanderbuddies;
     
-    const SITENAME =  hostname.includes('zusammenreisen')
-      ? 'Zusammenreisen'
-      : 'Wanderbuddies';
+  const SITENAME = hostname.includes('zusammenreisen')
+    ? 'Zusammenreisen'
+    : 'Wanderbuddies';
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -52,23 +49,22 @@ const Footer = React.memo(() => {
     window.scrollTo(0, 0);
   };
 
+  // Handle both internal and external links
+  const handleLinkClick = (path) => {
+    if (path.startsWith('http')) {
+      // External link - open in new tab
+      window.open(path, '_blank', 'noopener,noreferrer');
+    } else {
+      // Internal link - use navigate
+      navigateTo(path);
+    }
+  };
+
   const footerLinks = [
-    // {
-    //   title: t('company'),
-    //   links: [
-    //     { name: t('about'), path: '/about' },
-    //     { name: t('careers'), path: '/careers' },
-    //     { name: t('pressKit'), path: '/press' },
-    //     { name: t('partnership'), path: '/partnership' }
-    //   ]
-    // },
     {
       title: t('resources'),
       links: [
         { name: t('blog'), path: '/blog/blog' },
-        // { name: t('guides'), path: '/guides' },
-        // { name: t('help'), path: '/help' },
-        // { name: t('faq'), path: '/faq' }
       ]
     },
     {
@@ -77,19 +73,15 @@ const Footer = React.memo(() => {
         { name: t('terms'), path: '/blog/terms' },
         { name: t('privacy'), path: '/blog/privacy-policy' },
         { name: t('cookies'), path: '/blog/cookies' },
-        // { name: t('licenses'), path: '/blog/licenses' }
+      ]
+    },
+    {
+      title: t('developers'),
+      links: [
+        { name: t('Webarkitekt.com'), path: 'https://webarkitekt.com/' },
       ]
     }
-    ,
-    {
-        title : t('developers'),
-        links:[
-            {name: t('Webarkitekt.com'), path: 'https://webarkitekt.com/'},
-        ]
-    }
-   
   ];
-
 
   const itemVariants = {
     hidden: { y: 20, opacity: 0 },
@@ -103,10 +95,37 @@ const Footer = React.memo(() => {
     }
   };
 
+  // Component for rendering clickable links
+  const ClickableLink = ({ link, variant = "body2", sx = {} }) => (
+    <Typography 
+      component={motion.div}
+      whileHover={{ x: 5 }}
+      variant={variant}
+      sx={{ 
+        mb: 1,
+        cursor: 'pointer',
+        color: 'text.secondary',
+        textDecoration: 'none',
+        '&:hover': { 
+          color: 'primary.main',
+          textDecoration: 'underline'
+        },
+        // Ensure proper touch targets for mobile
+        minHeight: '44px',
+        display: 'flex',
+        alignItems: 'center',
+        ...sx
+      }}
+      onClick={() => handleLinkClick(link.path)}
+    >
+      {link.name}
+    </Typography>
+  );
+
   return (
     <Box
       sx={{
-        bgcolor: theme.palette.grey[100], // Light grey background        pt: 6,
+        bgcolor: theme.palette.grey[100],
         pt: 6,
         pb: 3,
         borderTop: '1px solid',
@@ -119,67 +138,71 @@ const Footer = React.memo(() => {
           {/* Logo and Company Info */}
           <Grid item xs={12} md={4}>
             <Box
-                component='img'
-                sx={{
-                    height: '80px', // Fixed reasonable height
-                    width: 'auto',  // Maintain aspect ratio
-                    display: { xs: 'none', md: 'flex' },
-                    cursor: 'pointer',
-                    marginRight: 2,
-                }}
-                alt={SITENAME}
-                src={Logo}
-                onClick={() => navigate('/')}
+              component='img'
+              sx={{
+                height: '80px',
+                width: 'auto',
+                display: { xs: 'none', md: 'flex' },
+                cursor: 'pointer',
+                marginRight: 2,
+              }}
+              alt={SITENAME}
+              src={Logo}
+              onClick={() => navigate('/')}
             />
             
-              <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                {t('footerDescription')}
-              </Typography>
-              
-              {/* Social Media Icons */}
-              <Stack direction="row" spacing={1} sx={{ mb: 2 }}>
-                <IconButton 
-                  component={motion.button}
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                  size="small" 
-                  color="primary"
-                  aria-label="facebook"
-                >
-                  <FacebookIcon />
-                </IconButton>
-                <IconButton 
-                  component={motion.button}
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                  size="small" 
-                  color="primary"
-                  aria-label="twitter"
-                >
-                  <TwitterIcon />
-                </IconButton>
-                <IconButton 
-                  component={motion.button}
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                  size="small" 
-                  color="primary"
-                  aria-label="instagram"
-                >
-                  <InstagramIcon />
-                </IconButton>
-                <IconButton 
-                  component={motion.button}
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                  size="small" 
-                  color="primary"
-                  aria-label="linkedin"
-                >
-                  <LinkedInIcon />
-                </IconButton>
-              </Stack>
-              </Grid>
+            <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+              {t('footerDescription')}
+            </Typography>
+            
+            {/* Social Media Icons */}
+            <Stack direction="row" spacing={1} sx={{ mb: 2 }}>
+              <IconButton 
+                component={motion.button}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                size="small" 
+                color="primary"
+                aria-label="facebook"
+                sx={{ minWidth: '44px', minHeight: '44px' }} // Ensure proper touch target
+              >
+                <FacebookIcon />
+              </IconButton>
+              <IconButton 
+                component={motion.button}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                size="small" 
+                color="primary"
+                aria-label="twitter"
+                sx={{ minWidth: '44px', minHeight: '44px' }}
+              >
+                <TwitterIcon />
+              </IconButton>
+              <IconButton 
+                component={motion.button}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                size="small" 
+                color="primary"
+                aria-label="instagram"
+                sx={{ minWidth: '44px', minHeight: '44px' }}
+              >
+                <InstagramIcon />
+              </IconButton>
+              <IconButton 
+                component={motion.button}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                size="small" 
+                color="primary"
+                aria-label="linkedin"
+                sx={{ minWidth: '44px', minHeight: '44px' }}
+              >
+                <LinkedInIcon />
+              </IconButton>
+            </Stack>
+          </Grid>
 
           {/* Links Sections */}
           {!isSmall ? (
@@ -195,21 +218,7 @@ const Footer = React.memo(() => {
                       {section.title}
                     </Typography>
                     {section.links.map((link, idx) => (
-                    <Link href={link.path} key={idx} underline="none" style={{ textDecoration: 'none' }}>
-                      <Typography 
-                        component={motion.div}
-                        whileHover={{ x: 5 }}
-                        variant="body2" 
-                        key={idx} 
-                        sx={{ 
-                          mb: 1,
-                          cursor: 'pointer',
-                          '&:hover': { color: 'primary.main' }
-                        }}
-                        >
-                        {link.name}
-                      </Typography>
-                      </Link>
+                      <ClickableLink key={idx} link={link} />
                     ))}
                   </motion.div>
                 </Grid>
@@ -229,21 +238,12 @@ const Footer = React.memo(() => {
                         {section.title}
                       </Typography>
                       {section.links.map((link, idx) => (
-                        <Typography 
-                          component={motion.div}
-                          variant="body2" 
+                        <ClickableLink 
                           key={idx} 
-                          sx={{ 
-                            mb: 1,
-                            fontSize: '0.8rem',
-                            cursor: 'pointer',
-                            '&:hover': { color: 'primary.main' }
-                          }}
-                          href={link.path}
-                        //   onClick={() => navigateTo(link.path)}
-                        >
-                          {link.name}
-                        </Typography>
+                          link={link} 
+                          variant="body2"
+                          sx={{ fontSize: '0.8rem' }}
+                        />
                       ))}
                     </motion.div>
                   </Grid>
@@ -262,18 +262,27 @@ const Footer = React.memo(() => {
               <Box sx={{ mb: 2 }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
                   <EmailIcon fontSize="small" sx={{ mr: 1, color: 'text.secondary' }} />
-                  <Typography variant="body2">support@wanderbuddies.com</Typography>
+                  <Typography 
+                    variant="body2"
+                    component="a"
+                    href="mailto:support@wanderbuddies.com"
+                    sx={{ 
+                      color: 'text.secondary',
+                      textDecoration: 'none',
+                      '&:hover': { 
+                        color: 'primary.main',
+                        textDecoration: 'underline'
+                      }
+                    }}
+                  >
+                    support@wanderbuddies.com
+                  </Typography>
                 </Box>
-                {/* <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                  <PhoneIcon fontSize="small" sx={{ mr: 1, color: 'text.secondary' }} />
-                  <Typography variant="body2">+1 (555) 123-4567</Typography>
-                </Box> */}
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
                   <LocationOnIcon fontSize="small" sx={{ mr: 1, color: 'text.secondary' }} />
                   <Typography variant="body2">Freiburg, Germany</Typography>
                 </Box>
               </Box>
-            
             </motion.div>
           </Grid>
         </Grid>
@@ -296,21 +305,56 @@ const Footer = React.memo(() => {
           
           {!isMobile && (
             <Box sx={{ display: 'flex', gap: 2 }}>
-              <Link href="/blog/terms" underline="hover" color="text.secondary" variant="body2">
+              <Typography
+                component="span"
+                variant="body2"
+                sx={{ 
+                  cursor: 'pointer',
+                  color: 'text.secondary',
+                  '&:hover': { 
+                    color: 'primary.main',
+                    textDecoration: 'underline'
+                  }
+                }}
+                onClick={() => handleLinkClick('/blog/terms')}
+              >
                 {t('terms')}
-              </Link>
-              <Link href="/blog/privacy-policy" underline="hover" color="text.secondary" variant="body2">
+              </Typography>
+              <Typography
+                component="span"
+                variant="body2"
+                sx={{ 
+                  cursor: 'pointer',
+                  color: 'text.secondary',
+                  '&:hover': { 
+                    color: 'primary.main',
+                    textDecoration: 'underline'
+                  }
+                }}
+                onClick={() => handleLinkClick('/blog/privacy-policy')}
+              >
                 {t('privacy')}
-              </Link>
-              <Link href="/blog/cookies" underline="hover" color="text.secondary" variant="body2">
+              </Typography>
+              <Typography
+                component="span"
+                variant="body2"
+                sx={{ 
+                  cursor: 'pointer',
+                  color: 'text.secondary',
+                  '&:hover': { 
+                    color: 'primary.main',
+                    textDecoration: 'underline'
+                  }
+                }}
+                onClick={() => handleLinkClick('/blog/cookies')}
+              >
                 {t('cookies')}
-              </Link>
+              </Typography>
             </Box>
           )}
         </Box>
       </Container>
     </Box>
-
   );
 });
 

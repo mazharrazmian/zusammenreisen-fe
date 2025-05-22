@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { get_profile } from "./redux/slice/profileSlice";
 import { useAppDispatch } from "./redux/store";
 import { get_AllCountries } from "./redux/slice/filterSlice";
+import ScrollToTop from "./components/shared/scrollToTop/scrollToTop";
 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
 
   return (
     <ThemeProvider>
+      <ScrollToTop />
       <Router />
     </ThemeProvider>
   );
