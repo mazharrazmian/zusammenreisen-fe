@@ -10,5 +10,6 @@
     "checkoutTours": "Touren ansehen",
     "loading": "Laden...",
     "loginNow": "Jetzt anmelden",
-    "haveAccount": "Haben Sie ein Konto?"
+    "haveAccount": "Haben Sie ein Konto?",
+    "VerificationEmailSent" : "Eine Bestätigungs-E-Mail wurde an Ihr Konto gesendet."
 }

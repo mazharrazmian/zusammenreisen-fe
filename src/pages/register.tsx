@@ -104,7 +104,7 @@ const RegisterPage = () => {
 
             const res = await authServices.signUp(formData);
             if (res.status === 201) {
-                toast.success("Verification email has been sent to your email");
+                toast.success(t("VerificationEmailSent"));
                 setIsLoading(false);
                 navigate("/login");
             }

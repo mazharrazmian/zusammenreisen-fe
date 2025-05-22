@@ -10,5 +10,6 @@
     "checkoutTours": "Checkout Tours",
     "loading": "loading...",
     "loginNow": "Login Now",
-    "haveAccount": "Have an account?"
+    "haveAccount": "Have an account?",
+    "VerificationEmailSent" : "Verification email has been sent to your account"
 }
