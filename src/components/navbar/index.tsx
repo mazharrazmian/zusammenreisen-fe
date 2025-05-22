@@ -186,7 +186,7 @@ const Navbar = React.memo(({ transparentOnHome }) => {
                                 cursor: 'pointer',
                                 marginRight: 2,
                             }}
-                            alt={t('travelMates')}
+                            alt={hostname}
                             src={Logo}
                             onClick={() => navigateWithAnimation('/')}
                         />

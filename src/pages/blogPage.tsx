@@ -51,7 +51,7 @@ const BlogPage = () => {
     return (
       <Box sx={{ textAlign: 'center', mt: 10 }}>
         <Typography variant="h4" color="error">
-          Page Not Found
+          Content could not be fetched
         </Typography>
       </Box>
     );

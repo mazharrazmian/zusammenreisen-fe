@@ -22,7 +22,6 @@ import TwitterIcon from '@mui/icons-material/Twitter';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import EmailIcon from '@mui/icons-material/Email';
-import PhoneIcon from '@mui/icons-material/Phone';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 
 import LogoWanderbuddies from '../../assets/logo-wanderbuddies.svg';
@@ -37,7 +36,11 @@ const Footer = React.memo(() => {
 
    const Logo = hostname.includes('zusammenreisen')
       ? LogoZusammenreisen
-      : LogoWanderbuddies; 
+      : LogoWanderbuddies;
+    
+    const SITENAME =  hostname.includes('zusammenreisen')
+      ? 'Zusammenreisen'
+      : 'Wanderbuddies';
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -124,7 +127,7 @@ const Footer = React.memo(() => {
                     cursor: 'pointer',
                     marginRight: 2,
                 }}
-                alt={t('travelMates')}
+                alt={SITENAME}
                 src={Logo}
                 onClick={() => navigate('/')}
             />
@@ -259,36 +262,18 @@ const Footer = React.memo(() => {
               <Box sx={{ mb: 2 }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
                   <EmailIcon fontSize="small" sx={{ mr: 1, color: 'text.secondary' }} />
-                  <Typography variant="body2">support@travelmates.com</Typography>
+                  <Typography variant="body2">support@wanderbuddies.com</Typography>
                 </Box>
-                <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                {/* <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
                   <PhoneIcon fontSize="small" sx={{ mr: 1, color: 'text.secondary' }} />
                   <Typography variant="body2">+1 (555) 123-4567</Typography>
-                </Box>
+                </Box> */}
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
                   <LocationOnIcon fontSize="small" sx={{ mr: 1, color: 'text.secondary' }} />
-                  <Typography variant="body2">123 Travel Street, San Francisco, CA 94103</Typography>
+                  <Typography variant="body2">Freiburg, Germany</Typography>
                 </Box>
               </Box>
-
-              {/* Contact Support Button */}
-              <Button
-                component={motion.button}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                variant="contained"
-                color="primary"
-                startIcon={<EmailIcon />}
-                onClick={() => navigateTo('/contact')}
-                sx={{
-                  borderRadius: "8px",
-                  px: 3,
-                  py: 1,
-                  fontWeight: 500
-                }}
-              >
-                {t('contactSupport')}
-              </Button>
+            
             </motion.div>
           </Grid>
         </Grid>
@@ -306,7 +291,7 @@ const Footer = React.memo(() => {
           }}
         >
           <Typography variant="body2" color="text.secondary">
-            © {new Date().getFullYear()} TravelMates. {t('allRightsReserved')}
+            © {new Date().getFullYear()} {SITENAME} {t('allRightsReserved')}
           </Typography>
           
           {!isMobile && (
