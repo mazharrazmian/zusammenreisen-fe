@@ -11,5 +11,8 @@
     "loading": "Laden...",
     "loginNow": "Jetzt anmelden",
     "haveAccount": "Haben Sie ein Konto?",
-    "VerificationEmailSent" : "Eine Bestätigungs-E-Mail wurde an Ihr Konto gesendet."
+    "VerificationEmailSent" : "Wir haben eine Bestätigungs-E-Mail an",
+    "registrationSuccessful" : "Registrierung erfolgreich",
+    "important" : "Wichtig",
+    "emailVerificationInstructions" : "Bitte überprüfen Sie Ihre E-Mails und klicken Sie auf den Bestätigungslink, um Ihr Konto zu aktivieren. Vergessen Sie nicht, Ihren Spam-Ordner zu überprüfen, falls Sie die E-Mail nicht innerhalb weniger Minuten sehen."
 }

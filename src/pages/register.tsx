@@ -22,6 +22,7 @@ import { authStyles, login } from "./styles";
 import LanguageSelector from "../components/language";
 import { ArrowBack } from "@mui/icons-material";
 import { useTranslation } from 'react-i18next';
+import EmailVerificationModal from "../components/shared/emailVerificationModal/emailVerificationModal";
 
 const initialValues = {
     name: "",
@@ -34,6 +35,9 @@ const initialValues = {
     age: "",
 };
 
+
+
+
 const RegisterPage = () => {
     const navigate = useNavigate();
     const [values, setValues] = useState(initialValues);
@@ -45,6 +49,8 @@ const RegisterPage = () => {
     const [menuItemImg, setMenuItemImg] = useState("");
     const [languages, setLanguages] = useState([])
     const [selectedLanguages, setSelectedLanguages] = useState([]);
+    const [showVerificationModal, setShowVerificationModal] = useState(false);
+
     const { t } = useTranslation('register');
 
     useEffect(() => {
@@ -73,6 +79,10 @@ const RegisterPage = () => {
         }
         setMenuItemImg(file);
     };
+
+    const handleModalConfirm = () => {
+    navigate("/login");
+  };
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -104,9 +114,8 @@ const RegisterPage = () => {
 
             const res = await authServices.signUp(formData);
             if (res.status === 201) {
-                toast.success(t("VerificationEmailSent"));
+                setShowVerificationModal(true); // Show modal
                 setIsLoading(false);
-                navigate("/login");
             }
         } catch (error) {
             setIsLoading(false);
@@ -134,8 +143,15 @@ const RegisterPage = () => {
         }
     };
 
+
     return (
         <Box sx={{ overflow: "auto", height: "100vh" }}>
+            <EmailVerificationModal
+            open={showVerificationModal}
+            onClose={() => setShowVerificationModal(false)}
+            onConfirm={handleModalConfirm}
+            userEmail={values.email}
+        />
             <Box sx={authStyles.vector1}>
                 <img src={vector1} alt="" />
             </Box>

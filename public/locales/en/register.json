@@ -11,5 +11,8 @@
     "loading": "loading...",
     "loginNow": "Login Now",
     "haveAccount": "Have an account?",
-    "VerificationEmailSent" : "Verification email has been sent to your account"
+    "VerificationEmailSent" : "We have sent a verification email to",
+    "registrationSuccessful" : "Registration Successful",
+    "important" : "Important",
+    "emailVerificationInstructions" : "Please check your email and click the verification link to activate your account. Don't forget to check your spam folder if you don't see the email within a few minutes."
 }
