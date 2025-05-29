@@ -4,13 +4,21 @@ import { useLocation, useNavigate, Outlet } from "react-router-dom";
 import Footer from "../footer/footerComponent";
 import Navbar from "../navbar";
 import { ArrowBack } from "@mui/icons-material";
+import { useEffect, useState } from "react";
 
 const Layout = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const { t } = useTranslation('common');
     const isHomePage = location.pathname === "/";
-  
+    const [canGoBack, setCanGoBack] = useState(false);
+
+    useEffect(() => {
+    // Update canGoBack on mount and location change
+    setCanGoBack(window.history.length > 1);
+  }, [location]);
+
+
     const handleGoBack = () => {
       navigate(-1);
     };
@@ -35,7 +43,7 @@ const Layout = () => {
             width: "100%"
           }}
         >
-          {!isHomePage && (
+          {!isHomePage && canGoBack && (
             <Container maxWidth="xl" sx={{ py: 2 }}>
               
                 <Button

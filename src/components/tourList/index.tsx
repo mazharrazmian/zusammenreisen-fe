@@ -8,6 +8,7 @@ import { TourDataInterface } from "../../types";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "@mui/material/styles";
 import { getTranslatedArray, tourTypes } from "../../Constants"; // Import helper and constants
+import { Link } from 'react-router-dom';
 
 const translatedTourTypes = getTranslatedArray({ en: tourTypes, de: tourTypes });
 
@@ -206,15 +207,17 @@ const TripList = ({posts} : {posts : Array<TourDataInterface>})=>{
                   <Button 
                     variant="contained" 
                     fullWidth
+                    component={Link}
+                    to={`/posts/${tour.id}`}
+                    rel="noopener noreferrer"
                     sx={{
-                      borderRadius: '8px',
-                      textTransform: 'none',
-                      fontWeight: 600,
+                        borderRadius: '8px',
+                        textTransform: 'none',
+                        fontWeight: 600,
                     }}
-                    onClick={() => navigate(`posts/${tour.id}`)}
-                  >
-                     {t("viewDetails")}
-                  </Button>
+                    >
+                    {t("viewDetails")}
+                    </Button>
                 </Box>
               </Card>
             </Grid>
