@@ -296,7 +296,8 @@ const ProfileDetail = () => {
                             border: '4px solid white',
                             marginTop: '-60px',
                             boxShadow: 1,
-                            position: 'relative'
+                            position: 'relative',
+                            objecctFit: 'cover',
                         }}
                     >
                         {!profilePicturePreview && <Person fontSize="large" />}

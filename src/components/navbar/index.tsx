@@ -333,7 +333,7 @@ const Navbar = React.memo(({ transparentOnHome }) => {
                                             sx={{ p: 0 }}
                                         >
                                             <Avatar
-                                                sx={{objectFit:'contain'}}
+                                                sx={{objectFit:'cover'}}
                                                 alt={profile?.profile?.name}
                                                 src={profile?.profile?.profile?.picture}
                                             />
