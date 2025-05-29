@@ -145,11 +145,27 @@ const ProfileDetail = () => {
         setProfile(prevProfile => ({ ...prevProfile, [name]: value }));
     };
 
+    const updateImageField = async (fieldName, file) => {
+        const formData = new FormData();
+        formData.append(fieldName, file);
+        
+        try {
+            await authServices.updateProfile(profile.id, formData);
+            toast(t('profileUpdated'));
+        } catch (error) {
+            toast(t('profileUpdateFailed'));
+            console.error('Image update failed:', error);
+        }
+    };
+
     const handleProfilePictureChange = (e) => {
         if (e.target.files.length > 0) {
             const file = e.target.files[0];
             setProfile(prevProfile => ({ ...prevProfile, picture: file }));
             setProfilePicturePreview(URL.createObjectURL(file));
+            
+            // Auto-update profile picture
+            updateImageField('picture', file);
         }
     };
 
@@ -158,6 +174,9 @@ const ProfileDetail = () => {
             const file = e.target.files[0];
             setProfile(prevProfile => ({ ...prevProfile, cover_picture: file }));
             setCoverPhotoPreview(URL.createObjectURL(file));
+            
+            // Auto-update cover photo
+            updateImageField('cover_picture', file);
         }
     };
 
@@ -168,6 +187,8 @@ const ProfileDetail = () => {
                 const languagesForAPI = selectedLanguages.map(lang => lang.name);
                 languagesForAPI.forEach(language => formData.append("languages", language));
             } else if (key === "picture" || key === "cover_picture") {
+                // Skip images as they're now updated automatically
+                // Only include if it's a new file (not already uploaded)
                 if (profile[key] instanceof File) {
                     formData.append(key, profile[key]);
                 }
