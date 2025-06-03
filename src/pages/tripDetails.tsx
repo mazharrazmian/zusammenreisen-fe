@@ -19,6 +19,7 @@ import TripDetailDesktopView from '../components/tripDetailComponents.tsx/tripDe
 import TripDetailMobileView from '../components/tripDetailComponents.tsx/tripDetailMobileView';
 import { useTranslation } from 'react-i18next';
 import { getTranslatedArray, tourTypes, accommodationTypes } from "../Constants"; // Import helper and constants
+import { Helmet } from 'react-helmet';
 
 // Main component
 const TripDetails = () => {
@@ -76,7 +77,17 @@ const TripDetails = () => {
     // Render either mobile or desktop view based on screen size
     return (
         <>
+        <Helmet>
+        <title>{postData?.title} | Zusammenreisen</title>
+        <meta property="og:title" content={postData?.title} />
+        <meta property="og:description" content={postData?.description.slice(0, 150)} />
+        <meta property="og:image" content={postData?.images[0]} />
+        <meta property="og:url" content={`https://zusammenreisen.com/posts/${postData?.slug}`} />
+        <meta property="og:type" content="website" />
+      </Helmet>
+
             {isMobile ? (
+                
                 <TripDetailMobileView
                     postData={{
                         ...postData,
