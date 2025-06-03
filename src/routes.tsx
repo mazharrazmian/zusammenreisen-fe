@@ -24,7 +24,7 @@ export default function Router() {
         element: <Layout />,
         children: [
           { path: "/", element: <PageTransition> <HomePage /> </PageTransition>, index: true },
-          { path: "posts/:id", element: <Details /> },
+          { path: "posts/:slug", element: <Details /> },
           { path: "blog/:slug", element: <BlogPage /> },
           { 
             path: "add/post", 
@@ -37,7 +37,7 @@ export default function Router() {
             ) 
           },
           { 
-            path: "edit/post/:tourId", 
+            path: "edit/post/:slug", 
             element: (
               <ProtectedRoute>
                 <PageTransition>

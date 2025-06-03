@@ -66,8 +66,8 @@ const TourForm = () => {
     const { t ,i18n } = useTranslation('tourForm'); // Initialize translation hook
     const currentLanguage = i18n.language || 'en'; // Get current language, default to English
 
-    const { tourId } = useParams(); // Get ID from URL (for edit mode)
-    const isEditMode = Boolean(tourId); // Check if it's edit mode
+    const { slug } = useParams(); // Get slug from URL (for edit mode)
+    const isEditMode = Boolean(slug); // Check if it's edit mode
 
     const navigate = useNavigate();
     const countries = useAppSelector(s => s.filter.countries);
@@ -137,7 +137,7 @@ const TourForm = () => {
 
     const fetchTour = async () => {
         try {
-            const res = await postServices.getPost(tourId);
+            const res = await postServices.getPost(slug as string);
 
             if (res.status === 200) {
                 setFormData({
@@ -338,7 +338,7 @@ const TourForm = () => {
                 setIsLoading(true);
 
                 if (isEditMode) {
-                    const res = await postServices.editPost(parseInt(tourId), tourData); // Assuming postServices.createPost handles FormData
+                    const res = await postServices.editPost(slug, tourData); // Assuming postServices.createPost handles FormData
                     if (res.status === 200) {
                         setIsLoading(false);
                         toast.success(t('tourEditedSuccessfully'));

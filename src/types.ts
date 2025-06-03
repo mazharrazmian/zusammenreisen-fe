@@ -116,6 +116,7 @@ export interface TourDataInterface {
     images: [],
     dates_flexible: boolean,
     posted_on : string,
+    slug : string,
 }
 
   

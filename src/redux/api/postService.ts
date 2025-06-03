@@ -5,7 +5,7 @@ const getAllPosts = (queryParams:string) => {
     return callAPi.get(`/reisapp/posts?${queryParams}`);
 
 }
-const getPost = (id: number) => callAPi.get(`/reisapp/posts/${id}`);
+const getPost = (slug: string) => callAPi.get(`/reisapp/posts/${slug}`);
 const getAllCountries = () => callAPi.get("/reisapp/countries/");
 const filterCountryByName = (key: string) =>
   callAPi.get(`reisapp/countries/?name__startswith=${key}`);

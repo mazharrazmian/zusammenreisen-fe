@@ -23,7 +23,7 @@ import { getTranslatedArray, tourTypes, accommodationTypes } from "../Constants"
 // Main component
 const TripDetails = () => {
     const theme = useTheme();
-    const { id } = useParams<{ id: string }>();
+    const { slug } = useParams<{ slug: string }>();
     const profile = useAppSelector((s) => s.profile);
     const accessToken = Cookies.get('accessToken');
     const navigate = useNavigate();
@@ -40,7 +40,7 @@ const TripDetails = () => {
 
     useEffect(() => {
         setLoading(true);
-        postServices.getPost(Number(id))
+        postServices.getPost(slug)
             .then(response => {
                 setPostdata(response.data);
                 setLoading(false);
@@ -48,11 +48,12 @@ const TripDetails = () => {
             .catch(error => {
                 toast.error(t('error'));
                 setLoading(false);
+
             });
-    }, [id]);
+    }, [slug]);
 
     const handleEdit = () => {
-        navigate(`/edit/post/${postData?.id}`);
+        navigate(`/edit/post/${postData?.slug}`);
     };
 
     const handleTabChange = (event, newValue) => {

@@ -208,7 +208,7 @@ const TripList = ({posts} : {posts : Array<TourDataInterface>})=>{
                     variant="contained" 
                     fullWidth
                     component={Link}
-                    to={`/posts/${tour.id}`}
+                    to={`/posts/${tour.slug}`}
                     rel="noopener noreferrer"
                     sx={{
                         borderRadius: '8px',
