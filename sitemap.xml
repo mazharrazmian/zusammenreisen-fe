@@ -6,15 +6,10 @@
   <url><loc>https://wanderbuddies.com/</loc></url>
   <url><loc>https://wanderbuddies.com/login</loc></url>
   <url><loc>https://wanderbuddies.com/register</loc></url>
-  <url><loc>https://wanderbuddies.com/add/post</loc></url>
-  <url><loc>https://wanderbuddies.com/requests</loc></url>
-  <url><loc>https://wanderbuddies.com/tripplanner</loc></url>
-  <url><loc>https://wanderbuddies.com/chat</loc></url>
   <url><loc>https://wanderbuddies.com/404</loc></url>
 
   <!-- Example dynamic pages (replace with actual data) -->
   <url><loc>https://wanderbuddies.com/posts/1</loc></url>
-  <!-- <url><loc>https://wanderbuddies.com/blog/example-slug</loc></url> -->
-  <url><loc>https://wanderbuddies.com/legal/privacy-policy</loc></url>
-
+  <url><loc>https://wanderbuddies.com/blog/cookies</loc></url>
+  <url><loc>https://wanderbuddies.com/blog/terms</loc></url>
 </urlset>

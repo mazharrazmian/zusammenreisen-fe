@@ -6,15 +6,11 @@
   <url><loc>https://zusammenreisen.com/</loc></url>
   <url><loc>https://zusammenreisen.com/login</loc></url>
   <url><loc>https://zusammenreisen.com/register</loc></url>
-  <url><loc>https://zusammenreisen.com/add/post</loc></url>
-  <url><loc>https://zusammenreisen.com/requests</loc></url>
-  <url><loc>https://zusammenreisen.com/tripplanner</loc></url>
-  <url><loc>https://zusammenreisen.com/chat</loc></url>
   <url><loc>https://zusammenreisen.com/404</loc></url>
-
+   <url><loc>https://zusammenreisen.com/posts/inselabenteuer-auf-mallorca-sonne-strand-versteckte-highlights</loc></url>
   <!-- Example dynamic pages -->
   <url><loc>https://zusammenreisen.com/posts/1</loc></url>
   <!-- <url><loc>https://zusammenreisen.com/blog/example-slug</loc></url> -->
-  <url><loc>https://zusammenreisen.com/legal/privacy-policy</loc></url>
-
+  <url><loc>https://zusammenreisen.com/blog/privacy-policy</loc></url>
+  <url><loc>https://zusammenreisen.com/blog/terms</loc></url>
 </urlset>
