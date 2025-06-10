@@ -36,5 +36,7 @@
     "viewProfile": "Profil Ansehen",
     "sentTo" : "Gesendet an",
     "yourMessage" : "Ihre Nachricht",
-    "viewTripDetails" : "Reisedetails anzeigen"
+    "viewTripDetails" : "Reisedetails anzeigen",
+    "viewTour": "Tour Ansehen",
+     "planTrip": "Reise Planen"
 }

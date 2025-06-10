@@ -48,6 +48,7 @@ const SentRequests = ({requests}) => {
   const [selectedRequest, setSelectedRequest] = useState(null);
   const [refresh, setRefresh] = useState(false);
 
+  console.log(selectedRequest)
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -245,13 +246,6 @@ const SentRequests = ({requests}) => {
                         <Stack direction={isMobile ? 'column' : 'row'} spacing={1} sx={{ mt: 2 }}>
                           <Button
                             variant="outlined"
-                            startIcon={<Edit />}
-                            fullWidth
-                          >
-                            {t('editRequest')}
-                          </Button>
-                          <Button
-                            variant="outlined"
                             color="error"
                             startIcon={<Delete />}
                             fullWidth
@@ -259,14 +253,7 @@ const SentRequests = ({requests}) => {
                           >
                             {t('cancelRequest')}
                           </Button>
-                          <Button
-                            variant="outlined"
-                            startIcon={<Chat />}
-                            fullWidth
-                            onClick={() => handleChat(request.to_profile.user.email)}
-                          >
-                            {t('chat')}
-                          </Button>
+                          
                         </Stack>
                       )}
 
@@ -279,6 +266,15 @@ const SentRequests = ({requests}) => {
                             onClick={() => handleChat(request.to_profile.user.email)}
                           >
                             {t('chatWithHost')}
+                          </Button>
+                          {/* show plan trip button */}
+                          <Button
+                            variant="contained"
+                            startIcon={<EventAvailable />}
+                            fullWidth
+                            onClick={() => navigate(`/tripplanner/${request.trip.id}`)}
+                          >
+                            {t('planTrip')}
                           </Button>
                         </Stack>
                       )}
@@ -409,14 +405,25 @@ const SentRequests = ({requests}) => {
         onClose={handleMenuClose}
       >
         <MenuItem onClick={()=>navigate(`/profile/${selectedRequest?.to_profile?.id}`)}>{t('viewProfile')}</MenuItem>
-        <MenuItem onClick={()=>console.log(selectedRequest)}>{t('viewTripDetails')}</MenuItem>
-
-        <MenuItem onClick={()=>navigate(`/tripplanner/${selectedRequest?.trip.id}`)}>{t('viewTripDetails')}</MenuItem>
-        <Divider />
-        {filteredRequests.find(r => r.id === selectedRequest)?.status === REQUESTSTATUS.Pending && (
-          <MenuItem onClick={handleMenuClose} sx={{ color: 'error.main' }}>
-            {t('cancelRequest')}
+        
+         {selectedRequest?.status === REQUESTSTATUS.Accepted && (
+          <div>
+            <MenuItem onClick={() => navigate(`/tripplanner/${selectedRequest?.trip.id}`)}>{t('planTrip')}</MenuItem>
+            <MenuItem onClick={() => handleChat(selectedRequest?.to_profile?.user.email)}>
+              {t('chatWithHost')}
           </MenuItem>
+          </div>
+          
+        )}
+
+        {selectedRequest?.status === REQUESTSTATUS.Pending && (
+          <div>
+            <MenuItem onClick={() => navigate(`/posts/${selectedRequest?.trip.slug}`)}>{t('viewTour')}</MenuItem>
+            <MenuItem onClick={() => handleCancelRequest(selectedRequest?.id)} sx={{ color: 'error.main' }}>
+              {t('cancelRequest')}
+          </MenuItem>
+          </div>
+          
         )}
       </Menu>
     </Grid>

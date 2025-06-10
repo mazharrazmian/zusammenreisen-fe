@@ -36,5 +36,7 @@
     "viewProfile": "View Profile",
     "sentTo" :"Sent to",
     "yourMessage" : "Your Message",
-    "viewTripDetails" : "View trip details"
+    "viewTripDetails" : "View trip details",
+    "viewTour": "View Tour",
+    "planTrip": "Plan Trip"
 }

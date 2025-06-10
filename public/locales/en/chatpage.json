@@ -8,5 +8,6 @@
     "enterEmail": "Enter Email Address",
     "cancel": "Cancel",
     "creating": "Creating...",
-    "startChat": "Start Chat"
+    "startChat": "Start Chat",
+    "typeMessage": "Type a message..."
 }

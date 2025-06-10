@@ -1,5 +1,5 @@
 import { Box, Button, Card, CardContent, CardMedia, Container, Grid2 as Grid, Typography, CircularProgress, Drawer, IconButton, Pagination, Chip, Stack, useMediaQuery, Paper, Avatar, Divider, Badge } from "@mui/material";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { homePageStyles } from "./styles";
 //import tourServices from "../redux/api/tourService";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -34,6 +34,7 @@ const HomePage: React.FC = () => {
 
     const [searchParams, setSearchParams] = useSearchParams();
     const navigate = useNavigate();
+
     const [isInitialLoad, setIsInitialLoad] = useState(true);
     // Get saved filters from session storage
     const getSavedFilters = () => {
@@ -58,6 +59,7 @@ const HomePage: React.FC = () => {
     useEffect(() => {
         sessionStorage.setItem("toursFilters", JSON.stringify(filters));
     }, [filters]);
+
 
     const urlParams = new URLSearchParams({
         ...(filters.page && { page: String(filters.page) }),
@@ -101,6 +103,7 @@ const HomePage: React.FC = () => {
             document.getElementById('explore-tours')?.scrollIntoView({ behavior: 'smooth' });
         }
     }, [filters.page]);
+
 
     const handlePageChange = (_event: React.ChangeEvent<unknown>, value: number) => {
         setFilters(prevFilters => ({
@@ -490,6 +493,7 @@ const HomePage: React.FC = () => {
                                                             page: 1,
                                                         })
                                                         setActiveFiltersCount(0)
+                                                       
                                                         }}
                                                         sx={{
                                                             borderRadius: "8px",

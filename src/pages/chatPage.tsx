@@ -23,10 +23,9 @@ import {
 import SendIcon from "@mui/icons-material/Send";
 import { useTheme } from "@mui/material/styles";
 import ScrollableFeed from "react-scrollable-feed";
-import { Add, ArrowBack } from "@mui/icons-material";
+import { Add } from "@mui/icons-material";
 import chatServices from "../redux/api/chatServices";
 import noChat from "../assets/chat.svg";
-import Iconify from "../components/iconify";
 import { useNavigate, useParams } from "react-router-dom";
 import Cookies from "js-cookie";
 import { toast } from "react-toastify";

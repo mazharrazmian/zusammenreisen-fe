@@ -46,6 +46,14 @@ const retrieveRoom = (id: number) => callAPi.get(`/chat/chat-rooms/${id}`);
 const sendMessage = (data: sendChat) =>
   callAPiMultiPart.post("/chat/messages/", data);
 
+const getNotificationPreferences = async () => callAPi.get('/chat/notification-preferences/');
+
+const updateNotificationPreferences = async (preferences) => {
+
+    return callAPi.patch(`/chat/notification-preferences/${preferences.id}/`, preferences);
+
+}
+
 const chatServices = {
   createRoom,
   getChatRooms,
@@ -54,7 +62,9 @@ const chatServices = {
   getChatRoomsCurrUser,
   getNotifications,
   updateNotification,
-  markMessagesAsRead
+  markMessagesAsRead,
+  getNotificationPreferences,
+  updateNotificationPreferences
 };
 
 export default chatServices;

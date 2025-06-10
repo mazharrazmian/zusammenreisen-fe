@@ -47,6 +47,7 @@ import Cookies from "js-cookie";
 import { useDispatch, useSelector } from "react-redux";
 import { clearProfile } from "../redux/slice/profileSlice";
 import { useAppSelector } from "../redux/store";
+import NotificationPreferences from "../components/profileDetails/notificationPreferences";
 
 const ProfileDetail = () => {
     const { t } = useTranslation('accountpage');
@@ -364,6 +365,7 @@ const ProfileDetail = () => {
                             <Tab label={t('profile')} />
                             <Tab label={t('about')} />
                             {isCurrentUser && <Tab label={t('settings')} />}
+                            {isCurrentUser && <Tab label={t('notificationPreferences')} />}
                         </Tabs>
                     </Box>
 
@@ -531,8 +533,7 @@ const ProfileDetail = () => {
                     {isCurrentUser && activeTab === 2 && (
                         <Box sx={{ pt: 3 }}>
                             <Typography variant="h6" sx={{ mb: 3 }}>{t('accountSettings')}</Typography>
-
-                            <Button
+                             <Button
                                 variant="outlined"
                                 color="error"
                                 startIcon={<Delete />}
@@ -542,6 +543,15 @@ const ProfileDetail = () => {
                                 {t('deactivateAccount')}
                             </Button>
                         </Box>
+                        
+                    )}
+
+                    {/* Notification Preferences - Only visible for current user */}
+                    {isCurrentUser && activeTab === 3 && (
+                        <Box sx={{ pt: 3 }}>
+                            <NotificationPreferences />
+                        </Box>
+                        
                     )}
                 </Box>
             </Paper>
