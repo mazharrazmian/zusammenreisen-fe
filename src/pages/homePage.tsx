@@ -121,6 +121,7 @@ const HomePage: React.FC = () => {
                         variant="h2"
                         sx={{
                             textAlign: 'center',
+                            marginTop: {xs : 5, sm : 0},
                             marginBottom: 3,
                             fontWeight: 700,
                             color: 'primary.dark', // Dark teal from your theme
