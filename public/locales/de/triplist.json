@@ -14,5 +14,13 @@
     "pending": "Ausstehend",
     "tourFull": "Ausgebucht",
     "tourFinished": "Tour Beendet",
-    "ongoing": "Laufend"
+    "ongoing": "Laufend",
+    "edit" : "Bearbeiten",
+    "loadingTrips": "Reisen werden geladen...",
+    "noTripsMessage": "Sie haben noch keine Reisen erstellt oder sind keiner beigetreten.",
+    "noUpcomingTrips": "Keine bevorstehenden Reisen gefunden.",
+    "noPastTrips": "Keine vergangenen Reisen gefunden.",
+    "createFirstTrip": "Erstellen Sie Ihre erste Reise",
+    "yourTrip": "Ihre Reise",
+    "filters": "Filter"
 }

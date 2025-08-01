@@ -15,5 +15,13 @@
     "pending": "Pending",
     "tourFull": "Tour Full",
     "tourFinished": "Tour Ended",
-    "ongoing": "Ongoing"
+    "ongoing": "Ongoing",
+    "edit" : "Edit",
+    "loadingTrips": "Loading trips...",
+    "noTripsMessage": "You haven't created or joined any trips yet.",
+    "noUpcomingTrips": "No upcoming trips found.",
+    "noPastTrips": "No past trips found.",
+    "createFirstTrip": "Create Your First Trip",
+    "yourTrip": "Your Trip",
+    "filters": "Filters"
 }
