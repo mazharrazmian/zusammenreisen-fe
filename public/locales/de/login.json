@@ -16,5 +16,6 @@
     "passwordResetEmailSent" : "Passwort zurücksetzen E-Mail gesendet",
     "errorSendingEmail" : "Fehler beim Senden einer E-Mail",
     "passwordMinLength" : "Mindestlänge des Passworts: 6 Zeichen",
-    "passwordRequired" : "Passwort erforderlich"
+    "passwordRequired" : "Passwort erforderlich",
+    "loginRequiredToAccess" : "Anmeldung erforderlich"
 }

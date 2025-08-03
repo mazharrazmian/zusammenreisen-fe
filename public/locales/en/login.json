@@ -16,5 +16,7 @@
     "passwordResetEmailSent" : "Password Reset Email Sent",
     "errorSendingEmail" : "Error sending Email",
     "passwordMinLength" : "Minimum password length : 6 characters",
-    "passwordRequired" : "Password required"
+    "passwordRequired" : "Password required",
+    "loginRequiredToAccess": "Login required to access:"
+
 }

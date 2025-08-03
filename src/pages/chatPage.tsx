@@ -58,6 +58,8 @@ const ChatPage: React.FC = () => {
 
     // Load user chats once on component mount
     // In your useEffect where you load the initial chat
+
+    // In your useEffect where you load the initial chat
 useEffect(() => {
     const loadUserChats = async () => {
         try {
@@ -69,11 +71,8 @@ useEffect(() => {
                 try {
                     const chatResponse = await chatServices.retrieveRoom(Number(chatId));
                     setActiveChat(chatResponse.data);
-                    // Sort messages by timestamp (oldest first for display)
-                    const sortedMessages = [...chatResponse.data.messages].sort(
-                        (a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
-                    );
-                    setMessageList(sortedMessages);
+                    // Reverse the messages array to show oldest first (for display purposes)
+                    setMessageList(chatResponse.data.messages.reverse());
 
                     // Mark messages as read
                     await chatServices.markMessagesAsRead(Number(chatId));
@@ -108,12 +107,9 @@ const handleChatSelection = async (chat: ChatRoom) => {
     // Update the URL without triggering the useEffect
     navigate(`/chat/${chat.id}`, { replace: true });
 
-    // Sort messages and set active chat
+    // Set the active chat and message list (reverse for display)
     setActiveChat(chat);
-    const sortedMessages = [...chat.messages].sort(
-        (a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
-    );
-    setMessageList(sortedMessages);
+    setMessageList([...chat.messages].reverse()); // Create a copy and reverse
     
     if (chat.unread_count > 0) {
         // Mark messages as read
@@ -138,11 +134,8 @@ useEffect(() => {
         try {
             const response = await chatServices.retrieveRoom(Number(chatId));
             setActiveChat(response.data);
-            // Sort messages by timestamp for proper display order
-            const sortedMessages = [...response.data.messages].sort(
-                (a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
-            );
-            setMessageList(sortedMessages);
+            // Reverse messages for proper display order
+            setMessageList([...response.data.messages].reverse());
 
             // Mark messages as read
             await chatServices.markMessagesAsRead(Number(chatId));

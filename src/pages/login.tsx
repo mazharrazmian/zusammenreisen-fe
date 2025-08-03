@@ -12,11 +12,11 @@ import Iconify from "../components/iconify";
 import vector1 from "../assets/Vector1.png";
 import vector2 from "../assets/vector2.png";
 import vector3 from "../assets/Vector3.png";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import authServices from "../redux/api/authService";
 import { toast } from "react-toastify";
 import Cookies from "js-cookie";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { authStyles, login } from "./styles";
 import { useDispatch } from "react-redux";
 import { get_profile } from "../redux/slice/profileSlice";
@@ -31,10 +31,22 @@ const LoginPage = () => {
   const { t } = useTranslation('login');
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
   const [values, setValues] = useState(initialValues);
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
+  // Get the page user was trying to access, default to home page
+  const from = location.state?.from || "/";
+
+  useEffect(() => {
+    // If user is already logged in, redirect them
+    const token = Cookies.get("accessToken");
+    if (token) {
+      navigate(from, { replace: true });
+    }
+  }, [navigate, from]);
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;
@@ -121,7 +133,9 @@ const LoginPage = () => {
             sameSite: "strict",
           });
           dispatch(get_profile());
-          navigate("/");
+          
+          // Redirect to the page they were trying to access
+          navigate(from, { replace: true });
           toast.success(t('loginSuccessful'));
           setIsLoading(false);
         }
@@ -173,6 +187,20 @@ const LoginPage = () => {
                     >
                       {t('loginWithEmail')}
                     </Typography>
+                    {/* Show message if user was redirected from a protected route */}
+                    {from !== "/" && (
+                      <Typography
+                        sx={{
+                          fontSize: { md: ".6rem", xs: ".5rem" },
+                          textAlign: "center",
+                          color: "primary.main",
+                          mt: 1,
+                          fontStyle: "italic"
+                        }}
+                      >
+                        {t('loginRequiredToAccess')} {from}
+                      </Typography>
+                    )}
                   </Box>
                   <Box sx={authStyles.form}>
                     <Box>
