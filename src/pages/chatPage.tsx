@@ -57,99 +57,111 @@ const ChatPage: React.FC = () => {
     const navigate = useNavigate();
 
     // Load user chats once on component mount
-    useEffect(() => {
-        const loadUserChats = async () => {
-            try {
-                const response = await chatServices.getChatRoomsCurrUser();
-                setUserChats({ loading: 'fulfilled', data: response.data });
+    // In your useEffect where you load the initial chat
+useEffect(() => {
+    const loadUserChats = async () => {
+        try {
+            const response = await chatServices.getChatRoomsCurrUser();
+            setUserChats({ loading: 'fulfilled', data: response.data });
 
-                // After loading chats, handle initial chat selection based on URL
-                if (chatId && response.data.length > 0) {
-                    try {
-                        const chatResponse = await chatServices.retrieveRoom(Number(chatId));
-                        setActiveChat(chatResponse.data);
-                        setMessageList(chatResponse.data.messages);
+            // After loading chats, handle initial chat selection based on URL
+            if (chatId && response.data.length > 0) {
+                try {
+                    const chatResponse = await chatServices.retrieveRoom(Number(chatId));
+                    setActiveChat(chatResponse.data);
+                    // Sort messages by timestamp (oldest first for display)
+                    const sortedMessages = [...chatResponse.data.messages].sort(
+                        (a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
+                    );
+                    setMessageList(sortedMessages);
 
-                        // Mark messages as read
-                        await chatServices.markMessagesAsRead(Number(chatId));
-                        setUserChats(prevState => ({
-                            ...prevState,
-                            data: prevState.data.map(chat =>
-                                chat.id === Number(chatId)
-                                    ? { ...chat, unread_count: 0 }
-                                    : chat
-                            ),
-                        }));
-                    } catch (error) {
-                        console.log(error);
-                        toast(t('couldNotLoadChatRoom'));
-                    }
+                    // Mark messages as read
+                    await chatServices.markMessagesAsRead(Number(chatId));
+                    setUserChats(prevState => ({
+                        ...prevState,
+                        data: prevState.data.map(chat =>
+                            chat.id === Number(chatId)
+                                ? { ...chat, unread_count: 0 }
+                                : chat
+                        ),
+                    }));
+                } catch (error) {
+                    console.log(error);
+                    toast(t('couldNotLoadChatRoom'));
                 }
-                setIsInitialLoad(false);
-            } catch (error) {
-                toast(t('couldNotGetChats'));
-                setIsInitialLoad(false);
             }
-        };
-
-        loadUserChats();
-    }, []);
-
-    // Handle chat selection from sidebar
-    const handleChatSelection = async (chat: ChatRoom) => {
-        // If we're already on this chat, don't do anything
-        if (activeChat?.id === chat.id) return;
-
-        // Update the URL without triggering the useEffect
-        navigate(`/chat/${chat.id}`, { replace: true });
-
-        // Set the active chat and message list
-        setActiveChat(chat);
-        setMessageList(chat.messages);
-        if (chat.unread_count > 0) {
-            // Mark messages as read
-            try {
-                await chatServices.markMessagesAsRead(chat.id);
-                setUserChats(prevState => ({
-                    ...prevState,
-                    data: prevState.data.map(c =>
-                        c.id === chat.id ? { ...c, unread_count: 0 } : c
-                    ),
-                }));
-            } catch (error) {
-                console.log(error);
-            }
+            setIsInitialLoad(false);
+        } catch (error) {
+            toast(t('couldNotGetChats'));
+            setIsInitialLoad(false);
         }
-
     };
 
-    // Handle URL changes (e.g., from notifications) after initial load
-    useEffect(() => {
-        if (isInitialLoad || !chatId) return;
-        const loadChatFromUrl = async () => {
-            try {
-                const response = await chatServices.retrieveRoom(Number(chatId));
-                setActiveChat(response.data);
-                setMessageList(response.data.messages);
+    loadUserChats();
+}, []);
 
-                // Mark messages as read
-                await chatServices.markMessagesAsRead(Number(chatId));
-                setUserChats(prevState => ({
-                    ...prevState,
-                    data: prevState.data.map(chat =>
-                        chat.id === Number(chatId)
-                            ? { ...chat, unread_count: 0 }
-                            : chat
-                    ),
-                }));
-            } catch (error) {
-                console.log(error);
-                toast(t('couldNotLoadChatRoom'));
-            }
-        };
+// Also update the handleChatSelection function
+const handleChatSelection = async (chat: ChatRoom) => {
+    // If we're already on this chat, don't do anything
+    if (activeChat?.id === chat.id) return;
 
-        loadChatFromUrl();
-    }, [chatId, isInitialLoad]);
+    // Update the URL without triggering the useEffect
+    navigate(`/chat/${chat.id}`, { replace: true });
+
+    // Sort messages and set active chat
+    setActiveChat(chat);
+    const sortedMessages = [...chat.messages].sort(
+        (a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
+    );
+    setMessageList(sortedMessages);
+    
+    if (chat.unread_count > 0) {
+        // Mark messages as read
+        try {
+            await chatServices.markMessagesAsRead(chat.id);
+            setUserChats(prevState => ({
+                ...prevState,
+                data: prevState.data.map(c =>
+                    c.id === chat.id ? { ...c, unread_count: 0 } : c
+                ),
+            }));
+        } catch (error) {
+            console.log(error);
+        }
+    }
+};
+
+// And update the URL-based chat loading
+useEffect(() => {
+    if (isInitialLoad || !chatId) return;
+    const loadChatFromUrl = async () => {
+        try {
+            const response = await chatServices.retrieveRoom(Number(chatId));
+            setActiveChat(response.data);
+            // Sort messages by timestamp for proper display order
+            const sortedMessages = [...response.data.messages].sort(
+                (a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
+            );
+            setMessageList(sortedMessages);
+
+            // Mark messages as read
+            await chatServices.markMessagesAsRead(Number(chatId));
+            setUserChats(prevState => ({
+                ...prevState,
+                data: prevState.data.map(chat =>
+                    chat.id === Number(chatId)
+                        ? { ...chat, unread_count: 0 }
+                        : chat
+                ),
+            }));
+        } catch (error) {
+            console.log(error);
+            toast(t('couldNotLoadChatRoom'));
+        }
+    };
+
+    loadChatFromUrl();
+}, [chatId, isInitialLoad]);
 
     // WebSocket connection management
     useEffect(() => {
