@@ -40,6 +40,7 @@ const ProtectedRoute = ({ children }) => {
         isProfileCompleted={profile?.profile?.profile?.is_completed || false}
         completionPercentage={60}
         missingFields={['age', 'languages', 'gender']}
+        profileUrl={`/profile/${profile?.profile?.profile?.id}`}
       />
       {children}
     </>
