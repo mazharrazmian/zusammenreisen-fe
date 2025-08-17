@@ -179,9 +179,6 @@ const LoginPage = () => {
               <Box sx={{ width: "100%", maxWidth: "400px", px: 2 }}>
                 <Box sx={authStyles.formWrapper}>
                   <Box>
-                    <Typography variant="h2" textAlign={"center"}>
-                      {t('welcome')}
-                    </Typography>
                     
                     {/* Show message if user was redirected from a protected route */}
                     {from !== "/" && (
@@ -202,7 +199,6 @@ const LoginPage = () => {
                   
                   {/* Google Sign In Section */}
                   <Box sx={{ 
-                    width: "100%", 
                     mb: 3,
                     display: "flex", 
                     flexDirection: "column", 

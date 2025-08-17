@@ -39,6 +39,8 @@ const ProfileCompletionBanner: React.FC<ProfileCompletionBannerProps> = ({
   const [dismissed, setDismissed] = useState(() => {
     return sessionStorage.getItem('profileBannerDismissed') === 'true';
   });
+
+  console.log(isProfileCompleted)
   
   const navigate = useNavigate();
 

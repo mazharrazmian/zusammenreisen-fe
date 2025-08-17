@@ -44,11 +44,13 @@ const GoogleOAuthButton: React.FC<GoogleOauthButtonProps> = ({
         window.google.accounts.id.renderButton(
           document.getElementById("google-signin-button"),
           { 
-            theme: "outline", 
-            size: "large", 
-            text: text,
-            width: "100%",
-            shape: "rectangular"
+            theme: "filled_blue", //outline" | "filled_blue" | "filled_black"
+            size: "large",  // "large" | "medium" | "small",
+            text: text, 
+            // width: "100%",
+            shape: "pill" // "rectangular" | "pill" | "circle" | "square",
+            //   locale: "en" | "es" | "fr" | "de" | "it" | "ja" | "ko" | "pt" | "ru" | "zh",
+
           }
         );
       }
@@ -64,14 +66,22 @@ const GoogleOAuthButton: React.FC<GoogleOauthButtonProps> = ({
   }, [handleGoogleSuccess, handleGoogleError, text]);
 
   return (
+
+   <div style={{ 
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    minHeight: "44px" // Google button height
+  }}>
     <div 
       id="google-signin-button" 
       style={{ 
-        width: "100%",
         display: "flex",
-        justifyContent: "center"
+        justifyContent: "center",
+        alignItems: "center"
       }}
     />
+  </div>
   );
 };
 

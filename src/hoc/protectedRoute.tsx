@@ -33,10 +33,11 @@ const ProtectedRoute = ({ children }) => {
 
   // If authenticated, render the wrapped component
   if (isAuthenticated) {
+    console.log(profile)
   return (
     <>
       <ProfileCompletionBanner
-        isProfileCompleted={profile?.profile?.is_compoeted || false}
+        isProfileCompleted={profile?.profile?.profile?.is_completed || false}
         completionPercentage={60}
         missingFields={['age', 'languages', 'gender']}
       />
