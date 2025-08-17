@@ -22,5 +22,6 @@
     "noPastTrips": "Keine vergangenen Reisen gefunden.",
     "createFirstTrip": "Erstellen Sie Ihre erste Reise",
     "yourTrip": "Ihre Reise",
-    "filters": "Filter"
+    "filters": "Filter",
+    "planTrip" : "Reise Planen"
 }

@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import Cookies from "js-cookie";
+import ProfileCompletionBanner from "../components/shared/profileCompletion/ProfileCompletionBanner";
+import { useAppSelector } from "../redux/store";
 
 const ProtectedRoute = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(null);
   const location = useLocation();
+  const profile = useAppSelector((s)=>s.profile);
 
   useEffect(() => {
     const token = Cookies.get("accessToken");
@@ -30,8 +33,17 @@ const ProtectedRoute = ({ children }) => {
 
   // If authenticated, render the wrapped component
   if (isAuthenticated) {
-    return children;
-  }
+  return (
+    <>
+      <ProfileCompletionBanner
+        isProfileCompleted={profile?.profile?.is_compoeted || false}
+        completionPercentage={60}
+        missingFields={['age', 'languages', 'gender']}
+      />
+      {children}
+    </>
+  );
+}
 
   // If not authenticated, redirect to login with the current location
   // The login page can use this to redirect back after successful login

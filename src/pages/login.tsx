@@ -17,10 +17,11 @@ import authServices from "../redux/api/authService";
 import { toast } from "react-toastify";
 import Cookies from "js-cookie";
 import { useNavigate, useLocation } from "react-router-dom";
-import { authStyles, login } from "./styles";
+import { authStyles } from "./styles";
 import { useDispatch } from "react-redux";
 import { get_profile } from "../redux/slice/profileSlice";
 import { useTranslation } from 'react-i18next';
+import GoogleOAuthButton from "../components/shared/googleOauth/GoogleOAuthButton";
 
 const initialValues = {
   email: "",
@@ -39,6 +40,8 @@ const LoginPage = () => {
 
   // Get the page user was trying to access, default to home page
   const from = location.state?.from || "/";
+
+  console.log(from)
 
   useEffect(() => {
     // If user is already logged in, redirect them
@@ -173,20 +176,13 @@ const LoginPage = () => {
                 justifyContent: "center",
               }}
             >
-              <Box>
+              <Box sx={{ width: "100%", maxWidth: "400px", px: 2 }}>
                 <Box sx={authStyles.formWrapper}>
                   <Box>
                     <Typography variant="h2" textAlign={"center"}>
                       {t('welcome')}
                     </Typography>
-                    <Typography
-                      sx={{
-                        fontSize: { md: ".7rem", xs: ".5rem" },
-                        textAlign: "center",
-                      }}
-                    >
-                      {t('loginWithEmail')}
-                    </Typography>
+                    
                     {/* Show message if user was redirected from a protected route */}
                     {from !== "/" && (
                       <Typography
@@ -195,6 +191,7 @@ const LoginPage = () => {
                           textAlign: "center",
                           color: "primary.main",
                           mt: 1,
+                          mb: 2,
                           fontStyle: "italic"
                         }}
                       >
@@ -202,87 +199,165 @@ const LoginPage = () => {
                       </Typography>
                     )}
                   </Box>
-                  <Box sx={authStyles.form}>
-                    <Box>
-                      <Typography sx={{ paddingLeft: "10px", fontSize: "14px" }}>
-                        {t('email')}
-                      </Typography>
-                      <TextField
-                        fullWidth
-                        name="email"
-                        helperText={errors?.email}
-                        value={values?.email}
-                        error={Boolean(errors?.email)}
-                        onChange={handleOnChange}
-                      />
-                    </Box>
-                    <Box>
-                      <Typography sx={{ paddingLeft: "10px", fontSize: "14px" }}>
-                        {t('password')}
-                      </Typography>
-                      <TextField
-                        fullWidth
-                        name="password"
-                        helperText={errors?.password}
-                        value={values?.password}
-                        error={Boolean(errors?.password)}
-                        type={showPassword ? "text" : "password"}
-                        onChange={handleOnChange}
-                        slotProps={{
-                          input: {
-                            endAdornment: (
-                              <InputAdornment position="end">
-                                <IconButton
-                                  onClick={() => setShowPassword(!showPassword)}
-                                  edge="end"
-                                >
-                                  <Iconify
-                                    icon={
-                                      showPassword
-                                        ? "eva:eye-fill"
-                                        : "eva:eye-off-fill"
-                                    }
-                                  />
-                                </IconButton>
-                              </InputAdornment>
-                            ),
-                          },
-                        }}
-                      />
-                    </Box>
-                    <Box>
-                      <Typography sx={authStyles.forgotPass}>
-                        <Button variant="text" onClick={() => handleForgotPassword()}>
-                          {t('forgotPassword')}
-                        </Button>
-                      </Typography>
+                  
+                  {/* Google Sign In Section */}
+                  <Box sx={{ 
+                    width: "100%", 
+                    mb: 3,
+                    display: "flex", 
+                    flexDirection: "column", 
+                    alignItems: "center",
+                    gap: 1
+                  }}>
+                    <Box sx={{ 
+                      width: "100%", 
+                      minWidth: "232px",
+                      "& #google-signin-button": {
+                        width: "100% !important",
+                        "& > div": {
+                          width: "100% !important",
+                          justifyContent: "center !important"
+                        }
+                      }
+                    }}>
+                      <GoogleOAuthButton text="signin_with"/>
                     </Box>
                   </Box>
-                  <Box>
-                    <Button
-                      variant="contained"
-                      fullWidth
-                      sx={authStyles.submitBtn}
-                      type="submit"
+
+                  {/* Divider */}
+                  <Box sx={{ 
+                    width: "100%", 
+                    mb: 2,
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 2
+                  }}>
+                    <Divider sx={{ flex: 1 }} />
+                    <Typography 
+                      variant="body2" 
+                      sx={{ 
+                        color: "text.secondary",
+                        fontSize: { md: ".8rem", xs: ".7rem" },
+                        textTransform: "uppercase",
+                        letterSpacing: "1px",
+                        fontWeight: 500
+                      }}
                     >
-                      {isLoading ? t('loading') : t('login')}
-                    </Button>
+                      or
+                    </Typography>
+                    <Divider sx={{ flex: 1 }} />
+                  </Box>
+
+                  {/* Email Login Section */}
+                  <Box sx={{ width: "100%" }}>
+                    <Typography
+                      sx={{
+                        fontSize: { md: ".8rem", xs: ".7rem" },
+                        textAlign: "center",
+                        color: "text.secondary",
+                        mb: 2,
+                      }}
+                    >
+                      {t('loginWithEmail')}
+                    </Typography>
+                    
+                    <Box sx={authStyles.form}>
+                      <Box>
+                        <Typography sx={{ paddingLeft: "10px", fontSize: "14px" }}>
+                          {t('email')}
+                        </Typography>
+                        <TextField
+                          fullWidth
+                          name="email"
+                          helperText={errors?.email}
+                          value={values?.email}
+                          error={Boolean(errors?.email)}
+                          onChange={handleOnChange}
+                        />
+                      </Box>
+                      <Box>
+                        <Typography sx={{ paddingLeft: "10px", fontSize: "14px" }}>
+                          {t('password')}
+                        </Typography>
+                        <TextField
+                          fullWidth
+                          name="password"
+                          helperText={errors?.password}
+                          value={values?.password}
+                          error={Boolean(errors?.password)}
+                          type={showPassword ? "text" : "password"}
+                          onChange={handleOnChange}
+                          slotProps={{
+                            input: {
+                              endAdornment: (
+                                <InputAdornment position="end">
+                                  <IconButton
+                                    onClick={() => setShowPassword(!showPassword)}
+                                    edge="end"
+                                  >
+                                    <Iconify
+                                      icon={
+                                        showPassword
+                                          ? "eva:eye-fill"
+                                          : "eva:eye-off-fill"
+                                      }
+                                    />
+                                  </IconButton>
+                                </InputAdornment>
+                              ),
+                            },
+                          }}
+                        />
+                      </Box>
+                      <Box>
+                        <Typography sx={authStyles.forgotPass}>
+                          <Button 
+                            variant="text" 
+                            onClick={() => handleForgotPassword()}
+                            sx={{ 
+                              fontSize: "12px",
+                              textTransform: "none",
+                              p: 0,
+                              minWidth: "auto"
+                            }}
+                          >
+                            {t('forgotPassword')}
+                          </Button>
+                        </Typography>
+                      </Box>
+                    </Box>
+                    
+                    <Box mt={2}>
+                      <Button
+                        variant="contained"
+                        fullWidth
+                        sx={authStyles.submitBtn}
+                        type="submit"
+                        disabled={isLoading}
+                      >
+                        {isLoading ? t('loading') : t('login')}
+                      </Button>
+                    </Box>
                   </Box>
                 </Box>
-                <Box sx={{ padding: { md: "0rem 10rem", xs: "0rem 1rem" } }}>
-                  <Divider>or</Divider>
-                </Box>
-                <Box mt={2} mb={4}>
+                
+                {/* Sign Up Link */}
+                <Box sx={{ mt: 2, mb: 4 }}>
                   <Typography
                     sx={{
                       textAlign: "center",
-                      fontSize: { xs: ".5rem", md: ".7rem" },
+                      fontSize: { xs: ".7rem", md: ".8rem" },
+                      color: "text.secondary"
                     }}
                   >
                     {t('dontHaveAccount')} {" "}
                     <span>
                       <a
-                        style={{ textDecoration: "none", color: "blue" }}
+                        style={{ 
+                          textDecoration: "none", 
+                          color: "inherit",
+                          fontWeight: 500
+                        }}
                         href="/register"
                       >
                         {t('signUp')}

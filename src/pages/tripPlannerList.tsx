@@ -26,11 +26,12 @@ import EditIcon from '@mui/icons-material/Edit';
 import PeopleIcon from '@mui/icons-material/People';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
-import TripCard from '../components/tripPlanningComponents/tripCardComponent';
 import { tripService } from '../redux/api/tripPlanningService';
 import { useTranslation } from 'react-i18next';
 import { useAppSelector } from '../redux/store';
 import { useNavigate } from 'react-router-dom';
+import ClickableAvatar from '../components/shared/clickableAvatar/clicakableAvatar';
+import { Details } from '@mui/icons-material';
 
 interface Trip {
   id: number;
@@ -89,9 +90,6 @@ const MyTripsPage = () => {
     setSearchQuery(event.target.value);
   };
 
-  const handleFilterChange = (newFilters: any) => {
-    setFilters(newFilters);
-  };
 
   const handleEditTrip = (trip: Trip) => {
     // Navigate to edit page
@@ -202,15 +200,16 @@ const MyTripsPage = () => {
               </Box>
             )}
 
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 1 }}>
-              <Avatar 
-                src={trip.posted_by?.avatar} 
-                sx={{ width: 24, height: 24 }}
-              >
-                {trip.posted_by?.name?.charAt(0) || 'U'}
-              </Avatar>
-              <Typography variant="body2" color="text.secondary">
-                {owner ? t('yourTrip') || 'Your Trip' : `by ${trip.posted_by?.name || 'Unknown'}`}
+            <Box sx={{ display: 'flex',alignItems:'start',gap:1 }}>
+              <ClickableAvatar 
+                    src={trip.posted_by?.picture}
+                    navigateTo={`/profile/${trip.posted_by?.id}`}
+                    fallbackName={trip.posted_by?.user.name}
+                    size={32}
+                    />
+              <Typography variant="body2" color="text.secondary" sx={{mt:0.5}}>
+                
+                {owner ? t('yourTrip') || 'Your Trip' : `by ${trip.posted_by?.user?.name || 'Unknown'}`}
               </Typography>
             </Box>
           </Stack>
@@ -219,12 +218,12 @@ const MyTripsPage = () => {
         <CardActions sx={{ justifyContent: 'space-between', px: 2, pb: 2 }}>
           <Button 
             size="small" 
-            onClick={() => navigate(`/posts/${trip.slug}`)}
+            onClick={() => navigate(`/tripplanner/${trip.id}`)}
           >
-            {t('viewDetails') || 'View Details'}
+            {t('planTrip') || 'Plan Trip'}
           </Button>
           
-          {owner && (
+          {owner ? (
             <Button
               size="small"
               variant="outlined"
@@ -234,7 +233,20 @@ const MyTripsPage = () => {
             >
               {t('edit') || 'Edit'}
             </Button>
-          )}
+          )
+          :
+          (
+            <Button
+              size="small"
+              variant="outlined"
+              startIcon={<Details />}
+              onClick={() => navigate(`/posts/${trip.slug}`)}
+              color="primary"
+            >
+              {t('viewDetails') || 'View Details'}
+            </Button>
+          )
+        }
         </CardActions>
       </Card>
     );

@@ -5,8 +5,8 @@
   "scripts": {
     "dev": "vite",
     "build": "npm run build:wanderbuddies && npm run build:zusammenreisen && npm run postbuild",
-    "build:wanderbuddies": "cross-env VITE_SITE=wanderbuddies VITE_API_URL=https://api.wanderbuddies.com/api VITE_CHAT_URL=wss://api.wanderbuddies.com vite build --outDir dist/wanderbuddies",
-    "build:zusammenreisen": "cross-env VITE_SITE=zusammenreisen VITE_API_URL=https://api.zusammenreisen.com/api VITE_CHAT_URL=wss://api.zusammenreisen.com vite build --outDir dist/zusammenreisen",
+    "build:wanderbuddies": "cross-env VITE_SITE=wanderbuddies VITE_API_URL=https://api.wanderbuddies.com/api VITE_CHAT_URL=wss://api.wanderbuddies.com VITE_GOOGLE_CLIENT_ID=135984795533-5a7jfo9m9ltvn84ui89oaj662krc70jt.apps.googleusercontent.com vite build --outDir dist/wanderbuddies",
+    "build:zusammenreisen": "cross-env VITE_SITE=zusammenreisen VITE_API_URL=https://api.zusammenreisen.com/api VITE_CHAT_URL=wss://api.zusammenreisen.com VITE_GOOGLE_CLIENT_ID=135984795533-5a7jfo9m9ltvn84ui89oaj662krc70jt.apps.googleusercontent.com vite build --outDir dist/zusammenreisen",
     "postbuild": "npm run copy:robots && npm run copy:sitemaps && npm run copy:ads",
     "copy:robots": "copyfiles -f robots-zusammenreisen.txt dist/zusammenreisen && copyfiles -f robots.txt dist/wanderbuddies/",
     "copy:sitemaps": "copyfiles -f sitemap-zusammenreisen.xml dist/zusammenreisen && copyfiles -f sitemap.xml dist/wanderbuddies/",

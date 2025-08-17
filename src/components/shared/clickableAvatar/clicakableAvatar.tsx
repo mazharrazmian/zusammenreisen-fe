@@ -10,7 +10,7 @@ const ClickableAvatar = ({ src, fallbackName, navigateTo, size = 56 }) => {
   return (
     <Avatar
       src={imageSrc}
-      sx={{ width: size, height: size, mx: 'auto', cursor: 'pointer' }}
+      sx={{ width: size, height: size, cursor: 'pointer' }}
       onClick={() => navigate(navigateTo)}
     />
   );

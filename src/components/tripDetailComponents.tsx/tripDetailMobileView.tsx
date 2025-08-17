@@ -10,6 +10,7 @@ import { Share as ShareIcon } from "@mui/icons-material";
 import { IconButton, Tooltip } from "@mui/material";
 import ShareModal from './shareModal';
 import { useState } from "react";
+import { useLocation } from "react-router-dom";
 
 
 // Mobile component
@@ -24,8 +25,10 @@ const TripDetailMobileView = ({
     setOpenModal 
 }) => {
     const { t } = useTranslation('tripdetails');
-     const [openShareModal, setOpenShareModal] = useState(false);
+    const [openShareModal, setOpenShareModal] = useState(false);
     const shareUrl = window.location.href;
+    const location = useLocation();
+    
     // Determine which button to show based on user status
     const renderActionButton = () => {
         // Flow 1: User is not logged in
@@ -42,7 +45,11 @@ const TripDetailMobileView = ({
                         borderRadius: 2,
                         zIndex: 1000
                     }}
-                    onClick={() => navigate('/login')}
+                     onClick={() =>
+                        navigate('/login', {
+                        state: { from: location.pathname + location.search }
+                        })
+                    }
                 >
                     <ChatIcon sx={{ mr: 1 }} />
                         {t('loginToSend')}

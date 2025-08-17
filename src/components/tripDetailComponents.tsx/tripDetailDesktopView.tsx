@@ -8,6 +8,7 @@ import { getTripTypeIcons } from "../../Constants";
 import { useTranslation } from "react-i18next";
 import { Share as ShareIcon } from "@mui/icons-material";
 import { IconButton, Tooltip } from "@mui/material";
+import { useLocation } from "react-router-dom";
 import ShareModal from './shareModal';
 
 import { useState } from "react";
@@ -27,6 +28,8 @@ const TripDetailDesktopView = ({
     const { t } = useTranslation('tripdetails');
     const [openShareModal, setOpenShareModal] = useState(false);
     const shareUrl = window.location.href;
+    const location = useLocation();
+    
 
     // Determine which button to show based on user status
     const renderCardContent = () => {
@@ -44,7 +47,11 @@ const TripDetailDesktopView = ({
                         color="primary"
                         variant="outlined"
                         startIcon={<ChatIcon />}
-                        onClick={() => navigate('/login')}
+                        onClick={() =>
+                        navigate('/login', {
+                            state: { from: location.pathname + location.search }
+                        })
+                        }
                         fullWidth
                     >
                         {t('loginToSend')}

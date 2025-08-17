@@ -23,5 +23,6 @@
     "noPastTrips": "No past trips found.",
     "createFirstTrip": "Create Your First Trip",
     "yourTrip": "Your Trip",
-    "filters": "Filters"
+    "filters": "Filters",
+    "planTrip" : "Plan Trip"
 }

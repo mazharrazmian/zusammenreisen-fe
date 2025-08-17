@@ -96,10 +96,22 @@ export const signUp = async (data: signup) => {
   }
   
   export const deleteAccount = async (data : any) => {
-    console.log(data)
     return await callAPiMultiPart.delete(`/auth/users/me/`, {data});
   
 }
+
+
+export const googleOAuth = async (token: string) => {
+  try {
+    const response = await callAPiMultiPart.post("auth/google/", { token });
+    return response;
+  } catch (error) {
+    handleApiError(error);
+    throw error; // Re-throw so the hook can handle it
+  }
+};
+
+
 const authServices = {
   signUp,
   login,
@@ -112,6 +124,7 @@ const authServices = {
   forgotPassword,
   resetPasswordConfirm,
   deleteAccount,
-  getUserProfile
+  getUserProfile,
+  googleOAuth
 };
 export default authServices;
