@@ -328,7 +328,7 @@ const MyTripsPage = () => {
                 {tabValue === 0 && (
                   <Button
                     variant="contained"
-                    onClick={() => navigate('/trips/create')}
+                    onClick={() => navigate('/add/post')}
                   >
                     {t('createFirstTrip') || 'Create Your First Trip'}
                   </Button>
