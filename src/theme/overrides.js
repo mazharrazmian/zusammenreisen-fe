@@ -161,5 +161,27 @@ export function overrides(theme) {
         },
       },
     },
+    MuiAlert: {
+      styleOverrides: {
+    root: {
+      '&.MuiAlert-standardSuccess, &.MuiAlert-filledSuccess': {
+        backgroundColor: theme.palette.success.main,
+        color: theme.palette.success.contrastText,
+      },
+      '&.MuiAlert-standardError, &.MuiAlert-filledError': {
+        backgroundColor: theme.palette.error.main,
+        color: theme.palette.error.contrastText,
+      },
+      '&.MuiAlert-standardInfo, &.MuiAlert-filledInfo': {
+        backgroundColor: theme.palette.info.main,
+        color: theme.palette.info.contrastText,
+      },
+      '&.MuiAlert-standardWarning, &.MuiAlert-filledWarning': {
+        backgroundColor: theme.palette.warning.main,
+        color: theme.palette.warning.contrastText,
+      },
+    },
+  },
+    },
   };
 }

@@ -21,7 +21,6 @@ import {
   MarkEmailReadOutlined,
   MarkEmailUnreadOutlined 
 } from '@mui/icons-material';
-import Navbar from '../components/navbar';
 import ReceivedRequests from '../components/tripRequests/receivedRequests';
 import SentRequests from '../components/tripRequests/sentRequests';
 import postRequestService from '../redux/api/tripRequestService';
@@ -69,11 +68,11 @@ const RequestManagementPage = () => {
     const handleAcceptRequest = async (id) => {
         postRequestService.acceptRequest(id)
           .then(res => {
-            toast(t('requestAccepted'));
+            toast.error(t('requestAccepted'));
           })
           .catch(error => {
             console.log(error);
-            toast(t('errorAcceptingRequest'));
+            toast.success(t('errorAcceptingRequest'));
           })
           .finally(() => {
             setRefresh(!refresh);
@@ -83,11 +82,11 @@ const RequestManagementPage = () => {
     const handleRejectRequest = async (id) => {
         postRequestService.rejectRequest(id)
           .then(res => {
-            toast(t('requestRejected'));
+            toast.success(t('requestRejected'));
           })
           .catch(error => {
             console.log(error);
-            toast(t('errorRejectingRequest'));
+            toast.error(t('errorRejectingRequest'));
           })
           .finally(() => {
             setRefresh(!refresh);
@@ -97,10 +96,10 @@ const RequestManagementPage = () => {
     const handleRequestDelete = (id) => {
         postRequestService.deleteRequest(id)
         .then(res => {
-            toast(t('requestDeleted'))
+            toast.success(t('requestDeleted'))
         })
         .catch(err => {
-            toast(t('errorDeletingRequest'))
+            toast.error(t('errorDeletingRequest'))
         })
         .finally(() => setRefresh(!refresh))
     }
@@ -114,12 +113,12 @@ const RequestManagementPage = () => {
 
         try {
             await postRequestService.deleteRequest(id);
-            toast(t('requestDeleted'));
+            toast.success(t('requestDeleted'));
         } catch (error) {
             // Rollback on error
             setSentRequests(originalRequests);
             console.log(error);
-            toast(t('errorDeletingRequest'));
+            toast.error(t('errorDeletingRequest'));
         }
     };
 

@@ -68,7 +68,7 @@ const Sidebar = ({ pages, navigate, onClose , handleLogout, Logo }) => {
     // Add 'Profile' and 'Logout'  to pages only if user is logged in
 
     const modifiedPages = isMobile && profile
-        ? [...pages, { pageName: t('profile'), path: '/account' } , {pageName: t('logout'), path: '/'}]
+        ? [...pages, { pageName: t('profile'), path: `/profile/${profile?.profile?.id}` } , {pageName: t('logout'), path: '/'}]
         : pages;
 
     const handleNavigate = (page) => {

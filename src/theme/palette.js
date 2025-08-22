@@ -33,21 +33,21 @@ export const secondary = {
   contrastText: '#FFFFFF',
 };
 
-export const info = {
-  lighter: '#E3F2FD',
-  light: '#90CAF9',
-  main: '#2196F3', // Clear blue for clarity
-  dark: '#1565C0',
-  darker: '#0D47A1',
-  contrastText: '#FFFFFF',
-};
-
 export const success = {
   lighter: '#E8F5E9',
   light: '#A5D6A7',
-  main: '#66BB6A', // Softer green for eco-friendliness
-  dark: '#388E3C',
-  darker: '#1B5E20',
+  main: '#2A7F7E', // Use your primary color - matches your theme
+  dark: '#1A5A5A',
+  darker: '#0D3A3A',
+  contrastText: '#FFFFFF',
+};
+
+export const info = {
+  lighter: '#D1D8E8',
+  light: '#7687B7', 
+  main: '#2A4F7E', // Use your secondary color
+  dark: '#1A365A',
+  darker: '#0D1F3A',
   contrastText: '#FFFFFF',
 };
 

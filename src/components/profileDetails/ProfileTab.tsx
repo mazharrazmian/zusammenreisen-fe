@@ -59,8 +59,8 @@ const ProfileTab: React.FC<ProfileTabProps> = ({
     t 
 }) => {
     return (
-        <Box sx={{ pt: 3 }}>
-            <Grid container spacing={3}>
+        <Box sx={{ pt: { xs: 2, sm: 3 } }}>
+            <Grid container spacing={{ xs: 2, sm: 3 }}>
                 <Grid item xs={12} sm={6}>
                     <TextField
                         fullWidth
@@ -68,6 +68,7 @@ const ProfileTab: React.FC<ProfileTabProps> = ({
                         value={user?.name || ''}
                         disabled
                         variant="outlined"
+                        size={window.innerWidth < 600 ? "small" : "medium"}
                         sx={{
                             '& .MuiOutlinedInput-root': {
                                 backgroundColor: 'rgba(0, 0, 0, 0.02)',
@@ -84,6 +85,7 @@ const ProfileTab: React.FC<ProfileTabProps> = ({
                             value={user?.email || ''}
                             disabled
                             variant="outlined"
+                            size={window.innerWidth < 600 ? "small" : "medium"}
                             sx={{
                                 '& .MuiOutlinedInput-root': {
                                     backgroundColor: 'rgba(0, 0, 0, 0.02)',
@@ -103,6 +105,7 @@ const ProfileTab: React.FC<ProfileTabProps> = ({
                         onChange={isCurrentUser ? onProfileChange : undefined}
                         disabled={!isCurrentUser}
                         variant="outlined"
+                        size={window.innerWidth < 600 ? "small" : "medium"}
                         sx={{
                             '& .MuiOutlinedInput-root': {
                                 backgroundColor: !isCurrentUser ? 'rgba(0, 0, 0, 0.02)' : 'white',
@@ -112,7 +115,7 @@ const ProfileTab: React.FC<ProfileTabProps> = ({
                 </Grid>
                 
                 <Grid item xs={12} sm={6}>
-                    <FormControl fullWidth variant="outlined">
+                    <FormControl fullWidth variant="outlined" size={window.innerWidth < 600 ? "small" : "medium"}>
                         <InputLabel>{t('gender')}</InputLabel>
                         <Select
                             name="gender"
@@ -137,7 +140,6 @@ const ProfileTab: React.FC<ProfileTabProps> = ({
                             allLanguages={languages}
                             selectedLanguages={selectedLanguages}
                             onLanguagesChange={onLanguagesChange}
-                            disablePortal={false}
                         />
                     ) : (
                         <Box>
@@ -148,7 +150,8 @@ const ProfileTab: React.FC<ProfileTabProps> = ({
                                 {selectedLanguages.map((lang, index) => (
                                     <Chip 
                                         key={index} 
-                                        label={lang.name} 
+                                        label={lang.name}
+                                        size={window.innerWidth < 600 ? "small" : "medium"}
                                         sx={{
                                             backgroundColor: 'primary.light',
                                             color: 'primary.contrastText',
@@ -172,13 +175,14 @@ const ProfileTab: React.FC<ProfileTabProps> = ({
                             color="primary"
                             onClick={onProfileUpdate}
                             startIcon={<Save />}
-                            size="large"
+                            size={window.innerWidth < 600 ? "medium" : "large"}
+                            fullWidth={window.innerWidth < 600}
                             sx={{
                                 borderRadius: 2,
-                                px: 4,
-                                py: 1.5,
+                                px: { xs: 2, sm: 4 },
+                                py: { xs: 1, sm: 1.5 },
                                 textTransform: 'none',
-                                fontSize: '1rem',
+                                fontSize: { xs: '0.875rem', sm: '1rem' },
                                 boxShadow: '0 4px 12px rgba(25, 118, 210, 0.3)',
                                 '&:hover': {
                                     boxShadow: '0 6px 16px rgba(25, 118, 210, 0.4)',

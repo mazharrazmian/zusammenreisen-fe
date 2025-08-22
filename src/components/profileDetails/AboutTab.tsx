@@ -46,28 +46,31 @@ const AboutTab: React.FC<AboutTabProps> = ({
     };
 
     return (
-        <Box sx={{ pt: 3 }}>
+        <Box sx={{ pt: { xs: 2, sm: 3 } }}>
             <Card 
                 elevation={0} 
                 sx={{ 
-                    borderRadius: 3, 
+                    borderRadius: { xs: 2, sm: 3 }, 
                     border: '1px solid rgba(0, 0, 0, 0.08)',
                     backgroundColor: 'rgba(255, 255, 255, 0.8)',
                     backdropFilter: 'blur(10px)',
                 }}
             >
-                <CardContent sx={{ p: 3 }}>
+                <CardContent sx={{ p: { xs: 2, sm: 3 } }}>
                     <Box sx={{
                         display: 'flex',
                         justifyContent: 'space-between',
                         alignItems: 'center',
-                        mb: 2
+                        mb: 2,
+                        flexDirection: { xs: 'column', sm: 'row' },
+                        gap: { xs: 1, sm: 0 }
                     }}>
                         <Typography 
                             variant="h6" 
                             sx={{ 
                                 fontWeight: 600,
-                                color: 'text.primary'
+                                color: 'text.primary',
+                                fontSize: { xs: '1.125rem', sm: '1.25rem' }
                             }}
                         >
                             {t('aboutMe')}
@@ -79,6 +82,8 @@ const AboutTab: React.FC<AboutTabProps> = ({
                                 sx={{
                                     backgroundColor: 'primary.light',
                                     color: 'primary.contrastText',
+                                    width: { xs: 32, sm: 36 },
+                                    height: { xs: 32, sm: 36 },
                                     '&:hover': {
                                         backgroundColor: 'primary.main',
                                         transform: 'scale(1.05)',
@@ -86,7 +91,7 @@ const AboutTab: React.FC<AboutTabProps> = ({
                                     transition: 'all 0.2s ease-in-out',
                                 }}
                             >
-                                <Edit fontSize="small" />
+                                <Edit sx={{ fontSize: { xs: 16, sm: 18 } }} />
                             </IconButton>
                         )}
                     </Box>
@@ -109,14 +114,21 @@ const AboutTab: React.FC<AboutTabProps> = ({
                                     }
                                 }}
                             />
-                            <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 1 }}>
+                            <Box sx={{ 
+                                display: 'flex', 
+                                justifyContent: 'flex-end', 
+                                gap: 1,
+                                flexDirection: { xs: 'column', sm: 'row' }
+                            }}>
                                 <Button
                                     onClick={handleCancelEditAbout}
                                     startIcon={<Close />}
                                     variant="outlined"
+                                    fullWidth={{ xs: true, sm: false }}
                                     sx={{
                                         borderRadius: 2,
                                         textTransform: 'none',
+                                        order: { xs: 2, sm: 1 }
                                     }}
                                 >
                                     {t('cancel')}
@@ -126,9 +138,11 @@ const AboutTab: React.FC<AboutTabProps> = ({
                                     color="primary"
                                     onClick={handleSaveAbout}
                                     startIcon={<Save />}
+                                    fullWidth={{ xs: true, sm: false }}
                                     sx={{
                                         borderRadius: 2,
                                         textTransform: 'none',
+                                        order: { xs: 1, sm: 2 },
                                         boxShadow: '0 4px 12px rgba(25, 118, 210, 0.3)',
                                         '&:hover': {
                                             boxShadow: '0 6px 16px rgba(25, 118, 210, 0.4)',
@@ -148,6 +162,7 @@ const AboutTab: React.FC<AboutTabProps> = ({
                                 whiteSpace: 'pre-wrap',
                                 color: 'text.secondary',
                                 lineHeight: 1.6,
+                                fontSize: { xs: '0.875rem', sm: '1rem' },
                                 fontStyle: profile.about ? 'normal' : 'italic'
                             }}
                         >

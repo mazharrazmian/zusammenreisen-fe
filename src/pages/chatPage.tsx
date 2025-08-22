@@ -86,12 +86,12 @@ useEffect(() => {
                     }));
                 } catch (error) {
                     console.log(error);
-                    toast(t('couldNotLoadChatRoom'));
+                    toast.error(t('couldNotLoadChatRoom'));
                 }
             }
             setIsInitialLoad(false);
         } catch (error) {
-            toast(t('couldNotGetChats'));
+            toast.error(t('couldNotGetChats'));
             setIsInitialLoad(false);
         }
     };
@@ -149,7 +149,7 @@ useEffect(() => {
             }));
         } catch (error) {
             console.log(error);
-            toast(t('couldNotLoadChatRoom'));
+            toast.error(t('couldNotLoadChatRoom'));
         }
     };
 
@@ -236,7 +236,7 @@ useEffect(() => {
             }
         } catch (error) {
             console.log(error);
-            toast(t('failedToCreateChatRoom'));
+            toast.error(t('failedToCreateChatRoom'));
         } finally {
             setSendingChat(false);
         }

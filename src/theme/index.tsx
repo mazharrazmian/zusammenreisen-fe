@@ -11,7 +11,6 @@ import { typography } from './typography';
 import { customShadows } from './custom-shadows';
 
 // ----------------------------------------------------------------------
-
 export default function ThemeProvider({ children }) {
   const memoizedValue = useMemo(
     () => ({
@@ -25,11 +24,14 @@ export default function ThemeProvider({ children }) {
   );
 
   const theme = createTheme(memoizedValue);
-
-  theme.components = overrides(theme);
+  
+  // Create the final theme with components
+  const themeWithComponents = createTheme(theme, {
+  components: overrides(theme),
+});
 
   return (
-    <MUIThemeProvider theme={theme}>
+    <MUIThemeProvider theme={themeWithComponents}>
       <CssBaseline />
       {children}
     </MUIThemeProvider>

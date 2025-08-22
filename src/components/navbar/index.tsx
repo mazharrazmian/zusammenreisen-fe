@@ -18,7 +18,6 @@ import { toast } from "react-toastify";
 import NotificationComponent from "./notification";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from 'react-i18next';
-import LanguageIcon from '@mui/icons-material/Language';
 import { useTheme } from "@mui/material/styles";
 
 import Iconify from "../iconify";

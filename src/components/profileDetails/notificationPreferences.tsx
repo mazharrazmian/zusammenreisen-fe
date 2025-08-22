@@ -10,14 +10,16 @@ import {
   Select,
   MenuItem,
   Box,
-  Divider,
   Alert,
   Snackbar,
   CircularProgress,
   Card,
   CardContent,
   Grid,
-  Chip
+  Chip,
+  useTheme,
+  useMediaQuery,
+  Button
 } from '@mui/material';
 import {
   Email as EmailIcon,
@@ -28,15 +30,26 @@ import {
 import chatServices from '../../redux/api/chatServices';
 import { useTranslation } from 'react-i18next';
 
+interface NotificationPreferences {
+  email_frequency: string;
+  [key: string]: any;
+}
 
-const NotificationPreferences = () => {
-    
-    const { t } = useTranslation('accountpage');
-  
-  const [preferences, setPreferences] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
-  const [snackbar, setSnackbar] = useState({
+interface SnackbarState {
+  open: boolean;
+  message: string;
+  severity: 'success' | 'error' | 'warning' | 'info';
+}
+
+const NotificationPreferences: React.FC = () => {
+  const { t } = useTranslation('accountpage');
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
+  const [preferences, setPreferences] = useState<NotificationPreferences | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [saving, setSaving] = useState<boolean>(false);
+  const [snackbar, setSnackbar] = useState<SnackbarState>({
     open: false,
     message: '',
     severity: 'success'
@@ -103,7 +116,7 @@ const NotificationPreferences = () => {
     }
   };
 
-  const showSnackbar = (message, severity = 'success') => {
+  const showSnackbar = (message: string, severity: 'success' | 'error' | 'warning' | 'info' = 'success') => {
     setSnackbar({
       open: true,
       message,
@@ -115,7 +128,7 @@ const NotificationPreferences = () => {
     setSnackbar({ ...snackbar, open: false });
   };
 
-  const handleToggle = async (type, category) => {
+  const handleToggle = async (type: string, category: string) => {
     if (!preferences) return;
 
     const fieldName = `${type}_${category}`;
@@ -130,7 +143,7 @@ const NotificationPreferences = () => {
       
       await chatServices.updateNotificationPreferences(updatedPreferences);
       setPreferences(updatedPreferences);
-      showSnackbar(`${notificationTypes[type].name} ${category} notifications ${newValue ? 'enabled' : 'disabled'}`);
+      showSnackbar(`${notificationTypes[type as keyof typeof notificationTypes].name} ${category} notifications ${newValue ? 'enabled' : 'disabled'}`);
     } catch (error) {
       console.error('Error updating preference:', error);
       showSnackbar('Error updating preference', 'error');
@@ -139,13 +152,13 @@ const NotificationPreferences = () => {
     }
   };
 
-  const handleFrequencyChange = async (event) => {
+  const handleFrequencyChange = async (event: { target: { value: string } }) => {
     const newFrequency = event.target.value;
     
     try {
       setSaving(true);
       const updatedPreferences = {
-        ...preferences,
+        ...preferences!,
         email_frequency: newFrequency
       };
       
@@ -160,12 +173,12 @@ const NotificationPreferences = () => {
     }
   };
 
-  const bulkToggle = async (category, enabled) => {
+  const bulkToggle = async (category: string, enabled: boolean) => {
     if (!preferences) return;
 
     try {
       setSaving(true);
-      const updates = {};
+      const updates: Record<string, boolean> = {};
       
       Object.keys(notificationTypes).forEach(type => {
         updates[`${type}_${category}`] = enabled;
@@ -189,7 +202,12 @@ const NotificationPreferences = () => {
 
   if (loading) {
     return (
-      <Container maxWidth="md" sx={{ py: 4, display: 'flex', justifyContent: 'center' }}>
+      <Container maxWidth="md" sx={{ 
+        py: { xs: 2, sm: 4 }, 
+        px: { xs: 1, sm: 2 },
+        display: 'flex', 
+        justifyContent: 'center' 
+      }}>
         <CircularProgress />
       </Container>
     );
@@ -197,34 +215,91 @@ const NotificationPreferences = () => {
 
   if (!preferences) {
     return (
-      <Container maxWidth="md" sx={{ py: 4 }}>
+      <Container maxWidth="md" sx={{ 
+        py: { xs: 2, sm: 4 },
+        px: { xs: 1, sm: 2 }
+      }}>
         <Alert severity="error">Failed to load notification preferences</Alert>
       </Container>
     );
   }
 
   return (
-    <Container maxWidth="md" sx={{ py: 4 }}>
-      <Paper elevation={3} sx={{ p: 4 }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
-          <SettingsIcon sx={{ mr: 2, fontSize: 32, color: 'primary.main' }} />
-          <Typography variant="h4" component="h1" fontWeight="bold">
+    <Container maxWidth="md" sx={{ 
+      py: { xs: 2, sm: 4 },
+      px: { xs: 1, sm: 2 }
+    }}>
+      <Paper 
+        elevation={3} 
+        sx={{ 
+          p: { xs: 2, sm: 3, md: 4 },
+          borderRadius: { xs: 2, sm: 3 }
+        }}
+      >
+        <Box sx={{ 
+          display: 'flex', 
+          alignItems: 'center', 
+          mb: { xs: 2, sm: 3 },
+          flexDirection: { xs: 'column', sm: 'row' },
+          textAlign: { xs: 'center', sm: 'left' },
+          gap: { xs: 1, sm: 0 }
+        }}>
+          <SettingsIcon sx={{ 
+            mr: { xs: 0, sm: 2 }, 
+            fontSize: { xs: 28, sm: 32 }, 
+            color: 'primary.main' 
+          }} />
+          <Typography 
+            variant={isMobile ? "h5" : "h4"} 
+            component="h1" 
+            fontWeight="bold"
+            sx={{ fontSize: { xs: '1.5rem', sm: '2rem' } }}
+          >
             {t('notificationPreferences')}
           </Typography>
         </Box>
 
-        <Typography variant="body1" color="text.secondary" paragraph>
+        <Typography 
+          variant="body1" 
+          color="text.secondary" 
+          paragraph
+          sx={{ 
+            fontSize: { xs: '0.875rem', sm: '1rem' },
+            mb: { xs: 2, sm: 3 }
+          }}
+        >
           {t('notificationPreferencesDesc')}
         </Typography>
 
         {/* Email Frequency Setting */}
-        <Card sx={{ mb: 4 }}>
-          <CardContent>
-            <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-              <EmailIcon sx={{ mr: 1, color: 'primary.main' }} />
-              <Typography variant="h6">{t('emailFrequency')}</Typography>
+        <Card sx={{ 
+          mb: { xs: 2, sm: 4 },
+          borderRadius: { xs: 2, sm: 3 }
+        }}>
+          <CardContent sx={{ p: { xs: 2, sm: 3 } }}>
+            <Box sx={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              mb: 2,
+              flexDirection: { xs: 'column', sm: 'row' },
+              gap: { xs: 1, sm: 0 }
+            }}>
+              <EmailIcon sx={{ 
+                mr: { xs: 0, sm: 1 }, 
+                color: 'primary.main',
+                fontSize: { xs: 20, sm: 24 }
+              }} />
+              <Typography 
+                variant="h6"
+                sx={{ fontSize: { xs: '1rem', sm: '1.25rem' } }}
+              >
+                {t('emailFrequency')}
+              </Typography>
             </Box>
-            <FormControl fullWidth>
+            <FormControl 
+              fullWidth 
+              size={isMobile ? "small" : "medium"}
+            >
               <InputLabel>{t('emailFrequencyLabel')}</InputLabel>
               <Select
                 data-testid="email-frequency-select"
@@ -244,45 +319,96 @@ const NotificationPreferences = () => {
         </Card>
 
         {/* Email Notifications */}
-        <Card sx={{ mb: 4 }}>
-          <CardContent>
-            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <EmailIcon sx={{ mr: 1, color: 'primary.main' }} />
-                <Typography variant="h6">{t('emailNotifications')}</Typography>
+        <Card sx={{ 
+          mb: { xs: 2, sm: 4 },
+          borderRadius: { xs: 2, sm: 3 }
+        }}>
+          <CardContent sx={{ p: { xs: 2, sm: 3 } }}>
+            <Box sx={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              justifyContent: 'space-between', 
+              mb: 2,
+              flexDirection: { xs: 'column', sm: 'row' },
+              gap: { xs: 2, sm: 0 }
+            }}>
+              <Box sx={{ 
+                display: 'flex', 
+                alignItems: 'center',
+                gap: 1
+              }}>
+                <EmailIcon sx={{ 
+                  color: 'primary.main',
+                  fontSize: { xs: 20, sm: 24 }
+                }} />
+                <Typography 
+                  variant="h6"
+                  sx={{ fontSize: { xs: '1rem', sm: '1.25rem' } }}
+                >
+                  {t('emailNotifications')}
+                </Typography>
                 {preferences.email_frequency === 'disabled' && (
-                  <Chip label={t('disabled')} size="small" sx={{ ml: 2 }} />
+                  <Chip 
+                    label={t('disabled')} 
+                    size="small" 
+                    sx={{ ml: { xs: 0, sm: 2 } }} 
+                  />
                 )}
               </Box>
-              <Box>
-                <Typography variant="body2" color="text.secondary" sx={{ mr: 2, display: 'inline' }}>
+              
+              {/* Quick Actions */}
+              <Box sx={{
+                display: 'flex',
+                flexDirection: { xs: 'column', sm: 'row' },
+                alignItems: 'center',
+                gap: 1
+              }}>
+                <Typography 
+                  variant="body2" 
+                  color="text.secondary" 
+                  sx={{ 
+                    fontSize: { xs: '0.75rem', sm: '0.875rem' },
+                    display: { xs: 'none', sm: 'inline' }
+                  }}
+                >
                   {t('quickActions')}
                 </Typography>
-                <Typography 
-                  variant="body2" 
-                  color="primary" 
-                  sx={{ cursor: 'pointer', mr: 1, display: 'inline' }}
-                  onClick={() => bulkToggle('email', true)}
-                >
-                  {t('enableAll')}
-                </Typography>
-                <Typography 
-                  variant="body2" 
-                  color="primary" 
-                  sx={{ cursor: 'pointer', display: 'inline' }}
-                  onClick={() => bulkToggle('email', false)}
-                >
-                  {t('disableAll')}
-                </Typography>
+                <Box sx={{ display: 'flex', gap: 1 }}>
+                  <Button
+                    variant="text"
+                    size="small"
+                    onClick={() => bulkToggle('email', true)}
+                    sx={{ 
+                      fontSize: { xs: '0.75rem', sm: '0.875rem' },
+                      minWidth: 'auto',
+                      p: { xs: 0.5, sm: 1 }
+                    }}
+                  >
+                    {t('enableAll')}
+                  </Button>
+                  <Button
+                    variant="text"
+                    size="small"
+                    onClick={() => bulkToggle('email', false)}
+                    sx={{ 
+                      fontSize: { xs: '0.75rem', sm: '0.875rem' },
+                      minWidth: 'auto',
+                      p: { xs: 0.5, sm: 1 }
+                    }}
+                  >
+                    {t('disableAll')}
+                  </Button>
+                </Box>
               </Box>
             </Box>
             
-            <Grid container spacing={2}>
+            <Grid container spacing={{ xs: 1, sm: 2 }}>
               {Object.entries(notificationTypes).map(([key, config]) => (
                 <Grid item xs={12} sm={6} key={key}>
                   <FormControlLabel
                     control={
                       <Switch
+                        size={isMobile ? "small" : "medium"}
                         checked={preferences[`${key}_email`]}
                         onChange={() => handleToggle(key, 'email')}
                         disabled={saving || preferences.email_frequency === 'disabled'}
@@ -290,14 +416,31 @@ const NotificationPreferences = () => {
                     }
                     label={
                       <Box>
-                        <Typography variant="body2" fontWeight="medium">
+                        <Typography 
+                          variant="body2" 
+                          fontWeight="medium"
+                          sx={{ fontSize: { xs: '0.875rem', sm: '0.875rem' } }}
+                        >
                           {config.name}
                         </Typography>
-                        <Typography variant="caption" color="text.secondary">
+                        <Typography 
+                          variant="caption" 
+                          color="text.secondary"
+                          sx={{ 
+                            fontSize: { xs: '0.75rem', sm: '0.75rem' },
+                            display: 'block'
+                          }}
+                        >
                           {config.description}
                         </Typography>
                       </Box>
                     }
+                    sx={{
+                      alignItems: 'flex-start',
+                      '& .MuiFormControlLabel-label': {
+                        mt: { xs: 0.5, sm: 0 }
+                      }
+                    }}
                   />
                 </Grid>
               ))}
@@ -306,42 +449,86 @@ const NotificationPreferences = () => {
         </Card>
 
         {/* Push Notifications */}
-        <Card>
-          <CardContent>
-            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <NotificationsIcon sx={{ mr: 1, color: 'primary.main' }} />
-                <Typography variant="h6">{t('pushNotifications')}</Typography>
+        <Card sx={{ borderRadius: { xs: 2, sm: 3 } }}>
+          <CardContent sx={{ p: { xs: 2, sm: 3 } }}>
+            <Box sx={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              justifyContent: 'space-between', 
+              mb: 2,
+              flexDirection: { xs: 'column', sm: 'row' },
+              gap: { xs: 2, sm: 0 }
+            }}>
+              <Box sx={{ 
+                display: 'flex', 
+                alignItems: 'center',
+                gap: 1
+              }}>
+                <NotificationsIcon sx={{ 
+                  color: 'primary.main',
+                  fontSize: { xs: 20, sm: 24 }
+                }} />
+                <Typography 
+                  variant="h6"
+                  sx={{ fontSize: { xs: '1rem', sm: '1.25rem' } }}
+                >
+                  {t('pushNotifications')}
+                </Typography>
               </Box>
-              <Box>
-                <Typography variant="body2" color="text.secondary" sx={{ mr: 2, display: 'inline' }}>
+              
+              {/* Quick Actions */}
+              <Box sx={{
+                display: 'flex',
+                flexDirection: { xs: 'column', sm: 'row' },
+                alignItems: 'center',
+                gap: 1
+              }}>
+                <Typography 
+                  variant="body2" 
+                  color="text.secondary" 
+                  sx={{ 
+                    fontSize: { xs: '0.75rem', sm: '0.875rem' },
+                    display: { xs: 'none', sm: 'inline' }
+                  }}
+                >
                   {t('quickActions')}
                 </Typography>
-                <Typography 
-                  variant="body2" 
-                  color="primary" 
-                  sx={{ cursor: 'pointer', mr: 1, display: 'inline' }}
-                  onClick={() => bulkToggle('push', true)}
-                >
-                  {t('enableAll')}
-                </Typography>
-                <Typography 
-                  variant="body2" 
-                  color="primary" 
-                  sx={{ cursor: 'pointer', display: 'inline' }}
-                  onClick={() => bulkToggle('push', false)}
-                >
-                  {t('disableAll')}
-                </Typography>
+                <Box sx={{ display: 'flex', gap: 1 }}>
+                  <Button
+                    variant="text"
+                    size="small"
+                    onClick={() => bulkToggle('push', true)}
+                    sx={{ 
+                      fontSize: { xs: '0.75rem', sm: '0.875rem' },
+                      minWidth: 'auto',
+                      p: { xs: 0.5, sm: 1 }
+                    }}
+                  >
+                    {t('enableAll')}
+                  </Button>
+                  <Button
+                    variant="text"
+                    size="small"
+                    onClick={() => bulkToggle('push', false)}
+                    sx={{ 
+                      fontSize: { xs: '0.75rem', sm: '0.875rem' },
+                      minWidth: 'auto',
+                      p: { xs: 0.5, sm: 1 }
+                    }}
+                  >
+                    {t('disableAll')}
+                  </Button>
+                </Box>
               </Box>
             </Box>
             
-            <Grid container spacing={2}>
+            <Grid container spacing={{ xs: 1, sm: 2 }}>
               {Object.entries(notificationTypes).map(([key, config]) => (
                 <Grid item xs={12} sm={6} key={key}>
                   <FormControlLabel
                     control={
                       <Switch
+                        size={isMobile ? "small" : "medium"}
                         checked={preferences[`${key}_push`]}
                         onChange={() => handleToggle(key, 'push')}
                         disabled={saving}
@@ -349,14 +536,31 @@ const NotificationPreferences = () => {
                     }
                     label={
                       <Box>
-                        <Typography variant="body2" fontWeight="medium">
+                        <Typography 
+                          variant="body2" 
+                          fontWeight="medium"
+                          sx={{ fontSize: { xs: '0.875rem', sm: '0.875rem' } }}
+                        >
                           {config.name}
                         </Typography>
-                        <Typography variant="caption" color="text.secondary">
+                        <Typography 
+                          variant="caption" 
+                          color="text.secondary"
+                          sx={{ 
+                            fontSize: { xs: '0.75rem', sm: '0.75rem' },
+                            display: 'block'
+                          }}
+                        >
                           {config.description}
                         </Typography>
                       </Box>
                     }
+                    sx={{
+                      alignItems: 'flex-start',
+                      '& .MuiFormControlLabel-label': {
+                        mt: { xs: 0.5, sm: 0 }
+                      }
+                    }}
                   />
                 </Grid>
               ))}
@@ -366,8 +570,12 @@ const NotificationPreferences = () => {
 
         {/* Loading indicator */}
         {saving && (
-          <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
-            <CircularProgress size={24} />
+          <Box sx={{ 
+            display: 'flex', 
+            justifyContent: 'center', 
+            mt: { xs: 1, sm: 2 } 
+          }}>
+            <CircularProgress size={isMobile ? 20 : 24} />
           </Box>
         )}
       </Paper>
@@ -377,9 +585,23 @@ const NotificationPreferences = () => {
         open={snackbar.open}
         autoHideDuration={4000}
         onClose={handleCloseSnackbar}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        anchorOrigin={{ 
+          vertical: 'bottom', 
+          horizontal: isMobile ? 'center' : 'left' 
+        }}
+        sx={{
+          '& .MuiSnackbarContent-root': {
+            fontSize: { xs: '0.875rem', sm: '1rem' }
+          }
+        }}
       >
-        <Alert severity={snackbar.severity} onClose={handleCloseSnackbar}>
+        <Alert 
+          severity={snackbar.severity} 
+          onClose={handleCloseSnackbar}
+          sx={{
+            fontSize: { xs: '0.875rem', sm: '1rem' }
+          }}
+        >
           {snackbar.message}
         </Alert>
       </Snackbar>

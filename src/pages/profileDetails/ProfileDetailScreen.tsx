@@ -56,7 +56,7 @@ interface PasswordData {
     new_password: string;
 }
 
-const ProfileDetailScreen: React.FC = () => {
+const ProfileDetail: React.FC = () => {
     const { t } = useTranslation('accountpage');
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -112,7 +112,7 @@ const ProfileDetailScreen: React.FC = () => {
                 })
                 .catch(error => {
                     console.log(error);
-                    toast(t('couldNotFetchProfile'));
+                    toast.error(t('couldNotFetchProfile'));
                     setIsLoading(false);
                 });
         } else {
@@ -131,7 +131,7 @@ const ProfileDetailScreen: React.FC = () => {
                 })
                 .catch(error => {
                     console.log(error);
-                    toast(t('couldNotFetchProfile'));
+                    toast.error(t('couldNotFetchProfile'));
                     setIsLoading(false);
                 });
         }
@@ -142,7 +142,7 @@ const ProfileDetailScreen: React.FC = () => {
         if (isCurrentUser) {
             authServices.getAllLanguages()
                 .then(response => setLanguages(response?.data))
-                .catch(() => toast(t('couldNotFetchLanguages')));
+                .catch(() => toast.error(t('couldNotFetchLanguages')));
         }
     }, [isCurrentUser]);
 
@@ -158,9 +158,9 @@ const ProfileDetailScreen: React.FC = () => {
         
         try {
             await authServices.updateProfile(profile.id, formData);
-            toast(t('profileUpdated'));
+            toast.success(t('profileUpdated'));
         } catch (error) {
-            toast(t('profileUpdateFailed'));
+            toast.error(t('profileUpdateFailed'));
             console.error('Image update failed:', error);
         }
     };
@@ -193,8 +193,8 @@ const ProfileDetailScreen: React.FC = () => {
         });
 
         authServices.updateProfile(profile.id, formData)
-            .then(() => toast(t('profileUpdated')))
-            .catch(() => toast(t('profileUpdateFailed')));
+            .then(() => toast.success(t('profileUpdated')))
+            .catch(() => toast.error(t('profileUpdateFailed')));
     };
 
     const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -207,13 +207,13 @@ const ProfileDetailScreen: React.FC = () => {
             new_password: passwordData.new_password 
         })
             .then(() => {
-                toast(t('passwordChanged'));
+                toast.success(t('passwordChanged'));
                 setOpenPasswordModal(false);
                 setPasswordData({ current_password: "", new_password: "" });
             })
             .catch(error => {
                 handleApiError(error);
-                toast(t('passwordChangeFailed'));
+                toast.error(t('passwordChangeFailed'));
             });
     };
 
@@ -223,14 +223,14 @@ const ProfileDetailScreen: React.FC = () => {
         const aboutFormData = new FormData();
         aboutFormData.append('about', about);
         authServices.updateProfile(profile.id, aboutFormData)
-            .then(() => toast(t('profileUpdated')))
-            .catch(() => toast(t('profileUpdateFailed')));
+            .then(() => toast.success(t('profileUpdated')))
+            .catch(() => toast.error(t('profileUpdateFailed')));
     };
 
     const handleDeactivateAccount = () => {
         authServices.deleteAccount({ current_password: deactivatePassword })
             .then(() => {
-                toast(t('accountDeleted'));
+                toast.success(t('accountDeleted'));
                 Cookies.remove("accessToken", { path: "/" });
                 Cookies.remove("refreshToken", { path: "/" });
                 dispatch(clearProfile());
@@ -246,7 +246,7 @@ const ProfileDetailScreen: React.FC = () => {
     const handleForgotPassword = async (email: string) => {
         try {
             await authServices.forgotPassword({ email });
-            toast(t('forgotPasswordEmailSent'));
+            toast.success(t('forgotPasswordEmailSent'));
         } catch (error) {
             handleApiError(error);
             throw error; // Re-throw to let the modal handle it
@@ -271,13 +271,19 @@ const ProfileDetailScreen: React.FC = () => {
     }
 
     return (
-        <Container maxWidth="md">
+        <Container 
+            maxWidth="md" 
+            sx={{ 
+                px: { xs: 1, sm: 2, md: 3 },
+                py: { xs: 2, sm: 3 }
+            }}
+        >
             <Paper 
                 elevation={0} 
                 sx={{ 
-                    borderRadius: 3, 
+                    borderRadius: { xs: 2, sm: 3 }, 
                     overflow: 'hidden', 
-                    mb: 4,
+                    mb: { xs: 2, sm: 4 },
                     boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
                     border: '1px solid rgba(255, 255, 255, 0.2)',
                     backgroundColor: 'rgba(255, 255, 255, 0.95)',
@@ -291,7 +297,7 @@ const ProfileDetailScreen: React.FC = () => {
                     isCurrentUser={isCurrentUser}
                 />
 
-                <Box sx={{ p: 3, pt: 0, position: 'relative' }}>
+                <Box sx={{ p: { xs: 2, sm: 3 }, pt: 0, position: 'relative' }}>
                     {/* Profile Picture */}
                     <ProfileAvatar
                         profilePicture={profilePicturePreview}
@@ -305,6 +311,7 @@ const ProfileDetailScreen: React.FC = () => {
                         sx={{ 
                             mt: 2, 
                             fontWeight: 'bold',
+                            fontSize: { xs: '1.75rem', sm: '2.125rem' },
                             background: 'linear-gradient(45deg, #1976d2, #42a5f5)',
                             backgroundClip: 'text',
                             WebkitBackgroundClip: 'text',
@@ -321,21 +328,29 @@ const ProfileDetailScreen: React.FC = () => {
                             onChange={handleTabChange}
                             indicatorColor="primary"
                             textColor="primary"
+                            variant={isCurrentUser ? "scrollable" : "fullWidth"}
+                            scrollButtons={isCurrentUser ? "auto" : false}
+                            allowScrollButtonsMobile={isCurrentUser}
                             sx={{
                                 '& .MuiTab-root': {
                                     textTransform: 'none',
                                     fontWeight: 500,
-                                    fontSize: '1rem',
+                                    fontSize: { xs: '0.875rem', sm: '1rem' },
+                                    minHeight: { xs: 40, sm: 48 },
+                                    px: { xs: 1, sm: 2 },
                                     '&:hover': {
                                         backgroundColor: 'rgba(25, 118, 210, 0.04)',
                                     },
+                                },
+                                '& .MuiTabs-scrollButtons': {
+                                    display: { xs: isCurrentUser ? 'flex' : 'none', sm: 'none' },
                                 },
                             }}
                         >
                             <Tab label={t('profile')} />
                             <Tab label={t('about')} />
                             {isCurrentUser && <Tab label={t('settings')} />}
-                            {isCurrentUser && <Tab label={t('notificationPreferences')} />}
+                            {isCurrentUser && <Tab label={t('notifications')} />}
                         </Tabs>
                     </Box>
 
@@ -409,4 +424,4 @@ const ProfileDetailScreen: React.FC = () => {
     );
 };
 
-export default ProfileDetailScreen;
+export default ProfileDetail;

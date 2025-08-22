@@ -25,12 +25,12 @@ const CoverPhotoSection: React.FC<CoverPhotoSectionProps> = ({
     return (
         <Box sx={{
             position: 'relative',
-            height: 200,
+            height: { xs: 150, sm: 200 },
             backgroundColor: coverPhoto ? 'transparent' : '#e0e0e0',
             backgroundImage: coverPhoto ? `url(${coverPhoto})` : 'none',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
-            borderRadius: '12px 12px 0 0',
+            borderRadius: { xs: '8px 8px 0 0', sm: '12px 12px 0 0' },
         }}>
             {isCurrentUser && (
                 <>
@@ -45,11 +45,13 @@ const CoverPhotoSection: React.FC<CoverPhotoSectionProps> = ({
                     <IconButton
                         sx={{
                             position: 'absolute',
-                            right: 16,
-                            bottom: 16,
+                            right: { xs: 8, sm: 16 },
+                            bottom: { xs: 8, sm: 16 },
                             backgroundColor: 'rgba(255, 255, 255, 0.9)',
                             backdropFilter: 'blur(10px)',
                             boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+                            width: { xs: 36, sm: 40 },
+                            height: { xs: 36, sm: 40 },
                             '&:hover': {
                                 backgroundColor: 'rgba(255, 255, 255, 1)',
                                 transform: 'scale(1.05)',
@@ -59,7 +61,7 @@ const CoverPhotoSection: React.FC<CoverPhotoSectionProps> = ({
                         }}
                         onClick={() => coverPhotoInputRef.current?.click()}
                     >
-                        <PhotoCamera />
+                        <PhotoCamera sx={{ fontSize: { xs: 18, sm: 24 } }} />
                     </IconButton>
                 </>
             )}

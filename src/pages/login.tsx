@@ -69,15 +69,15 @@ const LoginPage = () => {
     authServices.forgotPassword({ email: values.email })
       .then(response => {
         if (response.status == 204) {
-          toast(t('passwordResetEmailSent'));
+          toast.success(t('passwordResetEmailSent'));
         } else if (response.status == 400) {
           setErrors({ 'email': t('validEmailRequired') });
-          toast(t('enterEmailAndClickForgotPassword'));
+          toast.error(t('enterEmailAndClickForgotPassword'));
         }
       })
       .catch(error => {
         setErrors({ 'email': t('validEmailRequired') });
-        toast(t('errorSendingEmail'));
+        toast.error(t('errorSendingEmail'));
       });
   };
 
