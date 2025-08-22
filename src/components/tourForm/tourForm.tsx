@@ -38,6 +38,7 @@ import { useTranslation } from "react-i18next";
 
 import { tourTypesTranslations, accommodationTypesTranslations } from "../../Constants";
 import { error } from "../../theme/palette";
+import { handleApiError } from "../../redux/api/http-common";
 
 const initialValues: TourDataInterface = {
     title: "",
@@ -320,8 +321,8 @@ const TourForm = () => {
             tourData.append("group_size", String(formData.groupSize));
             tourData.append("current_travellers", String(formData.currentTravellers));
             tourData.append("tour_type", formData.tourType);
-            formData.activities.forEach((activity, index) => {
-                tourData.append(`activities[${index}]`, activity);
+            formData.activities.forEach((activity) => {
+            tourData.append("activities", activity);
             });
             tourData.append("accommodation_type", formData.accommodationType);
             tourData.append("estimated_cost", String(formData.estimatedCost));
@@ -336,7 +337,7 @@ const TourForm = () => {
 
             try {
                 setIsLoading(true);
-
+                console.log(formData)
                 if (isEditMode) {
                     const res = await postServices.editPost(slug, tourData); // Assuming postServices.createPost handles FormData
                     if (res.status === 200) {
@@ -360,11 +361,13 @@ const TourForm = () => {
                     }
                 }
             } catch (error: any) {
-                toast.error(
-                    `${error?.response?.data?.errors[0]?.detail} (${error?.response?.data?.errors[0]?.attr})`
-                );
+                handleApiError(error)
                 setIsLoading(false);
             }
+            finally {
+                setIsLoading(false)
+            }
+            
         } 
     };
 
