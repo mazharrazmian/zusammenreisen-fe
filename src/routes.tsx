@@ -14,7 +14,7 @@ import RequestManagementPage from "./pages/requestManagement";
 import MyTripsPage from "./pages/tripPlannerList";
 import TripPlannerPage from "./pages/tripPlannerDetail";
 import { PageTransition } from "./components/navbar";
-import ProfileDetail from "./pages/profileDetail";
+import ProfileDetailScreen from "./pages/profileDetails/ProfileDetailScreen";
 import BlogPage from "./pages/blogPage";
 import EditTour from "./pages/editTour";
 
@@ -98,7 +98,7 @@ export default function Router() {
             path: "profile/:userId", 
             element: (
               <ProtectedRoute>
-                <ProfileDetail />
+                <ProfileDetailScreen />
               </ProtectedRoute>
             ) 
           },

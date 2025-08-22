@@ -324,62 +324,134 @@ const Navbar = React.memo(({ transparentOnHome }) => {
 
                             {/* User Profile */}
                             {!isMobile && (
-                                <Box sx={{ flexGrow: 0 }}>
-                                    <Tooltip title={''}>
-                                        <IconButton
-                                            component={motion.button}
-                                            whileHover={{ scale: 1.1 }}
-                                            onClick={handleOpenUserMenu}
-                                            sx={{ p: 0 }}
-                                        >
-                                            <Avatar
-                                                sx={{objectFit:'cover'}}
-                                                alt={profile?.profile?.name}
-                                                src={profile?.profile?.profile?.picture}
-                                            />
-                                        </IconButton>
-                                    </Tooltip>
-                                    <Menu
-                                        sx={{ mt: "45px", width: "250px" }}
-                                        id="menu-appbar"
-                                        anchorEl={anchorElUser}
-                                        anchorOrigin={{
-                                            vertical: "top",
-                                            horizontal: "right",
-                                        }}
-                                        keepMounted
-                                        transformOrigin={{
-                                            vertical: "top",
-                                            horizontal: "right",
-                                        }}
-                                        open={Boolean(anchorElUser)}
-                                        onClose={handleCloseUserMenu}
-                                    >
-                                        <MenuItem>
-                                            <Typography sx={{ textAlign: "center" }}>
-                                                {profile?.profile?.name || "N/A"}
-                                            </Typography>
-                                        </MenuItem>
-                                        <MenuItem>
-                                            <Typography sx={{ textAlign: "center" }}>
-                                                {" "}
-                                                {profile?.profile?.email || "N/A"}
-                                            </Typography>
-                                        </MenuItem>
-                                        <Divider />
-                                        <MenuItem onClick={() => navigateWithAnimation(`/profile/${profile?.profile?.profile?.id}`)}>
-                                            <Typography sx={{ textAlign: "center", display: 'flex' }}>
-                                                <Iconify icon={'mdi:home'} width={25} />
-                                                {t('profile')}
-                                            </Typography>
-                                        </MenuItem>
-                                        <MenuItem onClick={handleLogout}>
-                                            <Typography sx={{ textAlign: "center", color: "red" }}>
-                                                {t('logout')}
-                                            </Typography>
-                                        </MenuItem>
-                                    </Menu>
-                                </Box>
+                               <Box sx={{ flexGrow: 0 }}>
+    <Tooltip title="">
+        <IconButton
+            component={motion.button}
+            whileHover={{ scale: 1.1 }}
+            onClick={handleOpenUserMenu}
+            sx={{ p: 0 }}
+        >
+            <Avatar
+                sx={{ objectFit: 'cover' }}
+                alt={profile?.profile?.name}
+                src={profile?.profile?.profile?.picture}
+            />
+        </IconButton>
+    </Tooltip>
+    <Menu
+        sx={{ 
+            mt: "45px",
+            '& .MuiPaper-root': {
+                minWidth: 280,
+                borderRadius: 2,
+                boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
+                border: '1px solid rgba(0,0,0,0.05)'
+            }
+        }}
+        id="menu-appbar"
+        anchorEl={anchorElUser}
+        anchorOrigin={{
+            vertical: "top",
+            horizontal: "right",
+        }}
+        keepMounted
+        transformOrigin={{
+            vertical: "top",
+            horizontal: "right",
+        }}
+        open={Boolean(anchorElUser)}
+        onClose={handleCloseUserMenu}
+    >
+        {/* User Info Header */}
+        <Box sx={{ px: 3, py: 2, borderBottom: '1px solid rgba(0,0,0,0.08)' }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                <Avatar
+                    src={profile?.profile?.profile?.picture}
+                    alt={profile?.profile?.name}
+                    sx={{ width: 48, height: 48 }}
+                />
+                <Box sx={{ flexGrow: 1, minWidth: 0 }}>
+                    <Typography 
+                        variant="subtitle1" 
+                        sx={{ 
+                            fontWeight: 600,
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap'
+                        }}
+                    >
+                        {profile?.profile?.name || "N/A"}
+                    </Typography>
+                    <Typography 
+                        variant="body2" 
+                        color="text.secondary"
+                        sx={{ 
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap'
+                        }}
+                    >
+                        {profile?.profile?.email || "N/A"}
+                    </Typography>
+                </Box>
+            </Box>
+        </Box>
+
+        {/* Menu Items */}
+        <Box sx={{ py: 1 }}>
+            <MenuItem 
+                onClick={() => navigateWithAnimation(`/profile/${profile?.profile?.profile?.id}`)}
+                sx={{ 
+                    px: 3, 
+                    py: 1.5,
+                    '&:hover': {
+                        backgroundColor: 'action.hover'
+                    }
+                }}
+            >
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, width: '100%' }}>
+                    <Iconify 
+                        icon="mdi:account-circle" 
+                        width={20} 
+                        sx={{ color: 'text.secondary' }}
+                    />
+                    <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                        {t('profile')}
+                    </Typography>
+                </Box>
+            </MenuItem>
+
+            <Divider sx={{ my: 1 }} />
+
+            <MenuItem 
+                onClick={handleLogout}
+                sx={{ 
+                    px: 3, 
+                    py: 1.5,
+                    
+                }}
+            >
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, width: '100%' }}>
+                    <Iconify 
+                        icon="mdi:logout" 
+                        width={20} 
+                        sx={{ color: 'error.main' }}
+                    />
+                    <Typography 
+                        variant="body2" 
+                        sx={{ 
+                            fontWeight: 500,
+                            color: 'error.main'
+                        }}
+                    >
+                        {t('logout')}
+                    </Typography>
+                </Box>
+            </MenuItem>
+        </Box>
+    </Menu>
+</Box>
                             )}
                             {/* Language Switcher */}
                            <LanguageSwitcher />

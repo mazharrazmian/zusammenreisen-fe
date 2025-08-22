@@ -1,7 +1,7 @@
 import React from "react";
 import { Autocomplete, TextField, Chip } from "@mui/material";
 
-const LanguageSelector = ({ allLanguages, selectedLanguages, onLanguagesChange }) => {
+const LanguageSelector = ({ allLanguages, selectedLanguages, onLanguagesChange, disablePortal }) => {
         const handleChange = (event, newValue) => {
         onLanguagesChange(newValue); // Keep it as array of objects
     };
@@ -15,7 +15,8 @@ const LanguageSelector = ({ allLanguages, selectedLanguages, onLanguagesChange }
             getOptionLabel={(option) => option.name} 
             autoSelect 
             onChange={handleChange} 
-
+            isOptionEqualToValue={(option, value) => option.name === value.name}  // <-- important
+            disablePortal={disablePortal}
             renderInput={(params) => (
                 <TextField {...params} placeholder="Type or select languages" />
             )}

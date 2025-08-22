@@ -1,0 +1,36 @@
+{
+  "welcomeTitle": "Willkommen bei WanderBuddies!",
+  "welcomeHi": "Hallo {{userName}}! 👋",
+  "welcomeDesc": "Um dir zu helfen, die perfekten Reisepartner zu finden und tolle Abenteuer zu erleben, möchten wir dich besser kennenlernen.",
+  "featureConnect": "Vernetze dich mit gleichgesinnten Reisenden",
+  "featureDiscover": "Entdecke großartige Reiseziele",
+  "featureSafe": "Reise sicher mit verifizierten Buddies",
+  "quickProcess": "Das dauert nur 2-3 Minuten",
+  "completeProfileBtn": "Profil vervollständigen",
+
+  "profileStep": "Schritt {{currentStep}} von {{totalSteps}}",
+  "profileTitle": "Vervollständige dein Profil",
+  "genderTitle": "Was ist dein Geschlecht?",
+  "genderDesc": "Das hilft uns, bessere Reiseempfehlungen zu geben und dich mit passenden Reisepartnern zu verbinden.",
+  "genderMale": "Männlich",
+  "genderFemale": "Weiblich",
+  "genderOther": "Andere",
+  "genderError": "Bitte wähle dein Geschlecht aus",
+
+  "ageTitle": "Wie alt bist du?",
+  "ageDesc": "Das Alter hilft uns, dich mit Reisenden in ähnlichen Lebensphasen und passenden Aktivitäten zu verbinden.",
+  "selectAge": "Wähle dein Alter",
+  "ageError": "Das Alter muss zwischen 18 und 100 liegen",
+
+  "languageTitle": "Welche Sprachen sprichst du?",
+  "languageDesc": "Sprachkompatibilität macht Reiseerlebnisse für alle angenehmer und einfacher.",
+  "languageError": "Bitte wähle mindestens eine Sprache aus",
+
+  "backToWelcome": "Zurück zur Begrüßung",
+  "previous": "Zurück",
+  "continue": "Weiter",
+  "completeProfile": "Profil vervollständigen",
+  "profileCompletedSuccess": "Profil erfolgreich vervollständigt!",
+  "profileCompletedError": "Profil konnte nicht aktualisiert werden. Bitte versuche es erneut.",
+  "onboardingToastSuccess": "Willkommen bei WanderBuddies! Dein Profil ist jetzt vollständig."
+}

@@ -25,7 +25,7 @@ i18n
     fallbackLng: "en",
     ns: [
       'homepage', 'filters', 'triplist', 'tripdetails', 'accountpage', 'activateaccount', 'bloglist', 'chatpage', 'login', 'page404', 'passwordreset', 'receivedRequests',
-       'register', 'requestmanagement', 'sentRequests', 'tourForm', 'translation', 'tripPlannerDetail' , 'tourForm', 'common', "footer"
+       'register', 'requestmanagement', 'sentRequests', 'tourForm', 'translation', 'tripPlannerDetail' , 'tourForm', 'common', "footer", "onboarding"
     ], // declare all namespaces here
     interpolation: {
       escapeValue: false,

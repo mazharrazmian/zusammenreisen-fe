@@ -53,7 +53,8 @@ const RegisterPage = () => {
 
     useEffect(() => {
         authServices.getAllLanguages().then(response => {
-            setLanguages(response.data)
+            console.log(response.data)
+            setLanguages(response?.data)
         })
     }, [])
 

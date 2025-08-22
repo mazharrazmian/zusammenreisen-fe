@@ -66,5 +66,19 @@
     "quickActions": "Schnellaktionen:",
     "enableAll": "Alle aktivieren",
     "disableAll": "Alle deaktivieren",
-    "pushNotifications": "Push-Benachrichtigungen"
+    "pushNotifications": "Push-Benachrichtigungen",
+    "security": "Sicherheit",
+    "forgotPassword": "Passwort vergessen",
+    "dangerZone": "Gefahrenzone",
+    "dangerZoneDescription": "Löschen oder deaktivieren Sie Ihr Konto. Diese Aktion kann nicht rückgängig gemacht werden.",
+    "forgotPasswordTitle": "Passwort vergessen",
+    "forgotPasswordDescription": "Geben Sie unten Ihre E-Mail-Adresse ein und wir senden Ihnen einen Link zum Zurücksetzen Ihres Passworts.",
+    "emailAddress": "E-Mail-Adresse",
+    "emailRequired": "E-Mail ist erforderlich.",
+    "emailInvalid": "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
+    "sendResetEmail": "Reset-E-Mail senden",
+    "emailSent": "E-Mail gesendet!",
+    "forgotPasswordEmailSent": "Ein Link zum Zurücksetzen des Passworts wurde an {{email}} gesendet.",
+    "forgotPasswordError": "Fehler beim Senden der Reset-E-Mail. Bitte versuchen Sie es erneut.",
+    "close": "Schließen"
 }

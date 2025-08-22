@@ -66,7 +66,6 @@ const RequestManagementPage = () => {
           })
     }, [refresh, profile]);
 
-
     const handleAcceptRequest = async (id) => {
         postRequestService.acceptRequest(id)
           .then(res => {
@@ -95,16 +94,34 @@ const RequestManagementPage = () => {
           });
     };
 
-    const handleRequestDelete = (id)=>{
+    const handleRequestDelete = (id) => {
         postRequestService.deleteRequest(id)
-        .then(res=>{
+        .then(res => {
             toast(t('requestDeleted'))
         })
-        .catch(err=>{
+        .catch(err => {
             toast(t('errorDeletingRequest'))
         })
-        .finally(()=>setRefresh(!refresh))
+        .finally(() => setRefresh(!refresh))
     }
+
+    // New handler specifically for sent requests with immediate UI update
+    const handleSentRequestDelete = async (id) => {
+        // Optimistically remove the request immediately
+        const originalRequests = sentRequests;
+        const updatedRequests = sentRequests.filter(request => request.id !== id);
+        setSentRequests(updatedRequests);
+
+        try {
+            await postRequestService.deleteRequest(id);
+            toast(t('requestDeleted'));
+        } catch (error) {
+            // Rollback on error
+            setSentRequests(originalRequests);
+            console.log(error);
+            toast(t('errorDeletingRequest'));
+        }
+    };
 
     const handleViewChange = (event, newValue) => {
         if (newValue !== null) {
@@ -286,7 +303,10 @@ const RequestManagementPage = () => {
                             handleRequestDelete={handleRequestDelete}
                         />
                       ) : (
-                        <SentRequests requests={sentRequests} />
+                        <SentRequests 
+                          requests={sentRequests} 
+                          onRequestDelete={handleSentRequestDelete}
+                        />
                       )}
                     </Box>
                   </Fade>

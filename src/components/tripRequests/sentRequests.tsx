@@ -36,19 +36,21 @@ import { useNavigate } from 'react-router-dom';
 import { handleApiError } from '../../redux/api/http-common';
 import chatServices from '../../redux/api/chatServices';
 import { getKeyByValue, REQUESTSTATUS } from '../../Constants';
-import postRequestService from '../../redux/api/tripRequestService';
 import { useTranslation } from 'react-i18next';
 import ClickableAvatar from '../shared/clickableAvatar/clicakableAvatar';
 
-const SentRequests = ({requests}) => {
+interface SentRequestsProps {
+  requests: any[];
+  onRequestDelete: (id: number) => void;
+}
+
+const SentRequests: React.FC<SentRequestsProps> = ({ requests, onRequestDelete }) => {
   const navigate = useNavigate();
   const { t } = useTranslation('requestmanagement');
   const [tabValue, setTabValue] = useState(0);
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedRequest, setSelectedRequest] = useState(null);
-  const [refresh, setRefresh] = useState(false);
 
-  console.log(selectedRequest)
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -67,17 +69,8 @@ const SentRequests = ({requests}) => {
   };
 
   const handleCancelRequest = async (id) => {
-    postRequestService.deleteRequest(id)
-      .then(res => {
-        toast(t('requestDeleted'));
-      })
-      .catch(error => {
-        console.log(error);
-        toast(t('errorDeletingRequest'));
-      })
-      .finally(() => {
-        setRefresh(!refresh);
-      });
+    handleMenuClose();
+    onRequestDelete(id);
   };
 
   const handleChat = (email) => {
@@ -249,7 +242,7 @@ const SentRequests = ({requests}) => {
                             color="error"
                             startIcon={<Delete />}
                             fullWidth
-                            onClick={() => handleCancelRequest(String(request.id))}
+                            onClick={() => handleCancelRequest(request.id)}
                           >
                             {t('cancelRequest')}
                           </Button>
@@ -267,7 +260,6 @@ const SentRequests = ({requests}) => {
                           >
                             {t('chatWithHost')}
                           </Button>
-                          {/* show plan trip button */}
                           <Button
                             variant="contained"
                             startIcon={<EventAvailable />}

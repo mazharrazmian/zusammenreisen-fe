@@ -1,0 +1,36 @@
+{
+  "welcomeTitle": "Welcome to WanderBuddies!",
+  "welcomeHi": "Hi {{userName}}! 👋",
+  "welcomeDesc": "To help you find the perfect travel companions and create amazing adventures, we need to know a bit more about you.",
+  "featureConnect": "Connect with like-minded travelers",
+  "featureDiscover": "Discover amazing destinations",
+  "featureSafe": "Travel safely with verified buddies",
+  "quickProcess": "This will only take 2-3 minutes",
+  "completeProfileBtn": "Complete My Profile",
+
+  "profileStep": "Step {{currentStep}} of {{totalSteps}}",
+  "profileTitle": "Complete Your Profile",
+  "genderTitle": "What's your gender?",
+  "genderDesc": "This helps us provide better travel recommendations and connect you with compatible travel buddies.",
+  "genderMale": "Male",
+  "genderFemale": "Female",
+  "genderOther": "Other",
+  "genderError": "Please select your gender",
+
+  "ageTitle": "How old are you?",
+  "ageDesc": "Age helps us match you with travelers in similar life stages and age-appropriate activities.",
+  "selectAge": "Select your age",
+  "ageError": "Age must be between 18 and 100",
+
+  "languageTitle": "What languages do you speak?",
+  "languageDesc": "Language compatibility makes travel experiences smoother and more enjoyable for everyone.",
+  "languageError": "Please select at least one language",
+
+  "backToWelcome": "Back to Welcome",
+  "previous": "Previous",
+  "continue": "Continue",
+  "completeProfile": "Complete Profile",
+  "profileCompletedSuccess": "Profile completed successfully!",
+  "profileCompletedError": "Failed to update profile. Please try again.",
+  "onboardingToastSuccess": "Welcome to WanderBuddies! Your profile is now complete."
+}

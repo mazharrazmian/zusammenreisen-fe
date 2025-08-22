@@ -66,5 +66,19 @@
     "quickActions": "Quick Actions:",
     "enableAll": "Enable All",
     "disableAll": "Disable All",
-    "pushNotifications": "Push Notifications"
+    "pushNotifications": "Push Notifications",
+    "security": "Security",
+    "forgotPassword": "Forgot Password",
+    "dangerZone": "Danger Zone",
+    "dangerZoneDescription": "Delete or deactivate your account. This action cannot be undone.",
+    "forgotPasswordTitle": "Forgot Password",
+    "forgotPasswordDescription": "Enter your email address below and we'll send you a link to reset your password.",
+    "emailAddress": "Email Address",
+    "emailRequired": "Email is required.",
+    "emailInvalid": "Please enter a valid email address.",
+    "sendResetEmail": "Send Reset Email",
+    "emailSent": "Email Sent!",
+    "forgotPasswordEmailSent": "A password reset link has been sent to {{email}}.",
+    "forgotPasswordError": "Failed to send reset email. Please try again.",
+    "close": "Close"
 }
